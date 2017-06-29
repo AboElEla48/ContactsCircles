@@ -12,7 +12,8 @@
         android:theme="@style/AppTheme">
 
         <!-- Splash screen -->
-        <activity android:name=".ui.splash.SplashActivity">
+        <activity android:name=".ui.splash.SplashActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

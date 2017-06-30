@@ -1,10 +1,10 @@
-package com.aboelela.circles.ui.home.viewCircles;
+package com.aboelela.circles.ui.home.fragments.viewCircles;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.aboelela.circles.ui.home.viewCircles.data.CirclesListViewModel;
+import com.aboelela.circles.ui.home.fragments.viewCircles.data.CirclesListViewModel;
 import com.mvvm.framework.annotation.ViewModel;
 import com.mvvm.framework.base.presenters.BasePresenter;
 

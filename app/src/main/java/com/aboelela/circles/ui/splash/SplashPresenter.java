@@ -27,13 +27,6 @@ public class SplashPresenter extends BasePresenter<SplashActivity, SplashPresent
             @Override
             public void run() {
                 ActivityNavigationManager.startCirclesHomeActivity(getBaseView());
-//                if (PreferencesManager.isCirclesDefined()) {
-//                    ActivityNavigationManager.startCirclesHomeActivity(getBaseView());
-//                }
-//                else {
-//                    ActivityNavigationManager.startAddCirclesActivity(getBaseView());
-//                }
-
                 getBaseView().finish();
             }
         }, Constants.Splash.SPLASH_DURATION);

@@ -1,7 +1,7 @@
-package com.aboelela.circles.ui.home.viewCircles.data;
+package com.aboelela.circles.ui.home.fragments.viewCircles.data;
 
 import com.aboelela.circles.R;
-import com.aboelela.circles.ui.home.viewCircles.CirclesListFragment;
+import com.aboelela.circles.ui.home.fragments.viewCircles.CirclesListFragment;
 import com.mvvm.framework.annotation.viewmodelfields.ViewModelViewVisibilityField;
 import com.mvvm.framework.base.viewmodels.BaseViewModel;
 import com.mvvm.framework.utils.LogUtil;

@@ -22,8 +22,6 @@
         </activity>
 
         <!-- Add new circle screen -->
-        <activity android:name=".ui.home.addCircles.AddCircleActivity">
-        </activity>
 
         <!-- Home screen -->
         <activity android:name=".ui.home.HomeActivity">

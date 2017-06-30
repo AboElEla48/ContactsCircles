@@ -3,7 +3,6 @@ package com.aboelela.circles.ui;
 import android.content.Context;
 import android.content.Intent;
 
-import com.aboelela.circles.ui.home.addCircles.AddCircleActivity;
 import com.aboelela.circles.ui.home.HomeActivity;
 
 /**
@@ -23,14 +22,6 @@ public final class ActivityNavigationManager
      */
     public static void startCirclesHomeActivity(Context context) {
         Intent intent = new Intent(context, HomeActivity.class);
-        context.startActivity(intent);
-    }
-
-    /**
-     * Start Add circles screen
-     */
-    public static void startAddCirclesActivity(Context context) {
-        Intent intent = new Intent(context, AddCircleActivity.class);
         context.startActivity(intent);
     }
 }

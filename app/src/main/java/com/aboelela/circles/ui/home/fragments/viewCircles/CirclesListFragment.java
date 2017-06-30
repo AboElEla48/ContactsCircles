@@ -1,4 +1,4 @@
-package com.aboelela.circles.ui.home.viewCircles;
+package com.aboelela.circles.ui.home.fragments.viewCircles;
 
 
 import android.os.Bundle;

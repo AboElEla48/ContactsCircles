@@ -73,7 +73,9 @@ public class LifeCycleDelegate implements ActivityLifeCycle, FragmentLifeCycle, 
                 {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-                        presenter.onCreate(savedInstanceState);
+                        if(presenter != null) {
+                            presenter.onCreate(savedInstanceState);
+                        }
                     }
                 });
     }
@@ -107,56 +109,79 @@ public class LifeCycleDelegate implements ActivityLifeCycle, FragmentLifeCycle, 
 
     @Override
     public void onStart() {
-        presenter.onStart();
+        if(presenter != null) {
+            presenter.onStart();
+        }
     }
 
     @Override
     public void onRestart() {
-        presenter.onRestart();
+        if(presenter != null) {
+            presenter.onRestart();
+        }
     }
 
     @Override
     public void onResume() {
-        presenter.onResume();
+        if(presenter != null) {
+            presenter.onResume();
+        }
     }
 
     @Override
     public void onPause() {
-        presenter.onPause();
+        if(presenter != null) {
+            presenter.onPause();
+        }
     }
 
     @Override
     public void onStop() {
-        presenter.onStop();
+        if(presenter != null) {
+            presenter.onStop();
+        }
     }
 
     @Override
     public void onDestroy() {
-        presenter.onDestroy();
+        if(presenter != null) {
+            presenter.onDestroy();
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        presenter.onActivityResult(requestCode, resultCode, data);
+        if(presenter != null) {
+            presenter.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        presenter.onSaveInstanceState(outState);
+        if(presenter != null) {
+            presenter.onSaveInstanceState(outState);
+        }
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        presenter.onRestoreInstanceState(savedInstanceState);
+        if(presenter != null) {
+            presenter.onRestoreInstanceState(savedInstanceState);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return presenter.onCreateView(inflater, container, savedInstanceState);
+        if(presenter != null) {
+            return presenter.onCreateView(inflater, container, savedInstanceState);
+        }
+        return null;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        presenter.onActivityCreated(savedInstanceState);
+        if(presenter != null) {
+            presenter.onActivityCreated(savedInstanceState);
+        }
     }
 }

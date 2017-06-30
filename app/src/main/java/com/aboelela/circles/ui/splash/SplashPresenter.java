@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.aboelela.circles.Constants;
-import com.aboelela.circles.data.PreferencesManager;
 import com.aboelela.circles.ui.ActivityNavigationManager;
 import com.mvvm.framework.base.presenters.BasePresenter;
 
@@ -27,12 +26,13 @@ public class SplashPresenter extends BasePresenter<SplashActivity, SplashPresent
         {
             @Override
             public void run() {
-                if (PreferencesManager.isCirclesDefined()) {
-                    ActivityNavigationManager.startCirclesHomeActivity(getBaseView());
-                }
-                else {
-                    ActivityNavigationManager.startAddCirclesActivity(getBaseView());
-                }
+                ActivityNavigationManager.startCirclesHomeActivity(getBaseView());
+//                if (PreferencesManager.isCirclesDefined()) {
+//                    ActivityNavigationManager.startCirclesHomeActivity(getBaseView());
+//                }
+//                else {
+//                    ActivityNavigationManager.startAddCirclesActivity(getBaseView());
+//                }
 
                 getBaseView().finish();
             }

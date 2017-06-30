@@ -23,18 +23,18 @@ public class BaseFragment extends Fragment implements BaseView, FragmentLifeCycl
     private LifeCycleDelegate lifeCycleDelegate;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public final void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public void onRestart() {
+    public final void onRestart() {
         lifeCycleDelegate.onRestart();
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public final View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         // Get declared resource Id of this activity
         int resourceId = new LayoutIdScanner().apply(this);
@@ -42,7 +42,7 @@ public class BaseFragment extends Fragment implements BaseView, FragmentLifeCycl
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public final void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ButterKnife.bind(this, getActivity());
 
@@ -54,31 +54,31 @@ public class BaseFragment extends Fragment implements BaseView, FragmentLifeCycl
     }
 
     @Override
-    public void onPause() {
+    public final void onPause() {
         super.onPause();
         lifeCycleDelegate.onPause();
     }
 
     @Override
-    public void onResume() {
+    public final void onResume() {
         super.onResume();
         lifeCycleDelegate.onResume();
     }
 
     @Override
-    public void onStop() {
+    public final void onStop() {
         super.onStop();
         lifeCycleDelegate.onStop();
     }
 
     @Override
-    public void onDestroy() {
+    public final void onDestroy() {
         super.onDestroy();
         lifeCycleDelegate.onDestroy();
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public final void onRestoreInstanceState(Bundle savedInstanceState) {
         lifeCycleDelegate.onRestoreInstanceState(savedInstanceState);
     }
 }

@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.aboelela.circles.ui.home.viewCircles.CirclesListFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_circles_list_circles_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+
+    <TextView
+        android:id="@+id/fragment_circles_list_empty_textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/txt_no_circles_empty_text"/>
+
+</FrameLayout>

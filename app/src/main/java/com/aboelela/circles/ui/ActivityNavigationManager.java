@@ -3,7 +3,7 @@ package com.aboelela.circles.ui;
 import android.content.Context;
 import android.content.Intent;
 
-import com.aboelela.circles.ui.addCircles.AddCircleActivity;
+import com.aboelela.circles.ui.home.addCircles.AddCircleActivity;
 import com.aboelela.circles.ui.home.HomeActivity;
 
 /**

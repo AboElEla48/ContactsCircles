@@ -48,6 +48,15 @@ public final class SingletonCreator
         singletonObjectsList.remove(cls);
     }
 
+    /**
+     * Check if there was object of this class created before as singleton or not
+     * @param cls
+     * @return
+     */
+    public boolean isSingletonObjectCreatedBefore(Class<?> cls) {
+        return singletonObjectsList.get(cls) != null;
+    }
+
     private static SingletonCreator instance;
     private HashMap<Class, Object> singletonObjectsList = new HashMap<>();
 }

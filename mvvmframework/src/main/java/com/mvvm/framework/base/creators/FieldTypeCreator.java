@@ -3,11 +3,10 @@ package com.mvvm.framework.base.creators;
 import com.mvvm.framework.annotation.singleton.Singleton;
 import com.mvvm.framework.annotation.singleton.SingletonPerSession;
 import com.mvvm.framework.base.scanners.FieldTypeScanner;
+import com.mvvm.framework.utils.LogUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-
-import com.mvvm.framework.utils.LogUtil;
 
 /**
  * Created by AboelelaA on 6/8/2017.
@@ -23,8 +22,10 @@ public class FieldTypeCreator
      * no field declared with this annotation
      */
     public Object createFieldObject(Field field) {
+        // Check if this field is singleton object or not
         if(!new FieldTypeScanner().isFieldAnnotatedBy(field, Singleton.class)
-                && new FieldTypeScanner().isFieldAnnotatedBy(field, SingletonPerSession.class)) {
+                && !new FieldTypeScanner().isFieldAnnotatedBy(field, SingletonPerSession.class)
+                && !SingletonCreator.getCreator().isSingletonObjectCreatedBefore(field.getType())) {
             // If this object isn't singleton, create new instance of it
             return getNewInstance(field);
         }

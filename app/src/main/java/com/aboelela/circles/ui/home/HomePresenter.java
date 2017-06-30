@@ -33,6 +33,7 @@ public class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
                 {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
+                        // Show dialog for creating new circle
                         NewCircleDialogFragment circleDialogFragment = NewCircleDialogFragment.newInstance();
                         circleDialogFragment.show(getBaseView().getSupportFragmentManager(), "");
                     }

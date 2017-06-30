@@ -38,13 +38,14 @@ public class BaseDialogFragment extends DialogFragment implements BaseView, Frag
 
         // Get declared resource Id of this activity
         int resourceId = new LayoutIdScanner().apply(this);
-        return inflater.inflate(resourceId, container, false);
+        View v = inflater.inflate(resourceId, container, false);
+        ButterKnife.bind(this, v);
+        return v;
     }
 
     @Override
     public final void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ButterKnife.bind(this, getActivity());
 
         // pass lifecycle to baseView life cycle delegate
         lifeCycleDelegate = new LifeCycleDelegate(this);

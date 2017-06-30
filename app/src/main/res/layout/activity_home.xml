@@ -20,7 +20,7 @@
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_action_add"
         android:scaleType="fitXY"
-        android:layout_marginBottom="@dimen/floating_btn_margin_bottom"
-        android:layout_marginRight="@dimen/floating_btn_margin_right"/>
+        android:layout_marginBottom="@dimen/dimen_floating_btn_margin_bottom"
+        android:layout_marginRight="@dimen/dimen_floating_btn_margin_right"/>
 
 </RelativeLayout>

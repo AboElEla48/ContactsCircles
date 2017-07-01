@@ -19,7 +19,7 @@ import io.reactivex.functions.Function;
 
 public class PreferencesManager
 {
-    private static class Prefs {
+    static class Prefs {
 
         // Key for accessing circles
         final static String PREF_CIRCLES_KEY = "PREF_CIRCLES_KEY";

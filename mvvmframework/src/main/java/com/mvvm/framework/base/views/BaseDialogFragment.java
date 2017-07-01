@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import com.mvvm.framework.base.scanners.LayoutIdScanner;
 import com.mvvm.framework.interfaces.BaseView;
 import com.mvvm.framework.interfaces.FragmentLifeCycle;
+import com.mvvm.framework.messaging.CustomMessage;
+import com.mvvm.framework.messaging.InboxHolder;
+import com.mvvm.framework.messaging.MessagesServer;
 
 import butterknife.ButterKnife;
 
@@ -18,9 +21,14 @@ import butterknife.ButterKnife;
  * Base class for all fragments that will be created as Dialog fragments
  */
 
-public class BaseDialogFragment extends DialogFragment implements BaseView, FragmentLifeCycle
+public class BaseDialogFragment extends DialogFragment implements BaseView, FragmentLifeCycle, InboxHolder
 {
     private LifeCycleDelegate lifeCycleDelegate;
+
+    @Override
+    public void onMessageReceived(CustomMessage msg) {
+        lifeCycleDelegate.onMessageReceived(msg);
+    }
 
     @Override
     public final void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +60,8 @@ public class BaseDialogFragment extends DialogFragment implements BaseView, Frag
         lifeCycleDelegate.onCreate(savedInstanceState);
 
         lifeCycleDelegate.onActivityCreated(savedInstanceState);
+
+        MessagesServer.getInstance().registerInboxHolder(this);
     }
 
     @Override

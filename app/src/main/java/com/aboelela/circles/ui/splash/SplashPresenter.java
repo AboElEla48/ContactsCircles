@@ -3,7 +3,7 @@ package com.aboelela.circles.ui.splash;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.aboelela.circles.Constants;
+import com.aboelela.circles.constants.Constants;
 import com.aboelela.circles.ui.ActivityNavigationManager;
 import com.mvvm.framework.base.presenters.BasePresenter;
 

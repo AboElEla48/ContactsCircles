@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import com.mvvm.framework.base.scanners.LayoutIdScanner;
 import com.mvvm.framework.interfaces.BaseView;
 import com.mvvm.framework.interfaces.FragmentLifeCycle;
+import com.mvvm.framework.messaging.CustomMessage;
+import com.mvvm.framework.messaging.InboxHolder;
+import com.mvvm.framework.messaging.MessagesServer;
 
 import butterknife.ButterKnife;
 
@@ -18,9 +21,14 @@ import butterknife.ButterKnife;
  * This is the parent fragment
  */
 
-public class BaseFragment extends Fragment implements BaseView, FragmentLifeCycle
+public class BaseFragment extends Fragment implements BaseView, FragmentLifeCycle, InboxHolder
 {
     private LifeCycleDelegate lifeCycleDelegate;
+
+    @Override
+    public void onMessageReceived(CustomMessage msg) {
+        lifeCycleDelegate.onMessageReceived(msg);
+    }
 
     @Override
     public final void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +59,8 @@ public class BaseFragment extends Fragment implements BaseView, FragmentLifeCycl
         lifeCycleDelegate.onCreate(savedInstanceState);
 
         lifeCycleDelegate.onActivityCreated(savedInstanceState);
+
+        MessagesServer.getInstance().registerInboxHolder(this);
     }
 
     @Override

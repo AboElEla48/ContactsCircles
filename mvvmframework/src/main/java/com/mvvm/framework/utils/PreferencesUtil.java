@@ -3,13 +3,13 @@
  */
 package com.mvvm.framework.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author ahmed
@@ -71,7 +71,6 @@ public class PreferencesUtil
 	 * 
 	 * @param context
 	 * @param key
-	 * @param val
 	 */
 	public static void saveSet(Context context, String key, List<String> values)
 	{
@@ -89,7 +88,6 @@ public class PreferencesUtil
 	 * 
 	 * @param context
 	 * @param key
-	 * @param val
 	 */
 	public static Integer getInteger(Context context, String key, int defValue)
 	{
@@ -102,7 +100,6 @@ public class PreferencesUtil
 	 * 
 	 * @param context
 	 * @param key
-	 * @param val
 	 */
 	public static String getString(Context context, String key, String defValue)
 	{
@@ -115,7 +112,6 @@ public class PreferencesUtil
 	 * 
 	 * @param context
 	 * @param key
-	 * @param val
 	 */
 	public static boolean getBoolean(Context context, String key, boolean defValue)
 	{
@@ -128,7 +124,6 @@ public class PreferencesUtil
 	 * 
 	 * @param context
 	 * @param key
-	 * @param val
 	 */
 	public static List<String> getSet(Context context, String key)
 	{

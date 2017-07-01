@@ -1,4 +1,4 @@
-package com.aboelela.circles;
+package com.aboelela.circles.constants;
 
 /**
  * Created by aboelela on 29/06/17.
@@ -9,6 +9,12 @@ package com.aboelela.circles;
 public final class Constants
 {
     private Constants() {
+    }
+
+    public static class App
+    {
+        public static int Result_SUCCESS = 0;
+        public static int Result_Error = -1;
     }
 
     public static class Splash

@@ -3,7 +3,7 @@
 
     <string name="txt_no_circles_empty_text">No circles to show!</string>
 
-    <string name="txt_add_circle_name_title">Circle Name</string>
+    <string name="txt_add_circle_name_title">Create new Circle</string>
     <string name="txt_add_circle_name_hint_text">Add Circle Name here!</string>
     <string name="txt_save_circle_btn">Save</string>
 </resources>

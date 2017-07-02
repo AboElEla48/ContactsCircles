@@ -1,7 +1,5 @@
 package com.mvvm.framework.base.scanners;
 
-import com.mvvm.framework.utils.LogUtil;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -46,10 +44,10 @@ public class FieldTypeScanner implements BiFunction<Field[], Class<?>, Object>
                     });
         }
 
-        if (resultFields.size() == 0) {
-            LogUtil.writeErrorLog("FieldTypeScanner", "LayoutIdScanner Exception",
-                    new UnsupportedOperationException(requiredAnnotation.getClass().getSimpleName() + " Not declared"));
-        }
+//        if (resultFields.size() == 0) {
+//            LogUtil.writeErrorLog("FieldTypeScanner", "LayoutIdScanner Exception",
+//                    new UnsupportedOperationException(requiredAnnotation.getClass().getSimpleName() + " Not declared"));
+//        }
 
         return resultFields;
     }

@@ -43,20 +43,13 @@ public class FieldTypeScanner implements BiFunction<Field[], Class<?>, Object>
                         }
                     });
         }
-
-//        if (resultFields.size() == 0) {
-//            LogUtil.writeErrorLog("FieldTypeScanner", "LayoutIdScanner Exception",
-//                    new UnsupportedOperationException(requiredAnnotation.getClass().getSimpleName() + " Not declared"));
-//        }
-
         return resultFields;
     }
 
     /**
      * Check for one field if the required annotation is declared for it or not
-     * @param field
-     * @param requiredAnnotation
-     * @return
+     * @param field: The field to check its annotation
+     * @param requiredAnnotation: the required annotation class
      */
     public boolean isFieldAnnotatedBy(Field field, Class<?> requiredAnnotation) {
         Annotation[] fieldAnnotations = field.getDeclaredAnnotations();

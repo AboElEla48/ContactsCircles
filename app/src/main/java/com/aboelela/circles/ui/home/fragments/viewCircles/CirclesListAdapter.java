@@ -1,5 +1,6 @@
 package com.aboelela.circles.ui.home.fragments.viewCircles;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,9 @@ import com.aboelela.circles.data.CirclesModel;
  * Create adapter for recycler view
  */
 
-public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.ViewHolder>
+class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.ViewHolder>
 {
-    public CirclesListAdapter(CirclesModel circlesModel) {
+    CirclesListAdapter(CirclesModel circlesModel) {
         this.circlesModel = circlesModel;
     }
 
@@ -25,16 +26,13 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
         // create a new view
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_circle_item, parent, false);
-        TextView v = (TextView) view.findViewById(R.id.circle_item_textView);
-
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(view);
 
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(circlesModel.getCircles().get(position).getName());
+        holder.setText(circlesModel.getCircles().get(position).getName());
     }
 
     @Override
@@ -44,11 +42,15 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
     static class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView textView;
+        CardView cardView;
 
-        public ViewHolder(TextView itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView;
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
+        }
+
+        void setText(String text) {
+            ((TextView)cardView.findViewById(R.id.circle_item_textView)).setText(text);
         }
     }
 

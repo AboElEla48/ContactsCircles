@@ -21,14 +21,14 @@ import com.mvvm.framework.messaging.CustomMessage;
  * Presenter for viewing the list of fragments
  */
 
-public class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesListPresenter>
+class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesListPresenter>
 {
     @ViewModel
-    CirclesListViewModel circlesListViewModel;
+    private CirclesListViewModel circlesListViewModel;
 
     @Singleton
     @DataModel
-    CirclesModel circlesModel;
+    private CirclesModel circlesModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,15 +37,11 @@ public class CirclesListPresenter extends BasePresenter<CirclesListFragment, Cir
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseView().getContext());
         getBaseView().circlesRecyclerView.setLayoutManager(mLayoutManager);
         getBaseView().circlesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        getBaseView().circlesRecyclerView.setHasFixedSize(true);
+
         getBaseView().circlesRecyclerView.setAdapter(new CirclesListAdapter(circlesModel));
 
-//        getBaseView().circlesRecyclerView.setHasFixedSize(true);
-//
-//        // use a linear layout manager
-//        getBaseView().circlesRecyclerView.setLayoutManager(new LinearLayoutManager(getBaseView().getContext()));
-//
-//        // specify an adapter (see also next example)
-//        getBaseView().circlesRecyclerView.setAdapter(new CirclesListAdapter(circlesModel));
+
     }
 
     @Override

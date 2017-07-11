@@ -65,9 +65,14 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
         super.onMessageReceived(msg);
         switch (msg.getMessageId()) {
             case CirclesMessages.MSGID_Refresh_Circles_List: {
-                getBaseView().circlesRecyclerView.getAdapter().notifyDataSetChanged();
+                updateCirclesList();
                 break;
             }
         }
+    }
+
+    private void updateCirclesList() {
+        getBaseView().circlesRecyclerView.getAdapter().notifyDataSetChanged();
+        checkEmptyList();
     }
 }

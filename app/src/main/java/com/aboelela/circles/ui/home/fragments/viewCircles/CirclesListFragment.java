@@ -4,6 +4,7 @@ package com.aboelela.circles.ui.home.fragments.viewCircles;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.widget.GridView;
 
 import com.aboelela.circles.R;
 import com.mvvm.framework.annotation.InflateLayout;
@@ -25,6 +26,9 @@ public class CirclesListFragment extends BaseFragment
 
     @BindView(R.id.fragment_circles_list_circles_recyclerView)
     RecyclerView circlesRecyclerView;
+
+    @BindView(R.id.fragment_circles_grid_circles_gridView)
+    GridView circlesGridView;
 
     /**
      * Use this factory method to create a new instance of

@@ -105,6 +105,8 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
                 updateCirclesList();
                 break;
             }
+
+
         }
     }
 
@@ -113,4 +115,6 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
         ((BaseAdapter)getBaseView().circlesGridView.getAdapter()).notifyDataSetChanged();
         checkEmptyList();
     }
+
+
 }

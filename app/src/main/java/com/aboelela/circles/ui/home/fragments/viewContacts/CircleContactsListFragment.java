@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.aboelela.circles.R;
+import com.aboelela.circles.data.entities.Circle;
 import com.mvvm.framework.annotation.InflateLayout;
 import com.mvvm.framework.base.views.BaseFragment;
 
@@ -17,18 +18,13 @@ import com.mvvm.framework.base.views.BaseFragment;
 @InflateLayout(R.layout.fragment_circle_contacts_list)
 public class CircleContactsListFragment extends BaseFragment
 {
-
-    public CircleContactsListFragment() {
-        // Required empty public constructor
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment CircleContactsListFragment.
      */
-    public static CircleContactsListFragment newInstance() {
+    public static CircleContactsListFragment newInstance(Circle circle) {
         CircleContactsListFragment fragment = new CircleContactsListFragment();
         Bundle args = new Bundle();
 

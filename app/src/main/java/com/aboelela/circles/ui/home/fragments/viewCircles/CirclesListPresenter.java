@@ -9,12 +9,18 @@ import android.view.View;
 
 import com.aboelela.circles.constants.CirclesMessages;
 import com.aboelela.circles.data.CirclesModel;
+import com.aboelela.circles.ui.home.fragments.viewCircles.adapters.CirclesGridAdapter;
+import com.aboelela.circles.ui.home.fragments.viewCircles.adapters.CirclesListAdapter;
 import com.aboelela.circles.ui.home.fragments.viewCircles.data.CirclesListViewModel;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.mvvm.framework.annotation.DataModel;
 import com.mvvm.framework.annotation.ViewModel;
 import com.mvvm.framework.annotation.singleton.Singleton;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.messaging.CustomMessage;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by aboelela on 30/06/17.
@@ -40,8 +46,38 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
         getBaseView().circlesRecyclerView.setHasFixedSize(true);
 
         getBaseView().circlesRecyclerView.setAdapter(new CirclesListAdapter(circlesModel));
+        getBaseView().circlesGridView.setAdapter(new CirclesGridAdapter(circlesModel));
+
+        RxView.clicks(getBaseView().viewAsGridBtn)
+                .subscribe(new Consumer<Object>()
+                {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        viewAsGrid();
+                    }
+                });
 
 
+        RxView.clicks(getBaseView().viewAsListBtn)
+                .subscribe(new Consumer<Object>()
+                {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        viewAsList();
+                    }
+                });
+    }
+
+    private void viewAsGrid() {
+        getBaseView().circlesGridView.setVisibility(View.VISIBLE);
+        getBaseView().circlesRecyclerView.setVisibility(View.GONE);
+
+        checkEmptyList();
+    }
+
+    private void viewAsList() {
+        getBaseView().circlesRecyclerView.setVisibility(View.VISIBLE);
+        getBaseView().circlesGridView.setVisibility(View.GONE);
     }
 
     @Override
@@ -73,6 +109,7 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
 
     private void updateCirclesList() {
         getBaseView().circlesRecyclerView.getAdapter().notifyDataSetChanged();
+//        getBaseView().circlesGridView.getAdapter().notifyDataSetChanged();
         checkEmptyList();
     }
 }

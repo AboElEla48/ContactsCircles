@@ -49,7 +49,7 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
         super.onMessageReceived(msg);
         switch (msg.getMessageId()) {
             case CirclesMessages.MSGID_Open_Contacts_Of_Circle: {
-                showCircleContacts(msg.getPayLoad(), (Circle) msg.getData());
+                showCircleContacts((Circle) msg.getData());
                 break;
             }
         }
@@ -58,9 +58,8 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
     /**
      * Display the contacts of circle
      *
-     * @param circleIndex: selected circle index
      */
-    private void showCircleContacts(int circleIndex, Circle circle) {
+    private void showCircleContacts(Circle circle) {
         getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
                 CircleContactsListFragment.newInstance(circle)).commit();
     }

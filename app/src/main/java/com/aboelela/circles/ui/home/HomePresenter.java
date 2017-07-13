@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.aboelela.circles.R;
+import com.aboelela.circles.constants.CirclesMessages;
+import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.fragments.addCircle.NewCircleDialogFragment;
 import com.aboelela.circles.ui.home.fragments.viewCircles.CirclesListFragment;
+import com.aboelela.circles.ui.home.fragments.viewContacts.CircleContactsListFragment;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.mvvm.framework.base.presenters.BasePresenter;
+import com.mvvm.framework.messaging.CustomMessage;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -17,7 +21,7 @@ import io.reactivex.functions.Consumer;
  * Presenter for home screen
  */
 
-public class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
+class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
 {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,5 +42,26 @@ public class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
                         circleDialogFragment.show(getBaseView().getSupportFragmentManager(), "");
                     }
                 });
+    }
+
+    @Override
+    public void onMessageReceived(CustomMessage msg) {
+        super.onMessageReceived(msg);
+        switch (msg.getMessageId()) {
+            case CirclesMessages.MSGID_Open_Contacts_Of_Circle: {
+                showCircleContacts(msg.getPayLoad(), (Circle) msg.getData());
+                break;
+            }
+        }
+    }
+
+    /**
+     * Display the contacts of circle
+     *
+     * @param circleIndex: selected circle index
+     */
+    private void showCircleContacts(int circleIndex, Circle circle) {
+        getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
+                CircleContactsListFragment.newInstance(circle)).commit();
     }
 }

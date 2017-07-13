@@ -13,4 +13,6 @@ public final class CirclesMessages
     public static final int MSGID_Refresh_Circles_List = 1;
     public static CustomMessage MSG_Refresh_Circles_List = new CustomMessage(MSGID_Refresh_Circles_List,
             Constants.App.Result_SUCCESS, null);
+
+    public static final int MSGID_Open_Contacts_Of_Circle = 2;
 }

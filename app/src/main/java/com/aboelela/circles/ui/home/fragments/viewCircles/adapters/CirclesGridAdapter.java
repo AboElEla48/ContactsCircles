@@ -40,16 +40,26 @@ public class CirclesGridAdapter extends BaseAdapter
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
+        ViewHolder viewHolder;
         if (convertView == null) {
-            view = LayoutInflater.from(CirclesApplication.getInstance()).inflate(R.layout.fragment_circles_grid_item, null);
-            TextView circleItemText = (TextView)view.findViewById(R.id.circle_grid_item_text_view);
-            circleItemText.setText(circlesModel.getCircles().get(position).getName());
+            convertView = LayoutInflater.from(CirclesApplication.getInstance()).inflate(R.layout.fragment_circles_grid_item, null);
+
+            viewHolder = new ViewHolder();
+            viewHolder.itemTextView = (TextView)convertView.findViewById(R.id.circle_grid_item_text_view);
+
+            convertView.setTag(viewHolder);
         }
         else {
-            view = convertView;
+            viewHolder = (ViewHolder)convertView.getTag();
         }
-        return view;
+
+        viewHolder.itemTextView.setText(circlesModel.getCircles().get(position).getName());
+
+        return convertView;
+    }
+
+    private class ViewHolder {
+        TextView itemTextView;
     }
 
 }

@@ -6,6 +6,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.BaseAdapter;
 
 import com.aboelela.circles.constants.CirclesMessages;
 import com.aboelela.circles.data.CirclesModel;
@@ -109,7 +110,7 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
 
     private void updateCirclesList() {
         getBaseView().circlesRecyclerView.getAdapter().notifyDataSetChanged();
-//        getBaseView().circlesGridView.getAdapter().notifyDataSetChanged();
+        ((BaseAdapter)getBaseView().circlesGridView.getAdapter()).notifyDataSetChanged();
         checkEmptyList();
     }
 }

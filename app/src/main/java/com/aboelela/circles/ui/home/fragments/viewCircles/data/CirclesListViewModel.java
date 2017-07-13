@@ -13,22 +13,14 @@ import com.mvvm.framework.utils.LogUtil;
 
 public class CirclesListViewModel extends BaseViewModel<CirclesListFragment, CirclesListViewModel>
 {
-    public enum CirclesListMode {
-        Circles_As_List,
-        Circles_As_Grid
-    }
-
-    String TAG = "CirclesListViewModel";
+    private String TAG = "CirclesListViewModel";
 
     @ViewModelViewVisibilityField(R.id.fragment_circles_list_empty_textView)
-    Integer emptyTextVisibility;
-
-    // Hold the viewing mode of the circles
-    CirclesListMode circlesListMode = CirclesListMode.Circles_As_List;
+    private Integer emptyTextVisibility;
 
     /**
      * set the visibility of empty text view
-     * @param emptyTextVisibility
+     * @param emptyTextVisibility: the text to be set in case empty items list/grid
      */
     public void setEmptyTextVisibility(Integer emptyTextVisibility) {
         try {

@@ -1,4 +1,4 @@
-package com.aboelela.circles.ui.home.fragments.viewCircles;
+package com.aboelela.circles.ui.home.fragments.viewCircles.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +15,9 @@ import com.aboelela.circles.data.CirclesModel;
  * Create adapter for recycler view
  */
 
-class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.ViewHolder>
+public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.ViewHolder>
 {
-    CirclesListAdapter(CirclesModel circlesModel) {
+    public CirclesListAdapter(CirclesModel circlesModel) {
         this.circlesModel = circlesModel;
     }
 
@@ -25,7 +25,7 @@ class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.ViewHol
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_circle_item, parent, false);
+                .inflate(R.layout.list_circle_list_item, parent, false);
         return new ViewHolder(view);
 
     }

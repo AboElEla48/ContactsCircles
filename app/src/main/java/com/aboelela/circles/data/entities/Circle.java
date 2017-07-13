@@ -1,5 +1,8 @@
 package com.aboelela.circles.data.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.aboelela.circles.data.runTimeErrors.UnsupportedStringFormat;
 import com.mvvm.framework.utils.LogUtil;
 
@@ -8,14 +11,14 @@ import com.mvvm.framework.utils.LogUtil;
  * Define circle entity
  */
 
-public class  Circle
+public class Circle implements Parcelable
 {
     private static String TAG = "Circle";
     private static String separator = "@##@$$|#";
 
 
-    int ID;
-    String name;
+    private int ID;
+    private String name;
 
     public Circle() {}
 
@@ -23,6 +26,24 @@ public class  Circle
         setID(ID);
         setName(name);
     }
+
+    public Circle(Parcel in) {
+        ID = in.readInt();
+        name = in.readString();
+    }
+
+    public static final Creator<Circle> CREATOR = new Creator<Circle>()
+    {
+        @Override
+        public Circle createFromParcel(Parcel in) {
+            return new Circle(in);
+        }
+
+        @Override
+        public Circle[] newArray(int size) {
+            return new Circle[size];
+        }
+    };
 
     public int getID() {
         return ID;
@@ -66,4 +87,18 @@ public class  Circle
         }
 
     }
+
+    @Override
+    public int describeContents() {
+        return getID();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(getID());
+        parcel.writeString(getName());
+    }
+
+
+
 }

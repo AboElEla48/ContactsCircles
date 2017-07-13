@@ -1,8 +1,23 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+              android:orientation="vertical"
              tools:context="com.aboelela.circles.ui.home.fragments.viewContacts.CircleContactsListFragment">
 
+    <!-- Show circle Name -->
+    <TextView
+        android:id="@+id/fragment_circle_contacts_circle_name_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/dimen_title_text_view_text_size"
+        android:textColor="@color/colorPureBlack"
+        android:gravity="center"/>
 
-</FrameLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_circle_contacts_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+
+</LinearLayout>

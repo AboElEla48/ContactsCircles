@@ -2,6 +2,7 @@ package com.aboelela.circles.ui.home.fragments.viewCircles;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.widget.GridView;
@@ -36,6 +37,9 @@ public class CirclesListFragment extends BaseFragment
 
     @BindView(R.id.fragment_circles_view_as_list_btn)
     ImageButton viewAsListBtn;
+
+    @BindView(R.id.fragment_circles_list_add_circle_btn)
+    FloatingActionButton addCircleBtn;
 
     /**
      * Use this factory method to create a new instance of

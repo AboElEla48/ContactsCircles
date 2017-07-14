@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 
 import com.aboelela.circles.constants.CirclesMessages;
 import com.aboelela.circles.data.CirclesModel;
+import com.aboelela.circles.ui.home.HomeActivity;
 import com.aboelela.circles.ui.home.fragments.viewCircles.adapters.CirclesGridAdapter;
 import com.aboelela.circles.ui.home.fragments.viewCircles.adapters.CirclesListAdapter;
 import com.aboelela.circles.ui.home.fragments.viewCircles.data.CirclesListViewModel;
@@ -19,6 +20,7 @@ import com.mvvm.framework.annotation.ViewModel;
 import com.mvvm.framework.annotation.singleton.Singleton;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.messaging.CustomMessage;
+import com.mvvm.framework.messaging.MessagesServer;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -65,6 +67,17 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
                         viewAsList();
+                    }
+                });
+
+        // Handle click on Add circle button
+        RxView.clicks(getBaseView().addCircleBtn)
+                .subscribe(new Consumer<Object>()
+                {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        MessagesServer.getInstance().sendMessage(HomeActivity.class, new CustomMessage(CirclesMessages.MSGID_Add_Circle, 0, null));
+
                     }
                 });
     }

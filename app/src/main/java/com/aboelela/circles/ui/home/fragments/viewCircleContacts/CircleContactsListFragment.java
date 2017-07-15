@@ -1,7 +1,8 @@
-package com.aboelela.circles.ui.home.fragments.viewContacts;
+package com.aboelela.circles.ui.home.fragments.viewCircleContacts;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
@@ -27,6 +28,9 @@ public class CircleContactsListFragment extends BaseFragment
 
     @BindView(R.id.fragment_circle_contacts_circle_name_textView)
     TextView circleName;
+
+    @BindView(R.id.fragment_circles_contacts_list_assign_contact_btn)
+    FloatingActionButton assignContactBtn;
 
     static final String Bundle_Circle_Key = "Bundle_Circle_Key";
 

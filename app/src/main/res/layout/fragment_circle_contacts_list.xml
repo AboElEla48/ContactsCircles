@@ -1,23 +1,39 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-              android:orientation="vertical"
-             tools:context="com.aboelela.circles.ui.home.fragments.viewContacts.CircleContactsListFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.aboelela.circles.ui.home.fragments.viewCircleContacts.CircleContactsListFragment">
 
-    <!-- Show circle Name -->
-    <TextView
-        android:id="@+id/fragment_circle_contacts_circle_name_textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/dimen_title_text_view_text_size"
-        android:textColor="@color/colorPureBlack"
-        android:gravity="center"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_circle_contacts_recyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"/>
+        android:orientation="vertical">
 
-</LinearLayout>
+        <!-- Show circle Name -->
+        <TextView
+            android:id="@+id/fragment_circle_contacts_circle_name_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorPureBlack"
+            android:textSize="@dimen/dimen_title_text_view_text_size"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_circle_contacts_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fragment_circles_contacts_list_assign_contact_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/dimen_floating_btn_margin_bottom"
+        android:layout_marginEnd="@dimen/dimen_floating_btn_margin_right"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_action_add"/>
+
+</RelativeLayout>

@@ -5,9 +5,11 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by AboElEla on 3/16/2015.
+ * Utility for encryption
  */
-public class SecurityUtil {
-    private SecurityUtil()
+public class EncryptionUtil
+{
+    private EncryptionUtil()
     {
 
     }
@@ -42,5 +44,5 @@ public class SecurityUtil {
         return "";
     }
 
-    private final static String LOG_TAG = "SecurityUtil";
+    private final static String LOG_TAG = "EncryptionUtil";
 }

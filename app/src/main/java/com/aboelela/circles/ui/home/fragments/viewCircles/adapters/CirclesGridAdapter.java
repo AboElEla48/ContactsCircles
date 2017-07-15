@@ -42,7 +42,7 @@ public class CirclesGridAdapter extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(CirclesApplication.getInstance()).inflate(R.layout.fragment_circles_grid_item, null);
+            convertView = LayoutInflater.from(CirclesApplication.getInstance()).inflate(R.layout.grid_circles_grid_item, null);
 
             viewHolder = new ViewHolder();
             viewHolder.itemTextView = (TextView)convertView.findViewById(R.id.circle_grid_item_text_view);

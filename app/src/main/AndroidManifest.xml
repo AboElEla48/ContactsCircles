@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.aboelela.circles">
 
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+
     <application
         android:name=".CirclesApplication"
         android:allowBackup="true"
@@ -12,8 +15,9 @@
         android:theme="@style/AppTheme">
 
         <!-- Splash screen -->
-        <activity android:name=".ui.splash.SplashActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" >
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -21,11 +25,11 @@
             </intent-filter>
         </activity>
 
-        <!-- Add new circle screen -->
-
         <!-- Home screen -->
-        <activity android:name=".ui.home.HomeActivity">
-        </activity>
+        <activity android:name=".ui.home.HomeActivity"/>
+
+        <!-- Permissions screen -->
+        <activity android:name="com.mvvm.framework.utils.permissions.PermissionsActivity" />
     </application>
 
 </manifest>

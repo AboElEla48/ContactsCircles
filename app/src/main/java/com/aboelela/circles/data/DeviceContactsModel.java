@@ -9,6 +9,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by aboelela on 14/07/17.
@@ -21,10 +22,11 @@ public class DeviceContactsModel extends BaseModel
 
     /**
      * Load device contacts
-     * @return
+     * @return :the list of device contacts
      */
     public List<ContactsUtil.ContactModel> loadDeviceContacts() {
         Observable.fromIterable(ContactsUtil.loadDeviceContacts(CirclesApplication.getInstance()))
+                .subscribeOn(Schedulers.newThread())
                 .blockingSubscribe(new io.reactivex.functions.Consumer<ContactsUtil.ContactModel>()
                 {
                     @Override

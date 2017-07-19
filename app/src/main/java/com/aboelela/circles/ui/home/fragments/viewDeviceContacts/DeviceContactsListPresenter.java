@@ -20,7 +20,7 @@ import com.mvvm.framework.utils.DialogMsgUtil;
  * Presenter for multi select device contacts
  */
 
-public class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragment, DeviceContactsListPresenter>
+class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragment, DeviceContactsListPresenter>
 {
     @ViewModel
     private DeviceContactsListViewModel deviceContactsListViewModel;
@@ -55,8 +55,8 @@ public class DeviceContactsListPresenter extends BasePresenter<DeviceContactsLis
         checkEmptyContactsList();
     }
 
-    void checkEmptyContactsList() {
-        int emptyTextVisibility = deviceContactsModel.getDeviceContacts().isEmpty() ? View.GONE : View.VISIBLE;
+    private void checkEmptyContactsList() {
+        int emptyTextVisibility = deviceContactsModel.getDeviceContacts().isEmpty() ? View.VISIBLE : View.GONE;
         deviceContactsListViewModel.setEmptyTextVisibility(emptyTextVisibility);
     }
 

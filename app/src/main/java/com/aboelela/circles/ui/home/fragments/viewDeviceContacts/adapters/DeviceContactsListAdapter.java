@@ -16,7 +16,10 @@ import com.aboelela.circles.R;
 import com.mvvm.framework.utils.ContactsUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by aboelela on 14/07/17.
@@ -26,7 +29,10 @@ import java.util.List;
 public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContactsListAdapter.ViewHolder>
 {
     public DeviceContactsListAdapter(List<ContactsUtil.ContactModel> contacts) {
-        this.deviceContacts = contacts;
+        Set<ContactsUtil.ContactModel> set = new HashSet<>(contacts);
+        deviceContacts = new ArrayList<>(set);
+
+        Collections.sort(deviceContacts);
     }
 
     @Override
@@ -40,8 +46,15 @@ public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContac
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    // mark item as selected
-                    selectedItems.add(viewHolder.getAdapterPosition());
+                    if (selectedItems.contains(viewHolder.getAdapterPosition())) {
+                        // item is selected, deselect it
+                        selectedItems.remove(selectedItems.indexOf(viewHolder.getAdapterPosition()));
+                    }
+                    else {
+                        // mark item as selected
+                        selectedItems.add(viewHolder.getAdapterPosition());
+                    }
+
                     notifyItemChanged(viewHolder.getAdapterPosition());
                 }
                 return true;

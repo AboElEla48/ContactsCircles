@@ -13,10 +13,17 @@ import com.aboelela.circles.data.DeviceContactsModel;
 import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.fragments.viewDeviceContacts.adapters.DeviceContactsListAdapter;
 import com.aboelela.circles.ui.home.fragments.viewDeviceContacts.data.DeviceContactsListViewModel;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.mvvm.framework.annotation.DataModel;
 import com.mvvm.framework.annotation.ViewModel;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.utils.DialogMsgUtil;
+
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by aboelela on 14/07/17.
@@ -33,6 +40,8 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
 
     private Circle circleToAssignContacts;
 
+    private DeviceContactsListAdapter deviceContactsListAdapter;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +57,44 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
         getBaseView().deviceContactsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         getBaseView().deviceContactsRecyclerView.setHasFixedSize(true);
 
-        DeviceContactsListAdapter deviceContactsListAdapter = new DeviceContactsListAdapter(deviceContactsModel.loadDeviceContacts());
+        deviceContactsListAdapter = new DeviceContactsListAdapter(deviceContactsModel.loadDeviceContacts());
         getBaseView().deviceContactsRecyclerView.setAdapter(deviceContactsListAdapter);
 
         loadingMsg.dismiss();
 
         checkEmptyContactsList();
+
+        // Handle event of save button
+        RxView.clicks(getBaseView().saveSelectionBtn)
+                .subscribe(new Consumer<Object>()
+                {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        List<Integer> selectedItems = deviceContactsListAdapter.getSelectedItems();
+
+                        Observable.fromIterable(selectedItems)
+                                .subscribe(new Consumer<Integer>()
+                                {
+                                    @Override
+                                    public void accept(@NonNull Integer integer) throws Exception {
+                                        //TODO: Save contact to circle
+                                        deviceContactsModel.getDeviceContacts().get(integer);
+
+                                        //TODO: dimiss
+                                    }
+                                });
+                    }
+                });
+
+        // Handle event of cancel button
+        RxView.clicks(getBaseView().cancelSelectionBtn)
+                .subscribe(new Consumer<Object>()
+                {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        // TODO: dismiss
+                    }
+                });
     }
 
     @Override

@@ -85,6 +85,9 @@ public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContac
         return deviceContacts.size();
     }
 
+    public List<Integer> getSelectedItems() {
+        return selectedItems;
+    }
 
     /**
      * View Holder for device contact item

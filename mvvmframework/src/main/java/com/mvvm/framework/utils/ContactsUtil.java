@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mvvm.framework.utils;
 
 import android.content.ContentProviderOperation;
@@ -8,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,13 +123,17 @@ public class ContactsUtil
 
 	}
 
-	public static class ContactModel
+	public static class ContactModel implements Comparable<ContactModel>
 	{
 		public String contactName;
 		public ArrayList<String> phones = new ArrayList<String>();
 		public ArrayList<String> addresses = new ArrayList<String>();
 		public ArrayList<String> emails = new ArrayList<String>();
 
+		@Override
+		public int compareTo(@NonNull ContactModel o) {
+			return contactName.compareTo(o.contactName);
+		}
 	}
 
 	private final static String LOG_TAG = "ContactsUtil";

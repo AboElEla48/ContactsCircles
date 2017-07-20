@@ -2,6 +2,7 @@ package com.aboelela.circles.ui.home.fragments.viewDeviceContacts;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.aboelela.circles.R;
@@ -26,6 +27,12 @@ public class DeviceContactsListFragment extends BaseFragment
 
     @BindView(R.id.fragment_device_contacts_empty_textView)
     TextView deviceContactsEmptyListTextView;
+
+    @BindView(R.id.fragment_device_contacts_cancel_btn)
+    ImageButton cancelSelectionBtn;
+
+    @BindView(R.id.fragment_device_contacts_save_btn)
+    ImageButton saveSelectionBtn;
 
     static String Bundle_Circle_To_Assign_Key  = "Bundle_Circle_To_Assign_Key";
 

@@ -3,6 +3,9 @@ package com.aboelela.circles.ui.home.fragments.viewDeviceContacts;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.aboelela.circles.R;
@@ -39,6 +42,11 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
         // Show waiting message for loading device contacts
         ProgressDialog loadingMsg = DialogMsgUtil.createProgressDialog(getBaseView().getContext(), "",
                 getBaseView().getString(R.string.txt_contacts_loading_waiting_message));
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseView().getContext());
+        getBaseView().deviceContactsRecyclerView.setLayoutManager(mLayoutManager);
+        getBaseView().deviceContactsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        getBaseView().deviceContactsRecyclerView.setHasFixedSize(true);
 
         DeviceContactsListAdapter deviceContactsListAdapter = new DeviceContactsListAdapter(deviceContactsModel.loadDeviceContacts());
         getBaseView().deviceContactsRecyclerView.setAdapter(deviceContactsListAdapter);

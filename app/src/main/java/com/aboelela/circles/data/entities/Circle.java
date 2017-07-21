@@ -3,7 +3,7 @@ package com.aboelela.circles.data.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.aboelela.circles.data.runTimeErrors.UnsupportedStringFormat;
+import com.aboelela.circles.data.runTimeErrors.UnsupportedStringFormatException;
 import com.mvvm.framework.utils.LogUtil;
 
 /**
@@ -66,12 +66,12 @@ public class Circle implements Parcelable
         return "" + ID + separator + name;
     }
 
-    public static Circle fromString(String str) throws UnsupportedStringFormat{
+    public static Circle fromString(String str) throws UnsupportedStringFormatException {
         Circle circle = new Circle();
 
         int index = str.indexOf(separator);
         if(index == -1) {
-            throw new UnsupportedStringFormat();
+            throw new UnsupportedStringFormatException();
         }
 
         try {
@@ -83,7 +83,7 @@ public class Circle implements Parcelable
         }
         catch (Exception ex) {
             LogUtil.writeErrorLog(TAG, ex);
-            throw new UnsupportedStringFormat();
+            throw new UnsupportedStringFormatException();
         }
 
     }

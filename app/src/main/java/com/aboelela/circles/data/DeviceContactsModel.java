@@ -1,15 +1,15 @@
 package com.aboelela.circles.data;
 
 import com.aboelela.circles.CirclesApplication;
+import com.aboelela.circles.data.runTimeErrors.ContactsNotLoadedException;
 import com.mvvm.framework.base.models.BaseModel;
 import com.mvvm.framework.utils.ContactsUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by aboelela on 14/07/17.
@@ -18,28 +18,40 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DeviceContactsModel extends BaseModel
 {
-    private ArrayList<ContactsUtil.ContactModel> deviceContacts = new ArrayList<>();
+    private Map<String, ContactsUtil.ContactModel> deviceContacts = null;
 
     /**
      * Load device contacts
+     *
      * @return :the list of device contacts
      */
-    public List<ContactsUtil.ContactModel> loadDeviceContacts() {
-        Observable.fromIterable(ContactsUtil.loadDeviceContacts(CirclesApplication.getInstance()))
-                .subscribeOn(Schedulers.newThread())
-                .blockingSubscribe(new io.reactivex.functions.Consumer<ContactsUtil.ContactModel>()
-                {
-                    @Override
-                    public void accept(@NonNull ContactsUtil.ContactModel contactModel) throws Exception {
-                        deviceContacts.add(contactModel);
-                    }
-                });
+    public Map<String, ContactsUtil.ContactModel> loadDeviceContacts() {
+        Observable.fromCallable(new Callable<Map<String, ContactsUtil.ContactModel>>()
+        {
+            @Override
+            public Map<String, ContactsUtil.ContactModel> call() throws Exception {
+                deviceContacts = ContactsUtil.loadDeviceContacts(CirclesApplication.getInstance());
+                if(deviceContacts == null) {
+                    deviceContacts = new HashMap<>();
+                }
+                return deviceContacts;
+            }
+        }).blockingSubscribe();
 
         return deviceContacts;
     }
 
-    public List<ContactsUtil.ContactModel> getDeviceContacts() {
-        return deviceContacts;
+    /**
+     * get the loaded device contacts
+     * @return : list of device contacts
+     *
+     * @throws ContactsNotLoadedException : exception in case you requests contacts without loading it
+     */
+    public Map<String, ContactsUtil.ContactModel> getDeviceContacts()throws ContactsNotLoadedException {
+        if(deviceContacts != null) {
+            return deviceContacts;
+        }
+        throw new ContactsNotLoadedException();
     }
 
 }

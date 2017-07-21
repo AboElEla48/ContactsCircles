@@ -5,6 +5,6 @@ package com.aboelela.circles.data.runTimeErrors;
  * Define exception for parsing strings
  */
 
-public class UnsupportedStringFormat extends RuntimeException
+public class UnsupportedStringFormatException extends RuntimeException
 {
 }

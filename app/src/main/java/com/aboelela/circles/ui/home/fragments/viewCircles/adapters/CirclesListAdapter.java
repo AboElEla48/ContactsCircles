@@ -11,11 +11,8 @@ import android.widget.TextView;
 
 import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
-import com.aboelela.circles.constants.CirclesMessages;
 import com.aboelela.circles.data.CirclesModel;
-import com.aboelela.circles.ui.home.HomeActivity;
-import com.mvvm.framework.messaging.CustomMessage;
-import com.mvvm.framework.messaging.MessagesServer;
+import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 
 /**
  * Created by aboelela on 02/07/17.
@@ -46,9 +43,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     // Show the contacts of this circle
-                    MessagesServer.getInstance().sendMessage(HomeActivity.class,
-                            new CustomMessage(CirclesMessages.MSGID_Open_Contacts_Of_Circle, viewHolder.getAdapterPosition(),
-                                    circlesModel.getCircles().get(viewHolder.getAdapterPosition())));
+                    HomeActivityMessagesHelper.openCircleContacts(circlesModel.getCircles().get(viewHolder.getAdapterPosition()));
                 }
                 return true;
             }

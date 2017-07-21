@@ -4,7 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.aboelela.circles.data.runTimeErrors.UnsupportedStringFormatException;
+import com.mvvm.framework.utils.ContactsUtil;
 import com.mvvm.framework.utils.LogUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by aboelela on 01/07/17.
@@ -17,8 +21,9 @@ public class Circle implements Parcelable
     private static String separator = "@##@$$|#";
 
 
-    private int ID;
-    private String name;
+    private int ID = 0;
+    private String name = "";
+    private ArrayList<ContactsUtil.ContactModel> circleContacts = new ArrayList<>();
 
     public Circle() {}
 
@@ -30,6 +35,7 @@ public class Circle implements Parcelable
     public Circle(Parcel in) {
         ID = in.readInt();
         name = in.readString();
+        circleContacts = in.readArrayList(ContactsUtil.ContactModel.class.getClassLoader());
     }
 
     public static final Creator<Circle> CREATOR = new Creator<Circle>()
@@ -59,6 +65,14 @@ public class Circle implements Parcelable
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<ContactsUtil.ContactModel> getCircleContacts() {
+        return circleContacts;
+    }
+
+    public void addCircleContact(ContactsUtil.ContactModel contact) {
+        circleContacts.add(contact);
     }
 
     @Override
@@ -97,6 +111,7 @@ public class Circle implements Parcelable
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(getID());
         parcel.writeString(getName());
+        parcel.writeTypedList(circleContacts);
     }
 
 

@@ -3,14 +3,12 @@ package com.aboelela.circles.ui.home.fragments.addCircle;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.aboelela.circles.constants.CirclesMessages;
 import com.aboelela.circles.data.CirclesModel;
-import com.aboelela.circles.ui.home.fragments.viewCircles.CirclesListFragment;
+import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.mvvm.framework.annotation.DataModel;
 import com.mvvm.framework.annotation.singleton.Singleton;
 import com.mvvm.framework.base.presenters.BasePresenter;
-import com.mvvm.framework.messaging.MessagesServer;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -20,7 +18,7 @@ import io.reactivex.functions.Consumer;
  * Presenter for new circle dialog fragment
  */
 
-public class NewCircleDialogPresenter extends BasePresenter<NewCircleDialogFragment, NewCircleDialogPresenter>
+class NewCircleDialogPresenter extends BasePresenter<NewCircleDialogFragment, NewCircleDialogPresenter>
 {
     @Singleton
     @DataModel
@@ -39,8 +37,7 @@ public class NewCircleDialogPresenter extends BasePresenter<NewCircleDialogFragm
                         circlesModel.addCircle(getBaseView().circleNameEditText.getText().toString());
 
                         // Notify list fragment to refresh
-                        MessagesServer.getInstance().sendMessage(CirclesListFragment.class,
-                                CirclesMessages.MSG_Refresh_Circles_List);
+                        HomeActivityMessagesHelper.refreshCirclesList();
 
                         // dismiss dialog
                         getBaseView().dismiss();

@@ -4,6 +4,8 @@ import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 
@@ -143,16 +145,49 @@ public class ContactsUtil
 
     }
 
-    public static class ContactModel implements Comparable<ContactModel>
+    public static class ContactModel implements Comparable<ContactModel>, Parcelable
     {
         private String contactName;
         private ArrayList<String> phones = new ArrayList<>();
         private ArrayList<String> emails = new ArrayList<>();
 
+        ContactModel() {}
+
+        ContactModel(Parcel in) {
+            contactName = in.readString();
+            in.readStringList(phones);
+            in.readStringList(emails);
+        }
+
         @Override
         public int compareTo(@NonNull ContactModel o) {
             return contactName.compareTo(o.contactName);
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeString(contactName);
+            parcel.writeStringList(phones);
+            parcel.writeStringList(emails);
+        }
+
+        public static final Creator<ContactModel> CREATOR = new Creator<ContactModel>()
+        {
+            @Override
+            public ContactModel createFromParcel(Parcel in) {
+                return new ContactModel(in);
+            }
+
+            @Override
+            public ContactModel[] newArray(int size) {
+                return new ContactModel[size];
+            }
+        };
     }
 
     private final static String LOG_TAG = "ContactsUtil";

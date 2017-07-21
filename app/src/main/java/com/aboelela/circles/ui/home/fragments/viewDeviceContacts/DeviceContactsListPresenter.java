@@ -11,6 +11,7 @@ import android.view.View;
 import com.aboelela.circles.R;
 import com.aboelela.circles.data.DeviceContactsModel;
 import com.aboelela.circles.data.entities.Circle;
+import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 import com.aboelela.circles.ui.home.fragments.viewDeviceContacts.adapters.DeviceContactsListAdapter;
 import com.aboelela.circles.ui.home.fragments.viewDeviceContacts.data.DeviceContactsListViewModel;
 import com.jakewharton.rxbinding2.view.RxView;
@@ -20,9 +21,7 @@ import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.utils.DialogMsgUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
@@ -71,21 +70,21 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
                 {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-                        List<Integer> selectedItems = deviceContactsListAdapter.getSelectedItems();
+                        deviceContactsListAdapter.getSelectedContactsNames(new Consumer<String>()
+                        {
+                            @Override
+                            public void accept(@NonNull String contactName) throws Exception {
+                                // Save contact to circle
+                                circleToAssignContacts.addCircleContact(deviceContactsModel.getDeviceContacts().get(contactName));
 
-                        Observable.fromIterable(selectedItems)
-                                .subscribe(new Consumer<Integer>()
-                                {
-                                    @Override
-                                    public void accept(@NonNull Integer integer) throws Exception {
-                                        //TODO: Save contact to circle
-//                                        deviceContactsModel.getDeviceContacts().get(integer);
+                                // dismiss fragment
+                                HomeActivityMessagesHelper.openCircleContacts(circleToAssignContacts);
 
-                                        //TODO: dimiss
-                                    }
-                                });
+                            }
+                        });
                     }
                 });
+
 
         // Handle event of cancel button
         RxView.clicks(getBaseView().cancelSelectionBtn)
@@ -93,7 +92,8 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
                 {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-                        // TODO: dismiss
+                        // dismiss
+                        HomeActivityMessagesHelper.openCircleContacts(circleToAssignContacts);
                     }
                 });
     }

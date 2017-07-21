@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+
 /**
  * Created by aboelela on 14/07/17.
  * Adapter for recycler view that displays list of device contacts names
@@ -81,8 +86,19 @@ public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContac
         return deviceContacts.size();
     }
 
-    public List<Integer> getSelectedItems() {
-        return selectedItems;
+    /**
+     * get selected contacts
+     * @param receiver : receiver to receive selected contacts names
+     */
+    public void getSelectedContactsNames(Consumer<String> receiver) {
+        Observable.fromIterable(selectedItems)
+                .map(new Function<Integer, String>()
+                {
+                    @Override
+                    public String apply(@NonNull Integer position) throws Exception {
+                        return deviceContacts.get(position);
+                    }
+                }).subscribe(receiver);
     }
 
     /**

@@ -3,13 +3,10 @@ package com.aboelela.circles.ui.home.fragments.viewCircleContacts;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.aboelela.circles.constants.CirclesMessages;
 import com.aboelela.circles.data.entities.Circle;
-import com.aboelela.circles.ui.home.HomeActivity;
+import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.mvvm.framework.base.presenters.BasePresenter;
-import com.mvvm.framework.messaging.CustomMessage;
-import com.mvvm.framework.messaging.MessagesServer;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -37,8 +34,7 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
                         // View the device contacts fragment to let user select from there
-                        MessagesServer.getInstance().sendMessage(HomeActivity.class,
-                                new CustomMessage(CirclesMessages.MSGID_Open_Device_Contacts, 0, circle));
+                        HomeActivityMessagesHelper.showDeviceContacts(circle);
                     }
                 });
     }

@@ -13,25 +13,21 @@ import android.widget.TextView;
 
 import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
-import com.mvvm.framework.utils.ContactsUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by aboelela on 14/07/17.
- * Adapter for recycler view that displays list of device contacts
+ * Adapter for recycler view that displays list of device contacts names
  */
 
 public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContactsListAdapter.ViewHolder>
 {
-    public DeviceContactsListAdapter(List<ContactsUtil.ContactModel> contacts) {
-        Set<ContactsUtil.ContactModel> set = new HashSet<>(contacts);
-        deviceContacts = new ArrayList<>(set);
+    public DeviceContactsListAdapter(List<String> contacts) {
 
+        deviceContacts = contacts;
         Collections.sort(deviceContacts);
     }
 
@@ -66,7 +62,7 @@ public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContac
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.setText(deviceContacts.get(position).contactName);
+        holder.setText(deviceContacts.get(position));
 
         // set item selected if this is the selection index
         holder.itemView.setSelected(selectedItems.contains(position));
@@ -116,6 +112,6 @@ public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContac
         }
     }
 
-    private List<ContactsUtil.ContactModel> deviceContacts;
+    private List<String> deviceContacts;
     private ArrayList<Integer> selectedItems = new ArrayList<>();
 }

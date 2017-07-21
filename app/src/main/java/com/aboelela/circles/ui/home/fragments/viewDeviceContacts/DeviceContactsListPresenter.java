@@ -19,6 +19,7 @@ import com.mvvm.framework.annotation.ViewModel;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.utils.DialogMsgUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -36,7 +37,7 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
     private DeviceContactsListViewModel deviceContactsListViewModel;
 
     @DataModel
-    DeviceContactsModel deviceContactsModel;
+    private DeviceContactsModel deviceContactsModel;
 
     private Circle circleToAssignContacts;
 
@@ -57,7 +58,7 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
         getBaseView().deviceContactsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         getBaseView().deviceContactsRecyclerView.setHasFixedSize(true);
 
-        deviceContactsListAdapter = new DeviceContactsListAdapter(deviceContactsModel.loadDeviceContacts());
+        deviceContactsListAdapter = new DeviceContactsListAdapter(new ArrayList<>(deviceContactsModel.loadDeviceContacts().keySet()));
         getBaseView().deviceContactsRecyclerView.setAdapter(deviceContactsListAdapter);
 
         loadingMsg.dismiss();
@@ -78,7 +79,7 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
                                     @Override
                                     public void accept(@NonNull Integer integer) throws Exception {
                                         //TODO: Save contact to circle
-                                        deviceContactsModel.getDeviceContacts().get(integer);
+//                                        deviceContactsModel.getDeviceContacts().get(integer);
 
                                         //TODO: dimiss
                                     }

@@ -159,6 +159,18 @@ public class ContactsUtil
             in.readStringList(emails);
         }
 
+        public String getContactName() {
+            return contactName;
+        }
+
+        public ArrayList<String> getEmails() {
+            return emails;
+        }
+
+        public ArrayList<String> getPhones() {
+            return phones;
+        }
+
         @Override
         public String toString() {
             String str = contactName;

@@ -98,7 +98,7 @@ public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContac
                     public String apply(@NonNull Integer position) throws Exception {
                         return deviceContacts.get(position);
                     }
-                }).subscribe(receiver);
+                }).blockingSubscribe(receiver);
     }
 
     /**

@@ -19,6 +19,7 @@ public class Circle implements Parcelable
 {
     private static String TAG = "Circle";
     private static String separator = "@##@$$|#";
+    private static String fieldSeparator = "^^#@$$^^";
 
 
     private int ID = 0;
@@ -75,9 +76,17 @@ public class Circle implements Parcelable
         circleContacts.add(contact);
     }
 
+    public void removeCircleContact(ContactsUtil.ContactModel contact) {
+        circleContacts.remove(contact);
+    }
+
     @Override
     public String toString() {
-        return "" + ID + separator + name;
+        String circleContactsStr = "";
+        for (ContactsUtil.ContactModel contact: circleContacts) {
+            circleContactsStr += contact.toString() + fieldSeparator;
+        }
+        return "" + ID + separator + name + separator + circleContactsStr;
     }
 
     public static Circle fromString(String str) throws UnsupportedStringFormatException {
@@ -91,7 +100,21 @@ public class Circle implements Parcelable
         try {
             circle.ID = Integer.parseInt(str.substring(0, index));
             str = str.substring(separator.length() + index);
-            circle.name = str;
+
+            index = str.indexOf(separator);
+            circle.name = str.substring(0, index);
+            str = str.substring(separator.length() + index);
+
+            index = str.indexOf(fieldSeparator);
+            while (index != -1) {
+                ContactsUtil.ContactModel contact = new ContactsUtil.ContactModel();
+                contact.fromString(str.substring(0, index));
+                circle.circleContacts.add(contact);
+
+                str = str.substring(fieldSeparator.length() + index);
+                index = str.indexOf(fieldSeparator);
+            }
+
 
             return circle;
         }

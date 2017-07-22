@@ -37,7 +37,7 @@ class NewCircleDialogPresenter extends BasePresenter<NewCircleDialogFragment, Ne
                         circlesModel.addCircle(getBaseView().circleNameEditText.getText().toString());
 
                         // Notify list fragment to refresh
-                        HomeActivityMessagesHelper.refreshCirclesList();
+                        HomeActivityMessagesHelper.sendMessageRefreshCirclesList();
 
                         // dismiss dialog
                         getBaseView().dismiss();

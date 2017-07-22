@@ -43,7 +43,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     // Show the contacts of this circle
-                    HomeActivityMessagesHelper.openCircleContacts(circlesModel.getCircles().get(viewHolder.getAdapterPosition()));
+                    HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circlesModel.getCircles().get(viewHolder.getAdapterPosition()));
                 }
                 return true;
             }

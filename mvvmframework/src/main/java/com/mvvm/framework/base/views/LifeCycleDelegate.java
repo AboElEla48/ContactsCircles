@@ -35,12 +35,12 @@ import io.reactivex.functions.Function;
  * This is the object that will held in activities and fragments to pass baseView life cycle events to it
  */
 
-public class LifeCycleDelegate implements ActivityLifeCycle, FragmentLifeCycle, InboxHolder
+class LifeCycleDelegate implements ActivityLifeCycle, FragmentLifeCycle, InboxHolder
 {
     private WeakReference<ViewLifeCycle> hostObjectReference;
     protected BasePresenter presenter;
 
-    public LifeCycleDelegate(Object hostViews) {
+    LifeCycleDelegate(Object hostViews) {
         hostObjectReference = new WeakReference<>((ViewLifeCycle) hostViews);
     }
 
@@ -85,7 +85,7 @@ public class LifeCycleDelegate implements ActivityLifeCycle, FragmentLifeCycle, 
      * @param hostView: the baseView object to get fields from
      * @return : function to subscribe to it
      */
-    public Function<Field, BasePresenter> toPresenter(final BaseView hostView) {
+    Function<Field, BasePresenter> toPresenter(final BaseView hostView) {
         return new Function<Field, BasePresenter>()
         {
             @Override
@@ -183,5 +183,10 @@ public class LifeCycleDelegate implements ActivityLifeCycle, FragmentLifeCycle, 
         if(presenter != null) {
             presenter.onActivityCreated(savedInstanceState);
         }
+    }
+
+    @Override
+    public boolean onActivityBackPressed() {
+        return(presenter != null && presenter.onActivityBackPressed());
     }
 }

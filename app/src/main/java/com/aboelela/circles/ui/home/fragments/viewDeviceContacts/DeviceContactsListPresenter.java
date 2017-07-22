@@ -12,7 +12,6 @@ import com.aboelela.circles.R;
 import com.aboelela.circles.data.CirclesModel;
 import com.aboelela.circles.data.DeviceContactsModel;
 import com.aboelela.circles.data.entities.Circle;
-import com.aboelela.circles.data.preferences.PreferencesManager;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 import com.aboelela.circles.ui.home.fragments.viewDeviceContacts.adapters.DeviceContactsListAdapter;
 import com.aboelela.circles.ui.home.fragments.viewDeviceContacts.data.DeviceContactsListViewModel;

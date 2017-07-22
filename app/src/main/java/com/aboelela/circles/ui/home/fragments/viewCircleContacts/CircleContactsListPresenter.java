@@ -46,7 +46,7 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
                 {
                     @Override
                     public void accept(@NonNull ContactsUtil.ContactModel contactModel) throws Exception {
-                        LogUtil.writeInfoLog(TAG, "Circle Contact: " + contactModel.toString());
+                        LogUtil.writeErrorLog(TAG, "Circle Contact: " + contactModel.toString());
                     }
                 });
 

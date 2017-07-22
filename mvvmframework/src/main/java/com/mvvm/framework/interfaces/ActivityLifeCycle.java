@@ -10,4 +10,6 @@ import android.content.Intent;
 public interface ActivityLifeCycle extends ViewLifeCycle
 {
     void onActivityResult(int requestCode, int resultCode, Intent data);
+
+    boolean onActivityBackPressed();
 }

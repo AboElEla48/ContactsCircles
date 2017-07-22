@@ -71,7 +71,7 @@ public class BasePresenter<V extends BaseView, P extends BasePresenter> implemen
     }
 
 
-    public Function<Field, BaseModel> toDataModel(final BasePresenter modelPresenter) {
+    Function<Field, BaseModel> toDataModel(final BasePresenter modelPresenter) {
         return new Function<Field, BaseModel>()
         {
             @Override
@@ -138,7 +138,7 @@ public class BasePresenter<V extends BaseView, P extends BasePresenter> implemen
 
     }
 
-    public Function<Field, BaseViewModel> toViewModel(final BasePresenter viewModelPresenter) {
+    Function<Field, BaseViewModel> toViewModel(final BasePresenter viewModelPresenter) {
         return new Function<Field, BaseViewModel>()
         {
             @Override
@@ -246,6 +246,11 @@ public class BasePresenter<V extends BaseView, P extends BasePresenter> implemen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+    }
+
+    @Override
+    public boolean onActivityBackPressed() {
+        return false;
     }
 
     @Override

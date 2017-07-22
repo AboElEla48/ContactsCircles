@@ -112,4 +112,19 @@ public class BaseActivity extends AppCompatActivity implements BaseView, Activit
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         lifeCycleDelegate.onRestoreInstanceState(savedInstanceState);
     }
+
+    @Override
+    public void onBackPressed() {
+        onActivityBackPressed();
+    }
+
+    @Override
+    public boolean onActivityBackPressed() {
+        if(!lifeCycleDelegate.onActivityBackPressed()) {
+            super.onBackPressed();
+            return true;
+        }
+
+        return false;
+    }
 }

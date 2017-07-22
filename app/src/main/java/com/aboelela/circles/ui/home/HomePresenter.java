@@ -13,7 +13,10 @@ import com.aboelela.circles.ui.home.fragments.viewCircleContacts.CircleContactsL
 import com.aboelela.circles.ui.home.fragments.viewCircles.CirclesListFragment;
 import com.aboelela.circles.ui.home.fragments.viewDeviceContacts.DeviceContactsListFragment;
 import com.mvvm.framework.base.presenters.BasePresenter;
+import com.mvvm.framework.base.views.BaseFragment;
 import com.mvvm.framework.messaging.CustomMessage;
+
+import java.util.ArrayList;
 
 /**
  * Created by aboelela on 29/06/17.
@@ -27,8 +30,9 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
         super.onCreate(savedInstanceState);
 
         // Set the view list of circles fragment
+        fragments.add(CirclesListFragment.newInstance());
         getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
-                CirclesListFragment.newInstance()).commit();
+                fragments.get(fragments.size() - 1)).commit();
 
         ActivityNavigationManager.showPermissionsActivity(getBaseView().getBaseContext(),
                 new String[]{Manifest.permission.READ_CONTACTS},
@@ -80,8 +84,9 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
      * @param circle : the circle to view its contacts
      */
     private void showCircleContacts(Circle circle) {
+        fragments.add(CircleContactsListFragment.newInstance(circle));
         getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
-                CircleContactsListFragment.newInstance(circle)).commit();
+                fragments.get(fragments.size() - 1)).commit();
 
         // set title of screen
         setTitleText(circle.getName());
@@ -93,8 +98,9 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
      * @param circle : the circle that device contact will be assigned to it
      */
     private void showDeviceContactsToAssignCircleContacts(Circle circle) {
+        fragments.add(DeviceContactsListFragment.newInstance(circle));
         getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
-                DeviceContactsListFragment.newInstance(circle)).commit();
+                fragments.get(fragments.size() - 1)).commit();
     }
 
     /**
@@ -105,4 +111,20 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
     private void setTitleText(String text) {
         getBaseView().setTitle(text);
     }
+
+    @Override
+    public boolean onActivityBackPressed() {
+        if (fragments.size() > 0) {
+            fragments.remove(fragments.size() - 1);
+
+            if (fragments.size() > 0) {
+                getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
+                        fragments.get(fragments.size() - 1)).commit();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ArrayList<BaseFragment> fragments = new ArrayList<>();
 }

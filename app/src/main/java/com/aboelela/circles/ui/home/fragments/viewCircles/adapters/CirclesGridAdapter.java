@@ -1,6 +1,7 @@
 package com.aboelela.circles.ui.home.fragments.viewCircles.adapters;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
 import com.aboelela.circles.data.CirclesModel;
+import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 
 /**
  * Created by AboelelaA on 7/13/2017.
@@ -54,6 +56,19 @@ public class CirclesGridAdapter extends BaseAdapter
         }
 
         viewHolder.itemTextView.setText(circlesModel.getCircles().get(position).getName());
+        viewHolder.itemTextView.setTag(position);
+
+        viewHolder.itemTextView.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View textView, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    // Show the contacts of this circle
+                    HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circlesModel.getCircles().get((int)textView.getTag()));
+                }
+                return true;
+            }
+        });
 
         return convertView;
     }

@@ -160,6 +160,21 @@ public class ContactsUtil
         }
 
         @Override
+        public String toString() {
+            String str = contactName;
+            str += ", Phones: ";
+            for (String phone: phones) {
+                str += phone + " - ";
+            }
+
+            str += ", emails: ";
+            for (String email: emails) {
+                str += email + " - ";
+            }
+            return str;
+        }
+
+        @Override
         public int compareTo(@NonNull ContactModel o) {
             return contactName.compareTo(o.contactName);
         }

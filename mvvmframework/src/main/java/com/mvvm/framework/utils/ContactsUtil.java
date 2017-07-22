@@ -151,7 +151,7 @@ public class ContactsUtil
         private ArrayList<String> phones = new ArrayList<>();
         private ArrayList<String> emails = new ArrayList<>();
 
-        ContactModel() {}
+        public ContactModel() {}
 
         ContactModel(Parcel in) {
             contactName = in.readString();
@@ -174,16 +174,48 @@ public class ContactsUtil
         @Override
         public String toString() {
             String str = contactName;
-            str += ", Phones: ";
+            str += ",";
             for (String phone: phones) {
-                str += phone + " - ";
+                str += phone + "-";
             }
 
-            str += ", emails: ";
+            str += ",";
             for (String email: emails) {
-                str += email + " - ";
+                str += email + "-";
             }
             return str;
+        }
+
+        /**
+         * Construct object from string
+         * @param str : the string of preferences to convert to object
+         */
+        public void fromString(String str) {
+            int index;
+
+            index = str.indexOf(",");
+            contactName = str.substring(0, index);
+            str = str.substring(index + 1);
+
+            phones = new ArrayList<>();
+            index = str.indexOf(",");
+            String allPhones = str.substring(0, index);
+            index = allPhones.indexOf("-");
+            while (index > -1) {
+                phones.add(allPhones.substring(0, index));
+                allPhones = allPhones.substring(index + 1);
+                index = allPhones.indexOf("-");
+            }
+            str = str.substring(index + 1);
+
+            emails = new ArrayList<>();
+            String allEmails = str;
+            index = allEmails.indexOf("-");
+            while (index > -1) {
+                emails.add(allEmails.substring(0, index));
+                allEmails = allEmails.substring(index + 1);
+                index = allEmails.indexOf("-");
+            }
         }
 
         @Override

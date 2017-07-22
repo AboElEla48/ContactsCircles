@@ -60,7 +60,7 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
                         // View the device contacts fragment to let user select from there
-                        HomeActivityMessagesHelper.showDeviceContacts(circle);
+                        HomeActivityMessagesHelper.sendMessageShowDeviceContacts(circle);
                     }
                 });
     }

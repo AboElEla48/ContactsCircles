@@ -75,7 +75,7 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
                 {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
-                        HomeActivityMessagesHelper.addCircle();
+                        HomeActivityMessagesHelper.sendMessageAddCircle();
 
                     }
                 });

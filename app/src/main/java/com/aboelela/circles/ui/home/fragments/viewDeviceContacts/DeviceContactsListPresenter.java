@@ -87,7 +87,7 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
                         });
 
                         // save circle
-                        //PreferencesManager.saveCirclesList(circlesModel.getCircles());
+                        PreferencesManager.saveCirclesList(circlesModel.getCircles());
 
                         // dismiss fragment
                         HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circleToAssignContacts);

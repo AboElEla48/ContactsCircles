@@ -18,14 +18,14 @@ public final class HomeActivityMessagesHelper
     /**
      * send message to home activity to trigger add circle dialog
      */
-    public static void addCircle() {
+    public static void sendMessageAddCircle() {
         MessagesServer.getInstance().sendMessage(HomeActivity.class, new CustomMessage(CirclesMessages.MSGID_Add_Circle, 0, null));
     }
 
     /**
      * send message to refresh the circles list
      */
-    public static void refreshCirclesList() {
+    public static void sendMessageRefreshCirclesList() {
         MessagesServer.getInstance().sendMessage(CirclesListFragment.class,
                 CirclesMessages.MSG_Refresh_Circles_List);
     }
@@ -34,7 +34,7 @@ public final class HomeActivityMessagesHelper
      * send message to show contacts list of given circle
      * @param circle : circle to show its contacts
      */
-    public static void openCircleContacts(Circle circle) {
+    public static void sendMessageOpenCircleContacts(Circle circle) {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
                 new CustomMessage(CirclesMessages.MSGID_Open_Contacts_Of_Circle, 0, circle));
     }
@@ -43,7 +43,7 @@ public final class HomeActivityMessagesHelper
      * send message to show device contacts fragment to assign contacts to given circle
      * @param circleToAssignContacts :  circle to assign contacts from device to it
      */
-    public static void showDeviceContacts(Circle circleToAssignContacts) {
+    public static void sendMessageShowDeviceContacts(Circle circleToAssignContacts) {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
                 new CustomMessage(CirclesMessages.MSGID_Open_Device_Contacts, 0, circleToAssignContacts));
     }

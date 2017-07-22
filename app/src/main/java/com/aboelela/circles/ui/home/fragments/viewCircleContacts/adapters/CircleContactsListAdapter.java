@@ -1,5 +1,6 @@
-package com.aboelela.circles.ui.home.fragments.viewCircles.adapters;
+package com.aboelela.circles.ui.home.fragments.viewCircleContacts.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,25 +12,27 @@ import android.widget.TextView;
 
 import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
-import com.aboelela.circles.data.CirclesModel;
-import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
+import com.mvvm.framework.utils.ContactsUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by aboelela on 02/07/17.
- * Create adapter for recycler view
+ * Created by aboelela on 22/07/17.
+ * Adapter for list displaying circle contacts
  */
 
-public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.ViewHolder>
+public class CircleContactsListAdapter extends RecyclerView.Adapter<CircleContactsListAdapter.ViewHolder>
 {
-    public CirclesListAdapter(CirclesModel circlesModel) {
-        this.circlesModel = circlesModel;
+    public CircleContactsListAdapter(@NonNull List<ContactsUtil.ContactModel> contacts) {
+        circleContacts = contacts;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_circle_list_item, parent, false);
+                .inflate(R.layout.list_circle_contacts_list_item, parent, false);
 
         final ViewHolder viewHolder = new ViewHolder(view);
         viewHolder.itemView.setOnTouchListener(new View.OnTouchListener()
@@ -38,27 +41,32 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     // mark item as selected only
-                    selectedItem = viewHolder.getAdapterPosition();
-                    notifyItemChanged(viewHolder.getAdapterPosition());
+                    if (selectedItems.contains(viewHolder.getAdapterPosition())) {
+                        // item is selected, deselect it
+                        selectedItems.remove(selectedItems.indexOf(viewHolder.getAdapterPosition()));
+                    }
+                    else {
+                        // mark item as selected
+                        selectedItems.add(viewHolder.getAdapterPosition());
+                    }
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    // Show the contacts of this circle
-                    HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circlesModel.getCircles().get(viewHolder.getAdapterPosition()));
+                    // TODO open contact details
+
                 }
                 return true;
             }
         });
 
         return viewHolder;
-
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.setText(circlesModel.getCircles().get(position).getName());
+        holder.setText(circleContacts.get(position).getContactName());
 
         // set item selected if this is the selection index
-        holder.itemView.setSelected(position == selectedItem);
+        holder.itemView.setSelected(selectedItems.contains(position));
         if (holder.itemView.isSelected()) {
             holder.itemTextView.setTextColor(ContextCompat.getColor(CirclesApplication.getInstance(),
                     R.color.colorTextSelectionItem));
@@ -71,9 +79,12 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
     @Override
     public int getItemCount() {
-        return circlesModel.getCircles().size();
+        return circleContacts.size();
     }
 
+    /**
+     * View holder to display contacts
+     */
     class ViewHolder extends RecyclerView.ViewHolder
     {
         CardView cardView;
@@ -84,7 +95,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
             itemView.setClickable(true);
 
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            itemTextView = (TextView) cardView.findViewById(R.id.circle_item_textView);
+            itemTextView = (TextView) cardView.findViewById(R.id.circle_contact_item_textView);
         }
 
         void setText(String text) {
@@ -92,10 +103,6 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
         }
     }
 
-    // Hold circles model
-    private CirclesModel circlesModel;
-
-    // Hold selected item index
-    private int selectedItem = -1;
-
+    private List<ContactsUtil.ContactModel> circleContacts;
+    private ArrayList<Integer> selectedItems = new ArrayList<>();
 }

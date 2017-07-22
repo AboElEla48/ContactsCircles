@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
+import com.aboelela.circles.ui.home.fragments.viewCircleContacts.adapters.CircleContactsListAdapter;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.utils.ContactsUtil;
@@ -49,6 +50,9 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
                     }
                 });
 
+        // Fill the list with circle items
+        getBaseView().circleContactsRecyclerView.setAdapter(new CircleContactsListAdapter(circle.getCircleContacts()));
+
         //Handle button to assign contact to circle
         RxView.clicks(getBaseView().assignContactBtn)
                 .subscribe(new Consumer<Object>()
@@ -56,7 +60,7 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
                         // View the device contacts fragment to let user select from there
-                        HomeActivityMessagesHelper.showDeviceContacts(circle);
+                        HomeActivityMessagesHelper.sendMessageShowDeviceContacts(circle);
                     }
                 });
     }

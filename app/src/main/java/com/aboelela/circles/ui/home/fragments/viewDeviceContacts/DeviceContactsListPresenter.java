@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.aboelela.circles.R;
+import com.aboelela.circles.data.CirclesModel;
 import com.aboelela.circles.data.DeviceContactsModel;
 import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
@@ -17,6 +18,7 @@ import com.aboelela.circles.ui.home.fragments.viewDeviceContacts.data.DeviceCont
 import com.jakewharton.rxbinding2.view.RxView;
 import com.mvvm.framework.annotation.DataModel;
 import com.mvvm.framework.annotation.ViewModel;
+import com.mvvm.framework.annotation.singleton.Singleton;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.utils.DialogMsgUtil;
 
@@ -37,6 +39,10 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
 
     @DataModel
     private DeviceContactsModel deviceContactsModel;
+
+    @Singleton
+    @DataModel
+    private CirclesModel circlesModel;
 
     private Circle circleToAssignContacts;
 
@@ -76,12 +82,14 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
                             public void accept(@NonNull String contactName) throws Exception {
                                 // Save contact to circle
                                 circleToAssignContacts.addCircleContact(deviceContactsModel.getDeviceContacts().get(contactName));
-
-                                // dismiss fragment
-                                HomeActivityMessagesHelper.openCircleContacts(circleToAssignContacts);
-
                             }
                         });
+
+                        // save circle
+                        //PreferencesManager.saveCirclesList(circlesModel.getCircles());
+
+                        // dismiss fragment
+                        HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circleToAssignContacts);
                     }
                 });
 
@@ -93,7 +101,7 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
                         // dismiss
-                        HomeActivityMessagesHelper.openCircleContacts(circleToAssignContacts);
+                        HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circleToAssignContacts);
                     }
                 });
     }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mvvm.framework.utils;
 
 import android.util.Log;
@@ -18,8 +15,8 @@ public class LogUtil
 	/**
 	 * Write debug message
 	 * 
-	 * @param logTag
-	 * @param logMessage
+	 * @param logTag : Tag for log
+	 * @param logMessage : message for log
 	 */
 	public static void writeDebugLog(String logTag, String logMessage)
 	{
@@ -37,8 +34,8 @@ public class LogUtil
 	/**
 	 * Write Error message
 	 * 
-	 * @param logTag
-	 * @param logMessage
+	 * @param logTag : Tag for log
+	 * @param logMessage : message for log
 	 */
 	public static void writeErrorLog(String logTag, String logMessage)
 	{
@@ -55,8 +52,8 @@ public class LogUtil
 
     /**
      * Log error exception
-     * @param logTag
-     * @param ex
+     * @param logTag tag for log
+     * @param ex exception to log
      */
     public static void writeErrorLog(String logTag, Exception ex)
     {
@@ -75,8 +72,8 @@ public class LogUtil
 
 	/**
 	 * Log error exception
-	 * @param logTag
-	 * @param ex
+	 * @param logTag tag to log
+	 * @param ex exception to log
 	 */
 	public static void writeErrorLog(String logTag, String message, Exception ex)
 	{
@@ -96,8 +93,8 @@ public class LogUtil
 	/**
 	 * Write Warning message
 	 * 
-	 * @param logTag
-	 * @param logMessage
+	 * @param logTag tag to log
+	 * @param logMessage message to log
 	 */
 	public static void writeWarningLog(String logTag, String logMessage)
 	{
@@ -115,8 +112,8 @@ public class LogUtil
 	/**
 	 * Write Info message
 	 * 
-	 * @param logTag
-	 * @param logMessage
+	 * @param logTag tag to log
+	 * @param logMessage message to log
 	 */
 	public static void writeInfoLog(String logTag, String logMessage)
 	{
@@ -134,8 +131,8 @@ public class LogUtil
 	/**
 	 * Write given log to log file stream
 	 * 
-	 * @param logTag
-	 * @param logMessage
+	 * @param logTag log to log
+	 * @param logMessage message to log
 	 */
 	private static void writeToFile(String logTag, String logMessage)
 	{
@@ -169,10 +166,13 @@ public class LogUtil
 	}
 
 	// Define compile time flag to enable/disable log on files
-	private final static boolean mUseFileLog = false;
-	private final static boolean mUseDebugLog = true;
-	private final static boolean mUseErrorLog = true;
-	private final static boolean mUseInfoLog = true;
+	private final static boolean MASTER_LOG = true;
+	private final static boolean mUseFileLog = MASTER_LOG & false;
+	private final static boolean mUseDebugLog = MASTER_LOG & true;
+	private final static boolean mUseErrorLog = MASTER_LOG & true;
+	private final static boolean mUseInfoLog = MASTER_LOG & true;
+
+
 
 	// Define the name of log file
 	private final static String Log_File_Path = "Util_log.txt";

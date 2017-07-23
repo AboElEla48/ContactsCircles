@@ -13,8 +13,11 @@ public final class Constants
 
     public static class App
     {
-        public static int Result_SUCCESS = 0;
-        public static int Result_Error = -1;
+        static int Result_SUCCESS = 0;
+        static int Result_Error = -1;
+
+        public static int ViewMode_Grid = 1;
+        public static int ViewMode_List = 2;
     }
 
     public static class Splash

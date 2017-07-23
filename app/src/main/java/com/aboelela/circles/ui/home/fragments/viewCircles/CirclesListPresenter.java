@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.BaseAdapter;
 
 import com.aboelela.circles.constants.CirclesMessages;
+import com.aboelela.circles.data.AppUIModel;
 import com.aboelela.circles.data.CirclesModel;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 import com.aboelela.circles.ui.home.fragments.viewCircles.adapters.CirclesGridAdapter;
@@ -38,6 +39,10 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
     @DataModel
     private CirclesModel circlesModel;
 
+    @Singleton
+    @DataModel
+    private AppUIModel appUIModel;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +54,13 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
 
         getBaseView().circlesRecyclerView.setAdapter(new CirclesListAdapter(circlesModel));
         getBaseView().circlesGridView.setAdapter(new CirclesGridAdapter(circlesModel));
+
+        if(appUIModel.isCirclesListViewingAsList()) {
+            viewAsList();
+        }
+        else {
+            viewAsGrid();
+        }
 
         RxView.clicks(getBaseView().viewAsGridBtn)
                 .subscribe(new Consumer<Object>()
@@ -86,6 +98,7 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
     private void viewAsGrid() {
         getBaseView().circlesGridView.setVisibility(View.VISIBLE);
         getBaseView().circlesRecyclerView.setVisibility(View.GONE);
+        appUIModel.setCirclesListViewingAsGrid();
 
         checkEmptyList();
     }
@@ -93,6 +106,7 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
     private void viewAsList() {
         getBaseView().circlesRecyclerView.setVisibility(View.VISIBLE);
         getBaseView().circlesGridView.setVisibility(View.GONE);
+        appUIModel.setCirclesListViewingAsList();
 
         checkEmptyList();
     }

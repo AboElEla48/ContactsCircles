@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageButton;
 
@@ -37,6 +38,9 @@ public class CirclesListFragment extends BaseFragment
 
     @BindView(R.id.fragment_circles_view_as_list_btn)
     ImageButton viewAsListBtn;
+
+    @BindView(R.id.fragment_circles_list_empty_textView)
+    View emptyTextView;
 
     @BindView(R.id.fragment_circles_list_add_circle_btn)
     FloatingActionButton addCircleBtn;

@@ -1,6 +1,7 @@
 package com.aboelela.circles.data.preferences;
 
 import com.aboelela.circles.CirclesApplication;
+import com.aboelela.circles.constants.Constants;
 import com.aboelela.circles.data.entities.Circle;
 import com.mvvm.framework.utils.PreferencesUtil;
 
@@ -19,15 +20,23 @@ import io.reactivex.functions.Function;
 
 public class PreferencesManager
 {
-    static class Prefs {
+    static class Prefs
+    {
 
         // Key for accessing circles
         final static String PREF_CIRCLES_KEY = "PREF_CIRCLES_KEY";
+
+        // key for saving how the circles are viewed (grid or list)
+        final static String PREF_VIEW_CIRCLES_MODE_KEY = "PREF_VIEW_CIRCLES_MODE_KEY";
+
+        // key for saving how the circle contacts are viewed (grid or list)
+        final static String PREF_VIEW_CIRCLE_CONTACTS_MODE_KEY = "PREF_VIEW_CIRCLE_CONTACTS_MODE_KEY";
     }
 
     /**
      * Load list of saved circles from preferences
-     * @return
+     *
+     * @return : saved list of circles
      */
     public static List<Circle> loadCirclesList() {
         final ArrayList<Circle> circles = new ArrayList<>();
@@ -56,7 +65,8 @@ public class PreferencesManager
 
     /**
      * Save circles list in preferences
-     * @param circlesList
+     *
+     * @param circlesList : list of circles to save
      */
     public static void saveCirclesList(List<Circle> circlesList) {
         final ArrayList<String> circlesStrList = new ArrayList<>();
@@ -79,6 +89,50 @@ public class PreferencesManager
 
         PreferencesUtil.saveSet(CirclesApplication.getInstance(), Prefs.PREF_CIRCLES_KEY,
                 circlesStrList);
+    }
+
+    /**
+     * save view mode for circles list
+     *
+     * @param mode : grid or list mode
+     */
+    public static void saveCirclesListViewMode(int mode) {
+        if (mode == Constants.App.ViewMode_Grid || mode == Constants.App.ViewMode_List) {
+            PreferencesUtil.saveInteger(CirclesApplication.getInstance(), Prefs.PREF_VIEW_CIRCLES_MODE_KEY,
+                    mode);
+        }
+    }
+
+    /**
+     * get the saved view mode for circles list
+     *
+     * @return : list or grid mode
+     */
+    public static int loadCirclesListViewMode() {
+        return PreferencesUtil.getInteger(CirclesApplication.getInstance(), Prefs.PREF_VIEW_CIRCLES_MODE_KEY,
+                Constants.App.ViewMode_List);
+    }
+
+    /**
+     * save view mode for circle contacts list
+     *
+     * @param mode : grid or list mode
+     */
+    public static void saveCircleContactsListViewMode(int mode) {
+        if (mode == Constants.App.ViewMode_Grid || mode == Constants.App.ViewMode_List) {
+            PreferencesUtil.saveInteger(CirclesApplication.getInstance(), Prefs.PREF_VIEW_CIRCLE_CONTACTS_MODE_KEY,
+                    mode);
+        }
+    }
+
+    /**
+     * get the saved view mode for circle Contacts list
+     *
+     * @return : list or grid mode
+     */
+    public static int loadCircleContactsListViewMode() {
+        return PreferencesUtil.getInteger(CirclesApplication.getInstance(), Prefs.PREF_VIEW_CIRCLE_CONTACTS_MODE_KEY,
+                Constants.App.ViewMode_List);
     }
 
 }

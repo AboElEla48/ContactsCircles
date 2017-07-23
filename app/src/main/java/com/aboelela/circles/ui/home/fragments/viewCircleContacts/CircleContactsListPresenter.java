@@ -7,13 +7,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.aboelela.circles.data.AppUIModel;
 import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 import com.aboelela.circles.ui.home.fragments.viewCircleContacts.adapters.CircleContactsGridAdapter;
 import com.aboelela.circles.ui.home.fragments.viewCircleContacts.adapters.CircleContactsListAdapter;
 import com.aboelela.circles.ui.home.fragments.viewCircleContacts.data.CircleContactsListViewModel;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.mvvm.framework.annotation.DataModel;
 import com.mvvm.framework.annotation.ViewModel;
+import com.mvvm.framework.annotation.singleton.Singleton;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.utils.ContactsUtil;
 import com.mvvm.framework.utils.LogUtil;
@@ -32,6 +35,10 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
     private final String TAG = "CircleContactsListPresenter";
 
     private Circle circle;
+
+    @Singleton
+    @DataModel
+    private AppUIModel appUIModel;
 
     @ViewModel
     private CircleContactsListViewModel circleContactsListViewModel;
@@ -61,6 +68,13 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
         // Fill the list with circle items
         getBaseView().circleContactsRecyclerView.setAdapter(new CircleContactsListAdapter(circle.getCircleContacts()));
         getBaseView().circleContactsGridView.setAdapter(new CircleContactsGridAdapter(circle.getCircleContacts()));
+
+        if(appUIModel.isCircleContactsListViewingAsList()) {
+            viewAsList();
+        }
+        else {
+            viewAsGrid();
+        }
 
         RxView.clicks(getBaseView().viewAsGridBtn)
                 .subscribe(new Consumer<Object>()
@@ -98,6 +112,7 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
     private void viewAsGrid() {
         getBaseView().circleContactsGridView.setVisibility(View.VISIBLE);
         getBaseView().circleContactsRecyclerView.setVisibility(View.GONE);
+        appUIModel.setCircleContactsListViewingAsGrid();
 
         checkEmptyList();
     }
@@ -105,6 +120,7 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
     private void viewAsList() {
         getBaseView().circleContactsRecyclerView.setVisibility(View.VISIBLE);
         getBaseView().circleContactsGridView.setVisibility(View.GONE);
+        appUIModel.setCircleContactsListViewingAsList();
 
         checkEmptyList();
     }

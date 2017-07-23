@@ -30,9 +30,10 @@ import io.reactivex.functions.Function;
 
 public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContactsListAdapter.ViewHolder>
 {
-    public DeviceContactsListAdapter(List<String> contacts) {
+    public DeviceContactsListAdapter(List<String> contacts, boolean isSelectable) {
 
         deviceContacts = contacts;
+        this.isSelectable = isSelectable;
         Collections.sort(deviceContacts);
     }
 
@@ -47,16 +48,21 @@ public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContac
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    if (selectedItems.contains(viewHolder.getAdapterPosition())) {
-                        // item is selected, deselect it
-                        selectedItems.remove(selectedItems.indexOf(viewHolder.getAdapterPosition()));
+                    if (isSelectable) {
+                        if (selectedItems.contains(viewHolder.getAdapterPosition())) {
+                            // item is selected, deselect it
+                            selectedItems.remove(selectedItems.indexOf(viewHolder.getAdapterPosition()));
+                        }
+                        else {
+                            // mark item as selected
+                            selectedItems.add(viewHolder.getAdapterPosition());
+                        }
+
+                        notifyItemChanged(viewHolder.getAdapterPosition());
                     }
                     else {
-                        // mark item as selected
-                        selectedItems.add(viewHolder.getAdapterPosition());
+                        // TODO: open contact
                     }
-
-                    notifyItemChanged(viewHolder.getAdapterPosition());
                 }
                 return true;
             }
@@ -88,6 +94,7 @@ public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContac
 
     /**
      * get selected contacts
+     *
      * @param receiver : receiver to receive selected contacts names
      */
     public void getSelectedContactsNames(Consumer<String> receiver) {
@@ -129,5 +136,6 @@ public class DeviceContactsListAdapter extends RecyclerView.Adapter<DeviceContac
     }
 
     private List<String> deviceContacts;
+    private boolean isSelectable;
     private ArrayList<Integer> selectedItems = new ArrayList<>();
 }

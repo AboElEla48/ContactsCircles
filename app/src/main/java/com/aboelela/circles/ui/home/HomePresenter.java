@@ -93,15 +93,22 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
      * @param circle : the circle that device contact will be assigned to it
      */
     private void showDeviceContactsToAssignCircleContacts(Circle circle) {
-        String screenTitle = String.format(getBaseView().getString(R.string.txt_add_device_contact_fragment_title),
-                circle.getName());
+        String screenTitle;
+        if (circle != null) {
+            screenTitle = String.format(getBaseView().getString(R.string.txt_add_device_contact_fragment_title),
+                    circle.getName());
+
+            // set title of screen
+            setTitleText(screenTitle);
+        }
+        else {
+            screenTitle = getBaseView().getTitle().toString();
+        }
 
         fragments.add(new FragmentTitle(DeviceContactsListFragment.newInstance(circle), screenTitle));
         getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
                 fragments.get(fragments.size() - 1).baseFragment).commit();
 
-        // set title of screen
-        setTitleText(screenTitle);
     }
 
     /**

@@ -62,6 +62,7 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
             viewAsGrid();
         }
 
+        // Handle click on button to view content as grid
         RxView.clicks(getBaseView().viewAsGridBtn)
                 .subscribe(new Consumer<Object>()
                 {
@@ -72,6 +73,7 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
                 });
 
 
+        // Handle click on button to view content as list
         RxView.clicks(getBaseView().viewAsListBtn)
                 .subscribe(new Consumer<Object>()
                 {
@@ -89,6 +91,16 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
                     public void accept(@NonNull Object o) throws Exception {
                         HomeActivityMessagesHelper.sendMessageAddCircle();
 
+                    }
+                });
+
+        // Handle click on default circle
+        RxView.clicks(getBaseView().defaultCircleItem)
+                .subscribe(new Consumer<Object>()
+                {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        HomeActivityMessagesHelper.sendMessageShowDeviceContacts(null);
                     }
                 });
 

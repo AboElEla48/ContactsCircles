@@ -6,6 +6,8 @@ import com.aboelela.circles.ui.home.fragments.viewCircles.CirclesListFragment;
 import com.mvvm.framework.messaging.CustomMessage;
 import com.mvvm.framework.messaging.MessagesServer;
 
+import io.reactivex.annotations.Nullable;
+
 /**
  * Created by aboelela on 21/07/17.
  * Unified place to send messages to home activity
@@ -43,7 +45,7 @@ public final class HomeActivityMessagesHelper
      * send message to show device contacts fragment to assign contacts to given circle
      * @param circleToAssignContacts :  circle to assign contacts from device to it
      */
-    public static void sendMessageShowDeviceContacts(Circle circleToAssignContacts) {
+    public static void sendMessageShowDeviceContacts(@Nullable  Circle circleToAssignContacts) {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
                 new CustomMessage(CirclesMessages.MSGID_Open_Device_Contacts, 0, circleToAssignContacts));
     }

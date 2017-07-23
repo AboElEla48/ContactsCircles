@@ -12,6 +12,8 @@
     <string name="txt_contacts_loading_waiting_message">Please wait while loading device contacts</string>
     <string name="txt_empty_device_contacts_text">No Contacts to show!</string>
 
+    <string name="txt_default_circle_title">Default Circle</string>
+
     <array name="txt_arr_permissions_arr">
         <item>Circles application need permission to read your contacts!</item>
     </array>

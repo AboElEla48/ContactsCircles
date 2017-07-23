@@ -2,6 +2,7 @@ package com.aboelela.circles.ui.home.fragments.viewDeviceContacts;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -34,20 +35,25 @@ public class DeviceContactsListFragment extends BaseFragment
     @BindView(R.id.fragment_device_contacts_save_btn)
     ImageButton saveSelectionBtn;
 
-    static String Bundle_Circle_To_Assign_Key  = "Bundle_Circle_To_Assign_Key";
+    @BindView(R.id.fragment_device_contacts_selection_layout)
+    View selectionContactsLayout;
+
+    static String Bundle_Circle_To_Assign_Key = "Bundle_Circle_To_Assign_Key";
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment DeviceContactsListFragment.
      */
     public static DeviceContactsListFragment newInstance(Circle circle) {
         DeviceContactsListFragment fragment = new DeviceContactsListFragment();
-        Bundle args = new Bundle();
 
-        args.putParcelable(Bundle_Circle_To_Assign_Key, circle);
-
-        fragment.setArguments(args);
+        if (circle != null) {
+            Bundle args = new Bundle();
+            args.putParcelable(Bundle_Circle_To_Assign_Key, circle);
+            fragment.setArguments(args);
+        }
         return fragment;
     }
 

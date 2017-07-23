@@ -18,12 +18,24 @@ public class DeviceContactsListViewModel extends BaseViewModel<DeviceContactsLis
     @ViewModelViewVisibilityField(R.id.fragment_device_contacts_empty_textView)
     private int emptyTextVisibility;
 
+    @ViewModelViewVisibilityField(R.id.fragment_device_contacts_selection_layout)
+    private int selectionLayoutVisibility;
+
     public void setEmptyTextVisibility(int emptyTextVisibility) {
         try {
             setViewModelFieldValue(this, "emptyTextVisibility", emptyTextVisibility);
         }
         catch (Exception ex) {
             LogUtil.writeErrorLog(TAG, "Error setting the visibility of empty text view");
+        }
+    }
+
+    public void setSelectionLayoutVisibility(int selectionLayoutVisibility) {
+        try {
+            setViewModelFieldValue(this, "selectionLayoutVisibility", selectionLayoutVisibility);
+        }
+        catch (Exception ex) {
+            LogUtil.writeErrorLog(TAG, "Error setting the visibility of selection view");
         }
     }
 }

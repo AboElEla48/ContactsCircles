@@ -38,6 +38,7 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
     @ViewModel
     private DeviceContactsListViewModel deviceContactsListViewModel;
 
+    @Singleton
     @DataModel
     private DeviceContactsModel deviceContactsModel;
 
@@ -53,8 +54,10 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        circleToAssignContacts = getBaseView().getArguments().getParcelable(DeviceContactsListFragment.Bundle_Circle_To_Assign_Key);
-
+        if (getBaseView().getArguments() != null) {
+            circleToAssignContacts = getBaseView().getArguments().getParcelable(DeviceContactsListFragment.Bundle_Circle_To_Assign_Key);
+        }
+        
         // Show waiting message for loading device contacts
         ProgressDialog loadingMsg = DialogMsgUtil.createProgressDialog(getBaseView().getContext(), "",
                 getBaseView().getString(R.string.txt_contacts_loading_waiting_message));
@@ -64,47 +67,56 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
         getBaseView().deviceContactsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         getBaseView().deviceContactsRecyclerView.setHasFixedSize(true);
 
-        deviceContactsListAdapter = new DeviceContactsListAdapter(new ArrayList<>(deviceContactsModel.loadDeviceContacts().keySet()));
+        deviceContactsListAdapter = new DeviceContactsListAdapter(new ArrayList<>(deviceContactsModel.loadDeviceContacts().keySet()),
+                circleToAssignContacts != null);
         getBaseView().deviceContactsRecyclerView.setAdapter(deviceContactsListAdapter);
 
         loadingMsg.dismiss();
 
         checkEmptyContactsList();
 
-        // Handle event of save button
-        RxView.clicks(getBaseView().saveSelectionBtn)
-                .subscribe(new Consumer<Object>()
-                {
-                    @Override
-                    public void accept(@NonNull Object o) throws Exception {
-                        deviceContactsListAdapter.getSelectedContactsNames(new Consumer<String>()
-                        {
-                            @Override
-                            public void accept(@NonNull String contactName) throws Exception {
-                                // Save contact to circle
-                                circleToAssignContacts.addCircleContact(deviceContactsModel.getDeviceContacts().get(contactName));
-                            }
-                        });
+        if (circleToAssignContacts == null) {
+            deviceContactsListViewModel.setSelectionLayoutVisibility(View.GONE);
+        }
+        else {
 
-                        // save circle
-                        PreferencesManager.saveCirclesList(circlesModel.getCircles());
+            deviceContactsListViewModel.setSelectionLayoutVisibility(View.VISIBLE);
 
-                        // dismiss fragment
-                        HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circleToAssignContacts);
-                    }
-                });
+            // Handle event of save button
+            RxView.clicks(getBaseView().saveSelectionBtn)
+                    .subscribe(new Consumer<Object>()
+                    {
+                        @Override
+                        public void accept(@NonNull Object o) throws Exception {
+                            deviceContactsListAdapter.getSelectedContactsNames(new Consumer<String>()
+                            {
+                                @Override
+                                public void accept(@NonNull String contactName) throws Exception {
+                                    // Save contact to circle
+                                    circleToAssignContacts.addCircleContact(deviceContactsModel.getDeviceContacts().get(contactName));
+                                }
+                            });
+
+                            // save circle
+                            PreferencesManager.saveCirclesList(circlesModel.getCircles());
+
+                            // dismiss fragment
+                            HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circleToAssignContacts);
+                        }
+                    });
 
 
-        // Handle event of cancel button
-        RxView.clicks(getBaseView().cancelSelectionBtn)
-                .subscribe(new Consumer<Object>()
-                {
-                    @Override
-                    public void accept(@NonNull Object o) throws Exception {
-                        // dismiss
-                        HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circleToAssignContacts);
-                    }
-                });
+            // Handle event of cancel button
+            RxView.clicks(getBaseView().cancelSelectionBtn)
+                    .subscribe(new Consumer<Object>()
+                    {
+                        @Override
+                        public void accept(@NonNull Object o) throws Exception {
+                            // dismiss
+                            HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circleToAssignContacts);
+                        }
+                    });
+        }
     }
 
     @Override

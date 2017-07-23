@@ -91,11 +91,20 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
                         HomeActivityMessagesHelper.sendMessageShowDeviceContacts(circle);
                     }
                 });
+
+        checkEmptyList();
     }
 
     private void viewAsGrid() {
         getBaseView().circleContactsGridView.setVisibility(View.VISIBLE);
         getBaseView().circleContactsRecyclerView.setVisibility(View.GONE);
+
+        checkEmptyList();
+    }
+
+    private void viewAsList() {
+        getBaseView().circleContactsRecyclerView.setVisibility(View.VISIBLE);
+        getBaseView().circleContactsGridView.setVisibility(View.GONE);
 
         checkEmptyList();
     }
@@ -107,10 +116,5 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
         else {
             circleContactsListViewModel.setEmptyTextVisibility(View.GONE);
         }
-    }
-
-    private void viewAsList() {
-        getBaseView().circleContactsRecyclerView.setVisibility(View.VISIBLE);
-        getBaseView().circleContactsGridView.setVisibility(View.GONE);
     }
 }

@@ -1,5 +1,6 @@
-package com.aboelela.circles.ui.home.fragments.viewCircles.adapters;
+package com.aboelela.circles.ui.home.fragments.viewCircleContacts.adapters;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,45 +10,46 @@ import android.widget.TextView;
 
 import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
-import com.aboelela.circles.data.CirclesModel;
-import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
+import com.mvvm.framework.utils.ContactsUtil;
+
+import java.util.List;
 
 /**
- * Created by AboelelaA on 7/13/2017.
- * Adapter for circles grid
+ * Created by aboelela on 23/07/17.
+ * Adapter for grid displaying circle contacts
  */
 
-public class CirclesGridAdapter extends BaseAdapter
+public class CircleContactsGridAdapter extends BaseAdapter
 {
-    private CirclesModel circlesModel;
-
-    public CirclesGridAdapter(CirclesModel model) {
-        circlesModel = model;
+    public CircleContactsGridAdapter(@NonNull List<ContactsUtil.ContactModel> contacts) {
+        circleContacts = contacts;
     }
+
+    private @NonNull List<ContactsUtil.ContactModel> circleContacts;
 
     @Override
     public int getCount() {
-        return circlesModel.getCircles().size();
+        return circleContacts.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return circlesModel.getCircles().get(position);
+        return circleContacts.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return circlesModel.getCircles().get(position).getID();
+        return 0;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(CirclesApplication.getInstance()).inflate(R.layout.grid_circles_grid_item, null);
+            convertView = LayoutInflater.from(CirclesApplication.getInstance()).inflate(R.layout.grid_circle_contacts_grid_item, null);
 
             viewHolder = new ViewHolder();
-            viewHolder.itemTextView = (TextView)convertView.findViewById(R.id.circle_grid_item_text_view);
+            viewHolder.itemTextView = (TextView)convertView.findViewById(R.id.circle_contact_grid_item_text_view);
 
             convertView.setTag(viewHolder);
         }
@@ -55,7 +57,7 @@ public class CirclesGridAdapter extends BaseAdapter
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        viewHolder.itemTextView.setText(circlesModel.getCircles().get(position).getName());
+        viewHolder.itemTextView.setText(circleContacts.get(position).getContactName());
         viewHolder.itemTextView.setTag(position);
 
         viewHolder.itemTextView.setOnTouchListener(new View.OnTouchListener()
@@ -63,8 +65,8 @@ public class CirclesGridAdapter extends BaseAdapter
             @Override
             public boolean onTouch(View textView, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    // Show the contacts of this circle
-                    HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circlesModel.getCircles().get((int)textView.getTag()));
+                    // TODO: Show contact details
+
                 }
                 return true;
             }
@@ -76,5 +78,4 @@ public class CirclesGridAdapter extends BaseAdapter
     private class ViewHolder {
         TextView itemTextView;
     }
-
 }

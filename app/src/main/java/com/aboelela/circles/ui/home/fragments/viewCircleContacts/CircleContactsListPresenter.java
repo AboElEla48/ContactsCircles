@@ -5,11 +5,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
+import com.aboelela.circles.ui.home.fragments.viewCircleContacts.adapters.CircleContactsGridAdapter;
 import com.aboelela.circles.ui.home.fragments.viewCircleContacts.adapters.CircleContactsListAdapter;
+import com.aboelela.circles.ui.home.fragments.viewCircleContacts.data.CircleContactsListViewModel;
 import com.jakewharton.rxbinding2.view.RxView;
+import com.mvvm.framework.annotation.ViewModel;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.utils.ContactsUtil;
 import com.mvvm.framework.utils.LogUtil;
@@ -25,8 +29,12 @@ import io.reactivex.functions.Consumer;
 
 class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragment, CircleContactsListPresenter>
 {
-    private Circle circle;
     private final String TAG = "CircleContactsListPresenter";
+
+    private Circle circle;
+
+    @ViewModel
+    private CircleContactsListViewModel circleContactsListViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +60,26 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
 
         // Fill the list with circle items
         getBaseView().circleContactsRecyclerView.setAdapter(new CircleContactsListAdapter(circle.getCircleContacts()));
+        getBaseView().circleContactsGridView.setAdapter(new CircleContactsGridAdapter(circle.getCircleContacts()));
+
+        RxView.clicks(getBaseView().viewAsGridBtn)
+                .subscribe(new Consumer<Object>()
+                {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        viewAsGrid();
+                    }
+                });
+
+
+        RxView.clicks(getBaseView().viewAsListBtn)
+                .subscribe(new Consumer<Object>()
+                {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        viewAsList();
+                    }
+                });
 
         //Handle button to assign contact to circle
         RxView.clicks(getBaseView().assignContactBtn)
@@ -63,5 +91,26 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
                         HomeActivityMessagesHelper.sendMessageShowDeviceContacts(circle);
                     }
                 });
+    }
+
+    private void viewAsGrid() {
+        getBaseView().circleContactsGridView.setVisibility(View.VISIBLE);
+        getBaseView().circleContactsRecyclerView.setVisibility(View.GONE);
+
+        checkEmptyList();
+    }
+
+    private void checkEmptyList() {
+        if (circle.getCircleContacts().size() == 0) {
+            circleContactsListViewModel.setEmptyTextVisibility(View.VISIBLE);
+        }
+        else {
+            circleContactsListViewModel.setEmptyTextVisibility(View.GONE);
+        }
+    }
+
+    private void viewAsList() {
+        getBaseView().circleContactsRecyclerView.setVisibility(View.VISIBLE);
+        getBaseView().circleContactsGridView.setVisibility(View.GONE);
     }
 }

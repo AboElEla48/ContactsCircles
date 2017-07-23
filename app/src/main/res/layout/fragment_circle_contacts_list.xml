@@ -9,20 +9,57 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Show circle Name -->
-        <TextView
-            android:id="@+id/fragment_circle_contacts_circle_name_textView"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/colorPureBlack"
-            android:textSize="@dimen/dimen_title_text_view_text_size"/>
+            android:layout_gravity="end|center"
+            android:orientation="horizontal">
+
+            <!-- View as list button -->
+            <ImageButton
+                android:id="@+id/fragment_circle_contacts_view_as_list_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_action_add"/>
+
+            <!-- View as grid button -->
+            <ImageButton
+                android:id="@+id/fragment_circle_contacts_view_as_grid_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_action_add"/>
+
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_circle_contacts_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"/>
+
+        <!-- Grid view for circles -->
+        <GridView
+            android:id="@+id/fragment_circle_contacts_gridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnWidth="@dimen/dimen_circle_grid_column_width"
+            android:gravity="center"
+            android:horizontalSpacing="@dimen/dimen_circle_grid_column_horizontal_spacing"
+            android:numColumns="auto_fit"
+            android:scrollbars="vertical"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="@dimen/dimen_circle_grid_column_vertical_spacing"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/fragment_circle_contacts_list_empty_textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/txt_no_circle_contacts_text"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

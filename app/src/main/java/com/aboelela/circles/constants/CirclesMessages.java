@@ -19,6 +19,4 @@ public final class CirclesMessages
     public static final int MSGID_Open_Contacts_Of_Circle = 3;
 
     public static final int MSGID_Open_Device_Contacts = 4;
-
-    public static final int MSGID_Set_Home_Title = 5;
 }

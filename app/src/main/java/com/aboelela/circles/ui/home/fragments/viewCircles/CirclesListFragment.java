@@ -27,6 +27,9 @@ public class CirclesListFragment extends BaseFragment
     @Presenter
     CirclesListPresenter circlesListPresenter;
 
+    @BindView(R.id.fragment_circles_list_default_cirlce)
+    View defaultCircleItem;
+
     @BindView(R.id.fragment_circles_list_circles_recyclerView)
     RecyclerView circlesRecyclerView;
 

@@ -26,17 +26,19 @@ public class DeviceContactsModel extends BaseModel
      * @return :the list of device contacts
      */
     public Map<String, ContactsUtil.ContactModel> loadDeviceContacts() {
-        Observable.fromCallable(new Callable<Map<String, ContactsUtil.ContactModel>>()
-        {
-            @Override
-            public Map<String, ContactsUtil.ContactModel> call() throws Exception {
-                deviceContacts = ContactsUtil.loadDeviceContacts(CirclesApplication.getInstance());
-                if(deviceContacts == null) {
-                    deviceContacts = new HashMap<>();
+        if(deviceContacts == null) {
+            Observable.fromCallable(new Callable<Map<String, ContactsUtil.ContactModel>>()
+            {
+                @Override
+                public Map<String, ContactsUtil.ContactModel> call() throws Exception {
+                    deviceContacts = ContactsUtil.loadDeviceContacts(CirclesApplication.getInstance());
+                    if (deviceContacts == null) {
+                        deviceContacts = new HashMap<>();
+                    }
+                    return deviceContacts;
                 }
-                return deviceContacts;
-            }
-        }).blockingSubscribe();
+            }).blockingSubscribe();
+        }
 
         return deviceContacts;
     }

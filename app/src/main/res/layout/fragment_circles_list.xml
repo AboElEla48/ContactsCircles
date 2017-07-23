@@ -34,6 +34,32 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/fragment_circles_list_default_cirlce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_default_circle_title"
+                android:textSize="@dimen/dimen_item_text_view_text_size"
+                android:paddingStart="@dimen/dimen_item_text_view_padding"
+                android:paddingEnd="@dimen/dimen_item_text_view_padding"
+                android:textColor="@color/colorPureBlack"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:contentDescription="@string/app_name"
+                android:paddingStart="@dimen/dimen_item_text_view_padding"
+                android:paddingEnd="@dimen/dimen_item_text_view_padding"
+                android:src="@drawable/separator"/>
+
+        </LinearLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

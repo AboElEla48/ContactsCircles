@@ -79,6 +79,8 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
 
                     }
                 });
+
+        checkEmptyList();
     }
 
     private void viewAsGrid() {
@@ -91,6 +93,8 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
     private void viewAsList() {
         getBaseView().circlesRecyclerView.setVisibility(View.VISIBLE);
         getBaseView().circlesGridView.setVisibility(View.GONE);
+
+        checkEmptyList();
     }
 
     @Override

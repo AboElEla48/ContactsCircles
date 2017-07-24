@@ -11,10 +11,12 @@ import com.aboelela.circles.ui.ActivityNavigationManager;
 import com.aboelela.circles.ui.home.fragments.addCircle.NewCircleDialogFragment;
 import com.aboelela.circles.ui.home.fragments.viewCircleContacts.CircleContactsListFragment;
 import com.aboelela.circles.ui.home.fragments.viewCircles.CirclesListFragment;
+import com.aboelela.circles.ui.home.fragments.viewContact.ContactDetailsFragment;
 import com.aboelela.circles.ui.home.fragments.viewDeviceContacts.DeviceContactsListFragment;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.base.views.BaseFragment;
 import com.mvvm.framework.messaging.CustomMessage;
+import com.mvvm.framework.utils.ContactsUtil;
 
 import java.util.ArrayList;
 
@@ -60,6 +62,12 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
             case CirclesMessages.MSGID_Open_Device_Contacts: {
                 // Show device contacts
                 showDeviceContactsToAssignCircleContacts((Circle) msg.getData());
+                break;
+            }
+
+            case CirclesMessages.MSGID_Open_Contact_Details: {
+                // Show contact details
+                showContactDetails((ContactsUtil.ContactModel) msg.getData());
                 break;
             }
         }
@@ -109,6 +117,18 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
         getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
                 fragments.get(fragments.size() - 1).baseFragment).commit();
 
+    }
+
+    /**
+     * Show contact details
+     * @param contactModel : contact details
+     */
+    private void showContactDetails(ContactsUtil.ContactModel contactModel) {
+        String screenTitle = getBaseView().getTitle().toString();
+
+        fragments.add(new FragmentTitle(ContactDetailsFragment.newInstance(contactModel), screenTitle));
+        getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
+                fragments.get(fragments.size() - 1).baseFragment).commit();
     }
 
     /**

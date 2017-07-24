@@ -1,0 +1,91 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.aboelela.circles.ui.home.fragments.viewContact.ContactDetailsFragment">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- Avatar -->
+        <ImageView
+            android:id="@+id/fragment_contact_details_avatar_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/test"
+            android:layout_gravity="center_horizontal"/>
+
+        <!-- Contact Name -->
+        <TextView
+            android:id="@+id/fragment_contact_details_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/dimen_title_text_view_text_size"
+            android:textColor="@color/colorPureBlack"
+            android:text="@string/app_name"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <!-- Phones layout -->
+    <LinearLayout
+        android:id="@+id/fragment_contact_details_phones_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_contact_details_sections_margins"
+        android:orientation="vertical">
+
+        <!-- Phones title -->
+        <TextView
+            android:id="@+id/fragment_contact_details_phones_title_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_contact_details_title_phones"
+            android:textColor="@color/colorPureBlack"
+            android:textSize="@dimen/dimen_subtitle_text_view_text_size"
+            android:textStyle="bold"/>
+
+        <!-- List of phones -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_contact_details_phones_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <!-- Emails layout -->
+    <LinearLayout
+        android:id="@+id/fragment_contact_details_emails_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_contact_details_sections_margins"
+        android:orientation="vertical">
+
+        <!-- Emails title -->
+        <TextView
+            android:id="@+id/fragment_contact_details_emails_title_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_contact_details_title_emails"
+            android:textColor="@color/colorPureBlack"
+            android:textSize="@dimen/dimen_subtitle_text_view_text_size"
+            android:textStyle="bold"/>
+
+        <!-- List of Emails -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_contact_details_emails_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

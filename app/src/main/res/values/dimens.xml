@@ -4,6 +4,7 @@
     <dimen name="dimen_floating_btn_margin_bottom">16dp</dimen>
 
     <dimen name="dimen_title_text_view_text_size">20sp</dimen>
+    <dimen name="dimen_subtitle_text_view_text_size">10sp</dimen>
     <dimen name="dimen_item_text_view_text_size">17sp</dimen>
 
     <dimen name="dimen_item_text_view_padding">5dp</dimen>
@@ -22,5 +23,7 @@
     <dimen name="dimen_circle_grid_column_width">90dp</dimen>
     <dimen name="dimen_circle_grid_column_vertical_spacing">10dp</dimen>
     <dimen name="dimen_circle_grid_column_horizontal_spacing">10dp</dimen>
+
+    <dimen name="dimen_contact_details_sections_margins">10dp</dimen>
 
 </resources>

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
+import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 import com.mvvm.framework.utils.ContactsUtil;
 
 import java.util.ArrayList;
@@ -51,8 +52,8 @@ public class CircleContactsListAdapter extends RecyclerView.Adapter<CircleContac
                     }
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    // TODO open contact details
-
+                    // open contact details
+                    HomeActivityMessagesHelper.sendMessageShowContactDetails(circleContacts.get(viewHolder.getAdapterPosition()));
                 }
                 return true;
             }

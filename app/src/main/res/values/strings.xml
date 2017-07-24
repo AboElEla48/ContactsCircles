@@ -14,6 +14,9 @@
 
     <string name="txt_default_circle_title">Default Circle</string>
 
+    <string name="txt_contact_details_title_phones">Phones</string>
+    <string name="txt_contact_details_title_emails">Emails</string>
+
     <array name="txt_arr_permissions_arr">
         <item>Circles application need permission to read your contacts!</item>
     </array>

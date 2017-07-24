@@ -5,6 +5,7 @@ import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.fragments.viewCircles.CirclesListFragment;
 import com.mvvm.framework.messaging.CustomMessage;
 import com.mvvm.framework.messaging.MessagesServer;
+import com.mvvm.framework.utils.ContactsUtil;
 
 import io.reactivex.annotations.Nullable;
 
@@ -48,6 +49,15 @@ public final class HomeActivityMessagesHelper
     public static void sendMessageShowDeviceContacts(@Nullable  Circle circleToAssignContacts) {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
                 new CustomMessage(CirclesMessages.MSGID_Open_Device_Contacts, 0, circleToAssignContacts));
+    }
+
+    /**
+     * send message to show contact details
+     * @param contactModel : the contact to show its details
+     */
+    public static void sendMessageShowContactDetails(ContactsUtil.ContactModel contactModel) {
+        MessagesServer.getInstance().sendMessage(HomeActivity.class,
+                new CustomMessage(CirclesMessages.MSGID_Open_Contact_Details, 0, contactModel));
     }
 
 

@@ -70,6 +70,11 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
                 showContactDetails((ContactsUtil.ContactModel) msg.getData());
                 break;
             }
+
+            case CirclesMessages.MSGID_Finish_Device_Contacts_Fragment: {
+                removeFragment(DeviceContactsListFragment.class);
+                break;
+            }
         }
     }
 
@@ -81,18 +86,31 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
         circleDialogFragment.show(getBaseView().getSupportFragmentManager(), "");
     }
 
+    private void removeFragment(Class fragmentClass) {
+        for (int i = 0; i < fragments.size(); i++ ) {
+            if(fragments.get(i).baseFragment.getClass().equals(fragmentClass)) {
+                fragments.remove(i);
+                break;
+            }
+        }
+    }
+
+    private void addFragment(Class fragmentClass, BaseFragment fragment, String title) {
+        removeFragment(fragmentClass);
+        fragments.add(new FragmentTitle(fragment, title));
+        setTitleText(title);
+    }
+
     /**
      * Display the contacts of circle
      *
      * @param circle : the circle to view its contacts
      */
     private void showCircleContacts(Circle circle) {
-        fragments.add(new FragmentTitle(CircleContactsListFragment.newInstance(circle), circle.getName()));
+        addFragment(CircleContactsListFragment.class, CircleContactsListFragment.newInstance(circle), circle.getName());
         getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
                 fragments.get(fragments.size() - 1).baseFragment).commit();
 
-        // set title of screen
-        setTitleText(circle.getName());
     }
 
     /**
@@ -105,15 +123,12 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
         if (circle != null) {
             screenTitle = String.format(getBaseView().getString(R.string.txt_add_device_contact_fragment_title),
                     circle.getName());
-
-            // set title of screen
-            setTitleText(screenTitle);
         }
         else {
             screenTitle = getBaseView().getTitle().toString();
         }
 
-        fragments.add(new FragmentTitle(DeviceContactsListFragment.newInstance(circle), screenTitle));
+        addFragment(DeviceContactsListFragment.class, DeviceContactsListFragment.newInstance(circle), screenTitle);
         getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
                 fragments.get(fragments.size() - 1).baseFragment).commit();
 
@@ -126,7 +141,7 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
     private void showContactDetails(ContactsUtil.ContactModel contactModel) {
         String screenTitle = getBaseView().getTitle().toString();
 
-        fragments.add(new FragmentTitle(ContactDetailsFragment.newInstance(contactModel), screenTitle));
+        addFragment(ContactDetailsFragment.class, ContactDetailsFragment.newInstance(contactModel), screenTitle);
         getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
                 fragments.get(fragments.size() - 1).baseFragment).commit();
     }

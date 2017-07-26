@@ -64,7 +64,7 @@ public class ContactDetailsEmailsListAdapter extends RecyclerView.Adapter<Contac
             itemView.setClickable(true);
 
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            itemTextView = (TextView) cardView.findViewById(R.id.circle_item_textView);
+            itemTextView = (TextView) cardView.findViewById(R.id.list_contact_details_string_item_text_view);
         }
 
         void setText(String text) {

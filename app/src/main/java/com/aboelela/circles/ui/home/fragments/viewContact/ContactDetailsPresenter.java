@@ -2,6 +2,9 @@ package com.aboelela.circles.ui.home.fragments.viewContact;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.aboelela.circles.ui.home.fragments.viewContact.adapters.ContactDetailsEmailsListAdapter;
@@ -34,6 +37,12 @@ class ContactDetailsPresenter extends BasePresenter<ContactDetailsFragment, Cont
         // show/hide phones section
         if (contactModel.getPhones() != null && contactModel.getPhones().size() > 0) {
             contactDetailsViewModel.setPhonesSectionVisibility(View.VISIBLE);
+
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseView().getContext());
+            getBaseView().contactPhonesRecyclerView.setLayoutManager(mLayoutManager);
+            getBaseView().contactPhonesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            getBaseView().contactPhonesRecyclerView.setHasFixedSize(true);
+
             getBaseView().contactPhonesRecyclerView.setAdapter(new ContactDetailsPhonesListAdapter(contactModel.getPhones()));
         }
         else {
@@ -43,6 +52,12 @@ class ContactDetailsPresenter extends BasePresenter<ContactDetailsFragment, Cont
         // show/hide emails section
         if (contactModel.getEmails() != null && contactModel.getEmails().size() > 0) {
             contactDetailsViewModel.setEmailsSectionVisibility(View.VISIBLE);
+
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseView().getContext());
+            getBaseView().contactEmailsRecyclerView.setLayoutManager(mLayoutManager);
+            getBaseView().contactEmailsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+            getBaseView().contactEmailsRecyclerView.setHasFixedSize(true);
+
             getBaseView().contactEmailsRecyclerView.setAdapter(new ContactDetailsEmailsListAdapter(contactModel.getEmails()));
         }
         else {

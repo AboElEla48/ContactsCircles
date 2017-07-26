@@ -21,4 +21,6 @@ public final class CirclesMessages
     public static final int MSGID_Open_Device_Contacts = 4;
 
     public static final int MSGID_Open_Contact_Details = 5;
+
+    public static final int MSGID_Finish_Device_Contacts_Fragment = 6;
 }

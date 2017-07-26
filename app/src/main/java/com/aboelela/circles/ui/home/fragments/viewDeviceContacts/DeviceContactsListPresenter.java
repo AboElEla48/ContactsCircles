@@ -101,6 +101,7 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
                             PreferencesManager.saveCirclesList(circlesModel.getCircles());
 
                             // dismiss fragment
+                            HomeActivityMessagesHelper.sendMessageFinishDeviceContactsFragment();
                             HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circleToAssignContacts);
                         }
                     });
@@ -113,6 +114,7 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
                         @Override
                         public void accept(@NonNull Object o) throws Exception {
                             // dismiss
+                            HomeActivityMessagesHelper.sendMessageFinishDeviceContactsFragment();
                             HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circleToAssignContacts);
                         }
                     });

@@ -60,5 +60,13 @@ public final class HomeActivityMessagesHelper
                 new CustomMessage(CirclesMessages.MSGID_Open_Contact_Details, 0, contactModel));
     }
 
+    /**
+     * send message to remove contacts fragment from activity buffer
+     */
+    public static void sendMessageFinishDeviceContactsFragment() {
+        MessagesServer.getInstance().sendMessage(HomeActivity.class,
+                new CustomMessage(CirclesMessages.MSGID_Finish_Device_Contacts_Fragment, 0, null));
+    }
+
 
 }

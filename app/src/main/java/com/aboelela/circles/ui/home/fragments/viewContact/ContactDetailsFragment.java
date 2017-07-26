@@ -17,7 +17,6 @@ import butterknife.BindView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ContactDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  *
  */

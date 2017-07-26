@@ -60,7 +60,7 @@ public class BaseViewModel<V extends BaseView, VM extends BaseViewModel>
                 });
     }
 
-    public void setViewModelFieldValue(BaseViewModel viewModel, String fieldName, final Object value) throws NoSuchFieldException, IllegalAccessException{
+    protected void setViewModelFieldValue(BaseViewModel viewModel, String fieldName, final Object value) throws NoSuchFieldException, IllegalAccessException{
         Field field = viewModel.getClass().getDeclaredField(fieldName);
         field.setAccessible(true);
         field.set(viewModel, value);

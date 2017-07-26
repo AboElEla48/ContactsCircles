@@ -147,7 +147,7 @@ public class ContactsUtil
 
     public static class ContactModel implements Comparable<ContactModel>, Parcelable
     {
-        private String contactName;
+        private String contactName = "";
         private ArrayList<String> phones = new ArrayList<>();
         private ArrayList<String> emails = new ArrayList<>();
 

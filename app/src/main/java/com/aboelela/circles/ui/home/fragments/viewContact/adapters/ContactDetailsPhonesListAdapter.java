@@ -35,7 +35,7 @@ public class ContactDetailsPhonesListAdapter extends RecyclerView.Adapter<Contac
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    // TODO call phone
+                    // call phone
                     PhoneUtil.dialPhone(CirclesApplication.getInstance(), viewHolder.itemTextView.getText().toString());
                 }
                 return true;

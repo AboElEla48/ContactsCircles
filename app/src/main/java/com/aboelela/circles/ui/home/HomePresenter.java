@@ -1,9 +1,9 @@
 package com.aboelela.circles.ui.home;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
 import com.aboelela.circles.constants.CirclesMessages;
 import com.aboelela.circles.data.entities.Circle;
@@ -17,6 +17,7 @@ import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.base.views.BaseFragment;
 import com.mvvm.framework.messaging.CustomMessage;
 import com.mvvm.framework.utils.ContactsUtil;
+import com.mvvm.framework.utils.PackageUtil;
 
 import java.util.ArrayList;
 
@@ -38,7 +39,7 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
         setTitleText(fragments.get(fragments.size() - 1).title);
 
         ActivityNavigationManager.showPermissionsActivity(getBaseView().getBaseContext(),
-                new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE},
+                PackageUtil.getApplicationRequestedPermissions(CirclesApplication.getInstance()),
                 getBaseView().getResources().getStringArray(R.array.txt_arr_permissions_arr));
 
     }

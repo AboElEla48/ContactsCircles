@@ -24,4 +24,10 @@ public class PhoneUtil
         callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(callIntent);
 	}
+
+	public static void sendSMS(Context context, String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber, null));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 }

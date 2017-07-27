@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
+import com.mvvm.framework.utils.PhoneUtil;
 
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class ContactDetailsPhonesListAdapter extends RecyclerView.Adapter<Contac
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     // TODO call phone
+                    PhoneUtil.dialPhone(CirclesApplication.getInstance(), viewHolder.itemTextView.getText().toString());
                 }
                 return true;
             }

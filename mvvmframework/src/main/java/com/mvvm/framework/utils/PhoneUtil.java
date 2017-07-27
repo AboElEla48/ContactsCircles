@@ -20,7 +20,7 @@ public class PhoneUtil
 	public static void dialPhone(Context context, String phoneNumber)
 	{
 		Uri number = Uri.parse("tel:" + phoneNumber);
-        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+        Intent callIntent = new Intent(Intent.ACTION_CALL, number);
         callIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(callIntent);
 	}

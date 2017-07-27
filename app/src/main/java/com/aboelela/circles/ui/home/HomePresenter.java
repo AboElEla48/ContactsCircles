@@ -38,7 +38,7 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
         setTitleText(fragments.get(fragments.size() - 1).title);
 
         ActivityNavigationManager.showPermissionsActivity(getBaseView().getBaseContext(),
-                new String[]{Manifest.permission.READ_CONTACTS},
+                new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE},
                 getBaseView().getResources().getStringArray(R.array.txt_arr_permissions_arr));
 
     }

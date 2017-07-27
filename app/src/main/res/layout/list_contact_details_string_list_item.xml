@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="4">
 
             <TextView
                 android:id="@+id/list_contact_details_string_item_text_view"
@@ -30,6 +30,15 @@
                 android:textSize="@dimen/dimen_item_text_view_text_size"/>
 
             <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_action_add"/>
+
+            <ImageView
+                android:id="@+id/list_contact_details_string_item_sms_image_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

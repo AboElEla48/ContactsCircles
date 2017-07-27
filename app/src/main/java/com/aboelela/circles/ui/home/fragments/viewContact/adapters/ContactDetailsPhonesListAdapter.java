@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aboelela.circles.CirclesApplication;
@@ -42,6 +43,18 @@ public class ContactDetailsPhonesListAdapter extends RecyclerView.Adapter<Contac
             }
         });
 
+        viewHolder.itemSMSImageView.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    // call phone
+                    PhoneUtil.sendSMS(CirclesApplication.getInstance(), viewHolder.itemTextView.getText().toString());
+                }
+                return true;
+            }
+        });
+
         return viewHolder;
 
     }
@@ -60,6 +73,7 @@ public class ContactDetailsPhonesListAdapter extends RecyclerView.Adapter<Contac
     {
         CardView cardView;
         TextView itemTextView;
+        ImageView itemSMSImageView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -67,6 +81,7 @@ public class ContactDetailsPhonesListAdapter extends RecyclerView.Adapter<Contac
 
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             itemTextView = (TextView) cardView.findViewById(R.id.list_contact_details_string_item_text_view);
+            itemSMSImageView = (ImageView) cardView.findViewById(R.id.list_contact_details_string_item_sms_image_view);
         }
 
         void setText(String text) {

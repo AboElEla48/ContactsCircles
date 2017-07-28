@@ -20,10 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.reactivex.Observable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-
 /**
  * @author Administrator
  */
@@ -121,8 +117,7 @@ public class ContactsUtil
      *
      * @param context : the device context
      */
-    public static Object loadDeviceContacts(final Context context,
-                                            final Consumer<Map<String, ContactModel>> receiver) {
+    public static Map<String, ContactModel> loadDeviceContacts(final Context context) {
 
         Cursor cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 new String[]{ContactsContract.Contacts._ID,
@@ -130,69 +125,52 @@ public class ContactsUtil
                         ContactsContract.CommonDataKinds.Phone.NUMBER,
                         ContactsContract.Contacts.PHOTO_ID}, null, null, null);
 
-        if (cursor == null) {
-            return new Object();
-        }
+        Map<String, ContactModel> contactsMap = new HashMap<>();
+        if (cursor.moveToFirst()) {
 
-        final Map<String, ContactModel> contactsMap = new HashMap<>();
-        Observable.fromIterable(RxCursorIterable.from(cursor))
-                .subscribe(new Consumer<Cursor>()
-                           {
-                               @Override
-                               public void accept(@io.reactivex.annotations.NonNull Cursor cursor) throws Exception {
-                                   ContactModel contactModel;
+            do {
+                ContactModel contactModel;
 
-                                   Long id;
-                                   String contactName;
-                                   String phone;
-                                   String email = "";
+                Long id;
+                String contactName;
+                String phone;
+                String email = "";
 
-                                   id = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-                                   contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                                   phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                id = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-                                   try {
-                                       email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DISPLAY_NAME));
-                                   } catch (Exception ex) {
-                                       LogUtil.writeErrorLog(LOG_TAG, "Error getting email");
-                                   }
+                try {
+                    email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DISPLAY_NAME));
+                } catch (Exception ex) {
+                    LogUtil.writeErrorLog(LOG_TAG, "Error getting email");
+                }
 
 
-                                   contactModel = contactsMap.get(contactName);
-                                   if (contactModel == null) {
-                                       contactModel = new ContactModel();
-                                       contactModel.id = id;
-                                       contactModel.contactName = contactName;
-                                       contactsMap.put(contactName, contactModel);
-                                   }
+                contactModel = contactsMap.get(contactName);
+                if (contactModel == null) {
+                    contactModel = new ContactModel();
+                    contactModel.id = id;
+                    contactModel.contactName = contactName;
+                    contactsMap.put(contactName, contactModel);
+                }
 
-                                   if (phone.length() > 0) {
+                if (phone.length() > 0) {
 //                                       contactModel.bitmap = getPhoto(context, id);
-                                       contactModel.bitmap = fetchThumbnail(fetchThumbnailId(context.getContentResolver(), phone), context.getContentResolver());
+                    contactModel.bitmap = fetchThumbnail(fetchThumbnailId(context.getContentResolver(), phone), context.getContentResolver());
 
-                                       contactModel.phones.add(phone);
-                                   }
+                    contactModel.phones.add(phone);
+                }
 
-                                   if (email.length() > 0) {
-                                       contactModel.phones.add(email);
-                                   }
-                               }
-                           },
-                        new Consumer<Throwable>()
-                        {
-                            @Override
-                            public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-                                LogUtil.writeErrorLog(LOG_TAG, "Error loading contacts from device");
-                                throwable.printStackTrace();
-                            }
-                        }, new Action()
-                        {
-                            @Override
-                            public void run() throws Exception {
-                                receiver.accept(contactsMap);
-                            }
-                        });
-        return new Object();
+                if (email.length() > 0) {
+                    contactModel.phones.add(email);
+                }
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return contactsMap;
 
     }
 

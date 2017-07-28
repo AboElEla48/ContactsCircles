@@ -19,10 +19,8 @@ import com.mvvm.framework.annotation.DataModel;
 import com.mvvm.framework.annotation.ViewModel;
 import com.mvvm.framework.annotation.singleton.Singleton;
 import com.mvvm.framework.base.presenters.BasePresenter;
-import com.mvvm.framework.utils.ContactsUtil;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -50,8 +48,8 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
     private DeviceContactsListAdapter deviceContactsListAdapter;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         if (getBaseView().getArguments() != null) {
             circleToAssignContacts = getBaseView().getArguments().getParcelable(DeviceContactsListFragment.Bundle_Circle_To_Assign_Key);
@@ -65,10 +63,10 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
         getBaseView().deviceContactsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         getBaseView().deviceContactsRecyclerView.setHasFixedSize(true);
 
-        deviceContactsModel.loadDeviceContacts(new Consumer<Map<String, ContactsUtil.ContactModel>>()
+        deviceContactsModel.loadDeviceContacts(new Consumer<Object>()
         {
             @Override
-            public void accept(@NonNull Map<String, ContactsUtil.ContactModel> stringContactModelMap) throws Exception {
+            public void accept(@NonNull Object o) throws Exception {
                 deviceContactsListViewModel.setProgressBarVisibility(View.GONE);
 
                 initListAfterLoadingContacts();

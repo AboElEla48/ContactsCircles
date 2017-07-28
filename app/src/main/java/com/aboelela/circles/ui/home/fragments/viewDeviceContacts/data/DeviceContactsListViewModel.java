@@ -21,12 +21,25 @@ public class DeviceContactsListViewModel extends BaseViewModel<DeviceContactsLis
     @ViewModelViewVisibilityField(R.id.fragment_device_contacts_selection_layout)
     private int selectionLayoutVisibility;
 
+    @ViewModelViewVisibilityField(R.id.fragment_device_contacts_list_progress_layout)
+    private int progressBarVisibility;
+
     public void setEmptyTextVisibility(int emptyTextVisibility) {
         try {
             setViewModelFieldValue(this, "emptyTextVisibility", emptyTextVisibility);
         }
         catch (Exception ex) {
             LogUtil.writeErrorLog(TAG, "Error setting the visibility of empty text view");
+        }
+    }
+
+    public void setProgressBarVisibility(int progressBarVisibility) {
+        try
+        {
+            setViewModelFieldValue(this, "progressBarVisibility", progressBarVisibility);
+        }
+        catch (Exception ex) {
+            LogUtil.writeErrorLog(TAG, "Error setting the visibility of progress bar");
         }
     }
 

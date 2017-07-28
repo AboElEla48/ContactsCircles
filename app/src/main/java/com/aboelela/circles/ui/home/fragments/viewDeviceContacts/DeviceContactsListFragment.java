@@ -38,6 +38,9 @@ public class DeviceContactsListFragment extends BaseFragment
     @BindView(R.id.fragment_device_contacts_selection_layout)
     View selectionContactsLayout;
 
+    @BindView(R.id.fragment_device_contacts_list_progress_layout)
+    View ProgressBar;
+
     static String Bundle_Circle_To_Assign_Key = "Bundle_Circle_To_Assign_Key";
 
     /**

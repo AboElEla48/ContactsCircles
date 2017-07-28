@@ -4,12 +4,13 @@ import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.data.runTimeErrors.ContactsNotLoadedException;
 import com.mvvm.framework.base.models.BaseModel;
 import com.mvvm.framework.utils.ContactsUtil;
+import com.mvvm.framework.utils.LogUtil;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by aboelela on 14/07/17.
@@ -20,27 +21,33 @@ public class DeviceContactsModel extends BaseModel
 {
     private Map<String, ContactsUtil.ContactModel> deviceContacts = null;
 
+    private final String TAG = "DeviceContactsModel";
+
     /**
      * Load device contacts
      *
-     * @return :the list of device contacts
      */
-    public Map<String, ContactsUtil.ContactModel> loadDeviceContacts() {
-        if(deviceContacts == null) {
-            Observable.fromCallable(new Callable<Map<String, ContactsUtil.ContactModel>>()
+    public void loadDeviceContacts(final Consumer<Map<String, ContactsUtil.ContactModel>> receiver) {
+        if (deviceContacts == null) {
+            Observable.just(ContactsUtil.loadDeviceContacts(CirclesApplication.getInstance(), new Consumer<Map<String, ContactsUtil.ContactModel>>()
             {
                 @Override
-                public Map<String, ContactsUtil.ContactModel> call() throws Exception {
-                    deviceContacts = ContactsUtil.loadDeviceContacts(CirclesApplication.getInstance());
-                    if (deviceContacts == null) {
-                        deviceContacts = new HashMap<>();
-                    }
-                    return deviceContacts;
+                public void accept(@NonNull Map<String, ContactsUtil.ContactModel> stringContactModelMap) throws Exception {
+                    deviceContacts = stringContactModelMap;
+                    receiver.accept(deviceContacts);
                 }
-            }).blockingSubscribe();
-        }
+            })).subscribe();
 
-        return deviceContacts;
+        }
+        else {
+            try {
+                receiver.accept(deviceContacts);
+            }
+            catch (Exception ex) {
+                LogUtil.writeErrorLog(TAG, ex);
+            }
+
+        }
     }
 
     /**

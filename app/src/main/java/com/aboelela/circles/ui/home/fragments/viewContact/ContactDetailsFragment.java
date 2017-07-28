@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aboelela.circles.R;
@@ -25,6 +26,9 @@ public class ContactDetailsFragment extends BaseFragment
 {
     @Presenter
     ContactDetailsPresenter contactDetailsPresenter;
+
+    @BindView(R.id.fragment_contact_details_avatar_image_view)
+    ImageView avatarImageView;
 
     @BindView(R.id.fragment_contact_details_name_text_view)
     TextView contactNameTextView;

@@ -1,6 +1,5 @@
 package com.aboelela.circles.ui.home.fragments.viewDeviceContacts;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -8,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.aboelela.circles.R;
 import com.aboelela.circles.data.CirclesModel;
 import com.aboelela.circles.data.DeviceContactsModel;
 import com.aboelela.circles.data.entities.Circle;
@@ -21,9 +19,10 @@ import com.mvvm.framework.annotation.DataModel;
 import com.mvvm.framework.annotation.ViewModel;
 import com.mvvm.framework.annotation.singleton.Singleton;
 import com.mvvm.framework.base.presenters.BasePresenter;
-import com.mvvm.framework.utils.DialogMsgUtil;
+import com.mvvm.framework.utils.ContactsUtil;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -57,21 +56,34 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
         if (getBaseView().getArguments() != null) {
             circleToAssignContacts = getBaseView().getArguments().getParcelable(DeviceContactsListFragment.Bundle_Circle_To_Assign_Key);
         }
-        
+
         // Show waiting message for loading device contacts
-        ProgressDialog loadingMsg = DialogMsgUtil.createProgressDialog(getBaseView().getContext(), "",
-                getBaseView().getString(R.string.txt_contacts_loading_waiting_message));
+        deviceContactsListViewModel.setProgressBarVisibility(View.VISIBLE);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseView().getContext());
         getBaseView().deviceContactsRecyclerView.setLayoutManager(mLayoutManager);
         getBaseView().deviceContactsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         getBaseView().deviceContactsRecyclerView.setHasFixedSize(true);
 
-        deviceContactsListAdapter = new DeviceContactsListAdapter(new ArrayList<>(deviceContactsModel.loadDeviceContacts().keySet()),
+        deviceContactsModel.loadDeviceContacts(new Consumer<Map<String, ContactsUtil.ContactModel>>()
+        {
+            @Override
+            public void accept(@NonNull Map<String, ContactsUtil.ContactModel> stringContactModelMap) throws Exception {
+                deviceContactsListViewModel.setProgressBarVisibility(View.GONE);
+
+                initListAfterLoadingContacts();
+            }
+        });
+
+
+    }
+
+    private void initListAfterLoadingContacts() {
+        deviceContactsListAdapter = new DeviceContactsListAdapter(
+                new ArrayList<>(deviceContactsModel.getDeviceContacts().keySet()),
                 circleToAssignContacts != null);
         getBaseView().deviceContactsRecyclerView.setAdapter(deviceContactsListAdapter);
 
-        loadingMsg.dismiss();
 
         checkEmptyContactsList();
 
@@ -121,12 +133,12 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        checkEmptyContactsList();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        checkEmptyContactsList();
+//    }
 
     private void checkEmptyContactsList() {
         int emptyTextVisibility = deviceContactsModel.getDeviceContacts().isEmpty() ? View.VISIBLE : View.GONE;

@@ -1,5 +1,6 @@
 package com.aboelela.circles.ui.home.fragments.viewContact;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -33,6 +34,9 @@ class ContactDetailsPresenter extends BasePresenter<ContactDetailsFragment, Cont
 
         // set contact name
         contactDetailsViewModel.setContactDetailsName(contactModel.getContactName());
+
+        // set contact avatar
+        getBaseView().avatarImageView.setImageDrawable(new BitmapDrawable(getBaseView().getResources(), contactModel.getBitmap()));
 
         // show/hide phones section
         if (contactModel.getPhones() != null && contactModel.getPhones().size() > 0) {

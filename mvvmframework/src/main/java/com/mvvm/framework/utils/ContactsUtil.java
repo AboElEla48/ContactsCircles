@@ -1,6 +1,7 @@
 package com.mvvm.framework.utils;
 
 import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,7 +11,6 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
-import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 
 import com.mvvm.framework.R;
@@ -23,7 +23,6 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author Administrator
@@ -107,8 +106,7 @@ public class ContactsUtil
         try {
 
             context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
 
             // Log exception
             LogUtil.writeErrorLog(LOG_TAG, "Exception encountered while inserting contact: " + e);
@@ -120,10 +118,11 @@ public class ContactsUtil
 
     /**
      * Load contacts categorized by name
+     *
      * @param context : the device context
-     * @return : map of strings and corresponding contact data
      */
-    public static Map<String, ContactModel> loadDeviceContacts(Context context) {
+    public static Object loadDeviceContacts(final Context context,
+                                            final Consumer<Map<String, ContactModel>> receiver) {
 
         Cursor cursor = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 new String[]{ContactsContract.Contacts._ID,
@@ -132,22 +131,20 @@ public class ContactsUtil
                         ContactsContract.Contacts.PHOTO_ID}, null, null, null);
 
         if (cursor == null) {
-            return null;
+            return new Object();
         }
 
-        Map<String, ContactModel> contactsMap = new HashMap<>();
+        final Map<String, ContactModel> contactsMap = new HashMap<>();
         Observable.fromIterable(RxCursorIterable.from(cursor))
-                .observeOn(Schedulers.newThread())
-                .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<Cursor>()
                            {
                                @Override
                                public void accept(@io.reactivex.annotations.NonNull Cursor cursor) throws Exception {
                                    ContactModel contactModel;
 
-                                   Long id = -1L;
-                                   String contactName = "";
-                                   String phone = "";
+                                   Long id;
+                                   String contactName;
+                                   String phone;
                                    String email = "";
 
                                    id = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts._ID));
@@ -156,7 +153,7 @@ public class ContactsUtil
 
                                    try {
                                        email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DISPLAY_NAME));
-                                   }catch (Exception ex) {
+                                   } catch (Exception ex) {
                                        LogUtil.writeErrorLog(LOG_TAG, "Error getting email");
                                    }
 
@@ -167,15 +164,16 @@ public class ContactsUtil
                                        contactModel.id = id;
                                        contactModel.contactName = contactName;
                                        contactsMap.put(contactName, contactModel);
-
-                                       contactModel.bitmap = getPhoto(context, id);
                                    }
 
-                                   if(phone.length() > 0) {
+                                   if (phone.length() > 0) {
+//                                       contactModel.bitmap = getPhoto(context, id);
+                                       contactModel.bitmap = fetchThumbnail(fetchThumbnailId(context.getContentResolver(), phone), context.getContentResolver());
+
                                        contactModel.phones.add(phone);
                                    }
 
-                                   if(email.length() > 0) {
+                                   if (email.length() > 0) {
                                        contactModel.phones.add(email);
                                    }
                                }
@@ -184,71 +182,68 @@ public class ContactsUtil
                         {
                             @Override
                             public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-
+                                LogUtil.writeErrorLog(LOG_TAG, "Error loading contacts from device");
+                                throwable.printStackTrace();
                             }
                         }, new Action()
                         {
                             @Override
                             public void run() throws Exception {
-
+                                receiver.accept(contactsMap);
                             }
                         });
-
-        while (cursor.moveToNext()) {
-            ContactModel contactModel;
-
-            Long id = -1L;
-            String contactName = "";
-            String phone = "";
-            String email = "";
-
-            id = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-            phone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-
-            try {
-                email = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DISPLAY_NAME));
-            }catch (Exception ex) {
-                LogUtil.writeErrorLog(LOG_TAG, "Error getting email");
-            }
-
-
-            contactModel = contactsMap.get(contactName);
-            if (contactModel == null) {
-                contactModel = new ContactModel();
-                contactModel.id = id;
-                contactModel.contactName = contactName;
-                contactsMap.put(contactName, contactModel);
-
-                contactModel.bitmap = getPhoto(context, id);
-            }
-
-            if(phone.length() > 0) {
-                contactModel.phones.add(phone);
-            }
-
-            if(email.length() > 0) {
-                contactModel.phones.add(email);
-            }
-        }
-
-        cursor.close();
-
-
-        return contactsMap;
+        return new Object();
 
     }
 
     public static Bitmap getPhoto(Context context, Long contactId) {
         Uri contactPhotoUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
         InputStream photoDataStream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), contactPhotoUri);
-        if(photoDataStream != null) {
-            Bitmap photo = BitmapFactory.decodeStream(photoDataStream);
-            return photo;
+        if (photoDataStream != null) {
+            return BitmapFactory.decodeStream(photoDataStream);
         }
         else {
             return BitmapFactory.decodeResource(context.getResources(), R.drawable.test);
         }
+    }
+
+    private static final String[] PHOTO_ID_PROJECTION = new String[]{
+            ContactsContract.Contacts.PHOTO_ID
+    };
+
+    private static final String[] PHOTO_BITMAP_PROJECTION = new String[]{
+            ContactsContract.CommonDataKinds.Photo.PHOTO
+    };
+
+    private static Bitmap fetchThumbnail(final int thumbnailId, ContentResolver contentResolver) {
+
+        final Uri uri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, thumbnailId);
+        final Cursor cursor = contentResolver.query(uri, PHOTO_BITMAP_PROJECTION, null, null, null);
+        Bitmap thumbnail = null;
+        if (cursor.moveToFirst()) {
+            final byte[] thumbnailBytes = cursor.getBlob(0);
+            if (thumbnailBytes != null) {
+                thumbnail = BitmapFactory.decodeByteArray(thumbnailBytes, 0, thumbnailBytes.length);
+            }
+        }
+        cursor.close();
+
+        return thumbnail;
+
+    }
+
+    private static Integer fetchThumbnailId(ContentResolver contentResolver, String phoneNumber) {
+
+        final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+        final Cursor cursor = contentResolver.query(uri, PHOTO_ID_PROJECTION, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+
+        Integer thumbnailId = null;
+        if (cursor.moveToFirst()) {
+            thumbnailId = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_ID));
+        }
+        cursor.close();
+        return thumbnailId;
+
     }
 
     public static class ContactModel implements Comparable<ContactModel>, Parcelable
@@ -284,6 +279,10 @@ public class ContactsUtil
             return phones;
         }
 
+        public Bitmap getBitmap() {
+            return bitmap;
+        }
+
         @Override
         public String toString() {
             String str = contactName;
@@ -301,6 +300,7 @@ public class ContactsUtil
 
         /**
          * Construct object from string
+         *
          * @param str : the string of preferences to convert to object
          */
         public void fromString(String str) {

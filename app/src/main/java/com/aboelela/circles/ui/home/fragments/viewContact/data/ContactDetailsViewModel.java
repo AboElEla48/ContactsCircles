@@ -37,6 +37,7 @@ public class ContactDetailsViewModel extends BaseViewModel<ContactDetailsFragmen
         setField("emailsSectionVisibility", emailsSectionVisibility);
     }
 
+
     private void setField(String field, Object val) {
         try {
             setViewModelFieldValue(this, field, val);

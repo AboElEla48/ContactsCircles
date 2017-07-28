@@ -1,51 +1,79 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context="com.aboelela.circles.ui.home.fragments.viewDeviceContacts.DeviceContactsListFragment">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.aboelela.circles.ui.home.fragments.viewDeviceContacts.DeviceContactsListFragment">
 
-    <RelativeLayout
-        android:id="@+id/fragment_device_contacts_selection_layout"
+    <LinearLayout
+        android:id="@+id/fragment_device_contacts_list_progress_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <!-- Save selected -->
-        <ImageButton
-            android:id="@+id/fragment_device_contacts_save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_action_add"/>
-
-        <!-- Cancel selected -->
-        <ImageButton
-            android:id="@+id/fragment_device_contacts_cancel_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/ic_action_add"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_device_contacts_recyclerView"
+        <ProgressBar
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
 
         <TextView
-            android:id="@+id/fragment_device_contacts_empty_textView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/txt_empty_device_contacts_text"
-            android:visibility="gone"/>
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/dimen_subtitle_text_view_text_size"
+            android:textColor="@color/colorPureBlack"
+            android:text="@string/txt_contacts_loading_waiting_message"/>
 
-    </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <RelativeLayout
+            android:id="@+id/fragment_device_contacts_selection_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Save selected -->
+            <ImageButton
+                android:id="@+id/fragment_device_contacts_save_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_action_add"/>
+
+            <!-- Cancel selected -->
+            <ImageButton
+                android:id="@+id/fragment_device_contacts_cancel_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_action_add"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_device_contacts_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"/>
+
+            <TextView
+                android:id="@+id/fragment_device_contacts_empty_textView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/txt_empty_device_contacts_text"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

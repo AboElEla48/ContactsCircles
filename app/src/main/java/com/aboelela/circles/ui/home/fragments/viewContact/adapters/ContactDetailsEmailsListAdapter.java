@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
+import com.mvvm.framework.utils.MailUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +38,9 @@ public class ContactDetailsEmailsListAdapter extends RecyclerView.Adapter<Contac
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     // TODO send mail to this email
+                    ArrayList<String> recipient = new ArrayList<>();
+                    recipient.add(viewHolder.itemTextView.getText().toString());
+                    MailUtil.sendMail(CirclesApplication.getInstance(), "", "", recipient);
                 }
                 return true;
             }

@@ -1,5 +1,21 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.23.0'
+    }
+}
 //noinspection GradleCompatible
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 android {
     compileSdkVersion 25
@@ -47,4 +63,7 @@ dependencies {
 
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
 }

@@ -25,6 +25,7 @@ import com.mvvm.framework.messaging.CustomMessage;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 
@@ -54,6 +55,7 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
 
         // load circles
         circlesModel.loadCircles()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Circle>>()
                 {
                     @Override
@@ -62,7 +64,6 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
                         initViewAfterLoadingCircles();
                     }
                 });
-
 
     }
 

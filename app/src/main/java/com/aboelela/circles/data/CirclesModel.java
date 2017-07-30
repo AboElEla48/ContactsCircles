@@ -38,26 +38,11 @@ public class CirclesModel extends BaseModel
             }
         })
         .subscribeOn(Schedulers.newThread());
-//        Observable.fromIterable(circles)
-//                .subscribe(new Consumer<Circle>()
-//                {
-//                    @Override
-//                    public void accept(@NonNull Circle circle) throws Exception {
-//                        Observable.fromIterable(circle.getCircleContacts())
-//                                .subscribe(new Consumer<ContactsUtil.ContactModel>()
-//                                {
-//                                    @Override
-//                                    public void accept(@NonNull ContactsUtil.ContactModel contactModel) throws Exception {
-//
-//                                    }
-//                                });
-//                    }
-//                });
     }
 
     /**
      * load images of contacts inside circle
-     * @return
+     * @return : fill photos in contacts
      */
     private List<Circle> fillInCircleContactsPhotos() {
         for(int i = 0; i < circles.size(); i++) {

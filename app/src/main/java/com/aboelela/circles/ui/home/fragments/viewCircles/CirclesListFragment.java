@@ -48,6 +48,9 @@ public class CirclesListFragment extends BaseFragment
     @BindView(R.id.fragment_circles_list_add_circle_btn)
     FloatingActionButton addCircleBtn;
 
+    @BindView(R.id.fragment_circles_list_progress_layout)
+    View progressLayout;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

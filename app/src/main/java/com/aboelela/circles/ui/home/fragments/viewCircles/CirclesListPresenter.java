@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import com.aboelela.circles.constants.CirclesMessages;
 import com.aboelela.circles.data.AppUIModel;
 import com.aboelela.circles.data.CirclesModel;
+import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 import com.aboelela.circles.ui.home.fragments.viewCircles.adapters.CirclesGridAdapter;
 import com.aboelela.circles.ui.home.fragments.viewCircles.adapters.CirclesListAdapter;
@@ -21,6 +22,8 @@ import com.mvvm.framework.annotation.ViewModel;
 import com.mvvm.framework.annotation.singleton.Singleton;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.messaging.CustomMessage;
+
+import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -47,13 +50,30 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        circlesListViewModel.setLoadingLayoutVisibility(View.VISIBLE);
+
+        // load circles
+        circlesModel.loadCircles()
+                .subscribe(new Consumer<List<Circle>>()
+                {
+                    @Override
+                    public void accept(@NonNull List<Circle> circles) throws Exception {
+                        circlesListViewModel.setLoadingLayoutVisibility(View.GONE);
+                        initViewAfterLoadingCircles();
+                    }
+                });
+
+
+    }
+
+    private void initViewAfterLoadingCircles() {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseView().getContext());
         getBaseView().circlesRecyclerView.setLayoutManager(mLayoutManager);
         getBaseView().circlesRecyclerView.setItemAnimator(new DefaultItemAnimator());
         getBaseView().circlesRecyclerView.setHasFixedSize(true);
 
-        getBaseView().circlesRecyclerView.setAdapter(new CirclesListAdapter(circlesModel));
-        getBaseView().circlesGridView.setAdapter(new CirclesGridAdapter(circlesModel));
+        getBaseView().circlesRecyclerView.setAdapter(new CirclesListAdapter(circlesModel.getCircles()));
+        getBaseView().circlesGridView.setAdapter(new CirclesGridAdapter(circlesModel.getCircles()));
 
         if(appUIModel.isCirclesListViewingAsList()) {
             viewAsList();
@@ -123,12 +143,6 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
         checkEmptyList();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        checkEmptyList();
-    }
 
     private void checkEmptyList() {
         if (circlesModel.getCircles().size() == 0) {

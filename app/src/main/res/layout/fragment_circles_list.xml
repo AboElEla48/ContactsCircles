@@ -95,6 +95,28 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/fragment_circles_list_progress_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/dimen_subtitle_text_view_text_size"
+            android:textColor="@color/colorPureBlack"
+            android:text="@string/txt_contacts_loading_waiting_message"/>
+
+    </LinearLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fragment_circles_list_add_circle_btn"
         android:layout_width="wrap_content"

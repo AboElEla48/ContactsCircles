@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
-import com.aboelela.circles.data.CirclesModel;
+import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
+
+import java.util.List;
 
 /**
  * Created by aboelela on 02/07/17.
@@ -21,8 +23,8 @@ import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 
 public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.ViewHolder>
 {
-    public CirclesListAdapter(CirclesModel circlesModel) {
-        this.circlesModel = circlesModel;
+    public CirclesListAdapter(List<Circle> circles) {
+        this.circles = circles;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     // Show the contacts of this circle
-                    HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circlesModel.getCircles().get(viewHolder.getAdapterPosition()));
+                    HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circles.get(viewHolder.getAdapterPosition()));
                 }
                 return true;
             }
@@ -55,7 +57,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.setText(circlesModel.getCircles().get(position).getName());
+        holder.setText(circles.get(position).getName());
 
         // set item selected if this is the selection index
         holder.itemView.setSelected(position == selectedItem);
@@ -71,7 +73,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
     @Override
     public int getItemCount() {
-        return circlesModel.getCircles().size();
+        return circles.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder
@@ -93,7 +95,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
     }
 
     // Hold circles model
-    private CirclesModel circlesModel;
+    private List<Circle> circles;
 
     // Hold selected item index
     private int selectedItem = -1;

@@ -36,7 +36,9 @@ class ContactDetailsPresenter extends BasePresenter<ContactDetailsFragment, Cont
         contactDetailsViewModel.setContactDetailsName(contactModel.getContactName());
 
         // set contact avatar
-        getBaseView().avatarImageView.setImageDrawable(new BitmapDrawable(getBaseView().getResources(), contactModel.getBitmap()));
+        if(contactModel.getBitmap() != null) {
+            getBaseView().avatarImageView.setImageDrawable(new BitmapDrawable(getBaseView().getResources(), contactModel.getBitmap()));
+        }
 
         // show/hide phones section
         if (contactModel.getPhones() != null && contactModel.getPhones().size() > 0) {

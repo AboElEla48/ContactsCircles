@@ -40,16 +40,6 @@ public class DeviceContactsModel extends BaseModel
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(receiver);
-//        }
-//        else {
-//            try {
-//                receiver.accept(deviceContacts);
-//            }
-//            catch (Exception ex) {
-//                LogUtil.writeErrorLog(TAG, ex);
-//            }
-//
-//        }
     }
 
     /**

@@ -13,9 +13,6 @@ import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 
-import com.mvvm.framework.R;
-
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -156,15 +153,14 @@ public class ContactsUtil
                 }
 
                 if (phone.length() > 0) {
-//                                       contactModel.bitmap = getPhoto(context, id);
-                    contactModel.bitmap = fetchThumbnail(fetchThumbnailId(context.getContentResolver(), phone), context.getContentResolver());
-
                     contactModel.phones.add(phone);
                 }
 
                 if (email.length() > 0) {
                     contactModel.phones.add(email);
                 }
+
+                contactModel.bitmap = getPhoto(context, contactModel);
 
             } while (cursor.moveToNext());
         }
@@ -174,24 +170,9 @@ public class ContactsUtil
 
     }
 
-    public static Bitmap getPhoto(Context context, Long contactId) {
-        Uri contactPhotoUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
-        InputStream photoDataStream = ContactsContract.Contacts.openContactPhotoInputStream(context.getContentResolver(), contactPhotoUri);
-        if (photoDataStream != null) {
-            return BitmapFactory.decodeStream(photoDataStream);
-        }
-        else {
-            return BitmapFactory.decodeResource(context.getResources(), R.drawable.test);
-        }
+    public static Bitmap getPhoto(Context context, ContactModel contactModel) {
+        return fetchThumbnail(fetchThumbnailId(context.getContentResolver(), contactModel), context.getContentResolver());
     }
-
-    private static final String[] PHOTO_ID_PROJECTION = new String[]{
-            ContactsContract.Contacts.PHOTO_ID
-    };
-
-    private static final String[] PHOTO_BITMAP_PROJECTION = new String[]{
-            ContactsContract.CommonDataKinds.Photo.PHOTO
-    };
 
     private static Bitmap fetchThumbnail(final int thumbnailId, ContentResolver contentResolver) {
 
@@ -210,16 +191,32 @@ public class ContactsUtil
 
     }
 
-    private static Integer fetchThumbnailId(ContentResolver contentResolver, String phoneNumber) {
-
-        final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
-        final Cursor cursor = contentResolver.query(uri, PHOTO_ID_PROJECTION, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
-
+    private static Integer fetchThumbnailId(ContentResolver contentResolver, ContactModel contactModel) {
         Integer thumbnailId = null;
-        if (cursor.moveToFirst()) {
-            thumbnailId = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_ID));
+        if (contactModel.getPhones().size() > 0) {
+
+            for(int i = 0; i < contactModel.getPhones().size(); i++) {
+                final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI,
+                        Uri.encode(contactModel.getPhones().get(i)));
+                if(uri != null) {
+                    Cursor cursor = contentResolver.query(uri, PHOTO_ID_PROJECTION, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+
+                    if (cursor.moveToFirst()) {
+                        thumbnailId = cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_ID));
+
+                        if(thumbnailId != null && thumbnailId != -1) {
+                            contactModel.photoUri = uri;
+                        }
+                    }
+
+                    cursor.close();
+
+                    break; // end for first phone number that has photo
+                }
+            }
+
         }
-        cursor.close();
+
         return thumbnailId;
 
     }
@@ -231,6 +228,7 @@ public class ContactsUtil
         private ArrayList<String> phones = new ArrayList<>();
         private ArrayList<String> emails = new ArrayList<>();
         private Bitmap bitmap;
+        private Uri photoUri;
 
         public ContactModel() {
         }
@@ -239,6 +237,7 @@ public class ContactsUtil
             contactName = in.readString();
             in.readStringList(phones);
             in.readStringList(emails);
+            photoUri = Uri.parse(in.readString());
         }
 
         public long getId() {
@@ -257,8 +256,16 @@ public class ContactsUtil
             return phones;
         }
 
+        public Uri getPhotoUri() {
+            return photoUri;
+        }
+
         public Bitmap getBitmap() {
             return bitmap;
+        }
+
+        public void setBitmap(Bitmap bitmap) {
+            this.bitmap = bitmap;
         }
 
         @Override
@@ -273,6 +280,9 @@ public class ContactsUtil
             for (String email : emails) {
                 str += email + "-";
             }
+
+            str += ",";
+            str += "" + photoUri + ",";
             return str;
         }
 
@@ -300,13 +310,19 @@ public class ContactsUtil
             str = str.substring(index + 1);
 
             emails = new ArrayList<>();
-            String allEmails = str;
+            index = str.indexOf(",");
+            str = str.substring(index + 1);
+            String allEmails = str.substring(0, index);
             index = allEmails.indexOf("-");
             while (index > -1) {
                 emails.add(allEmails.substring(0, index));
                 allEmails = allEmails.substring(index + 1);
                 index = allEmails.indexOf("-");
             }
+
+            index = str.indexOf(",");
+            photoUri = Uri.parse(str.substring(0, index));
+
         }
 
         @Override
@@ -341,4 +357,13 @@ public class ContactsUtil
     }
 
     private final static String LOG_TAG = "ContactsUtil";
+
+
+    private static final String[] PHOTO_ID_PROJECTION = new String[]{
+            ContactsContract.Contacts.PHOTO_ID
+    };
+
+    private static final String[] PHOTO_BITMAP_PROJECTION = new String[]{
+            ContactsContract.CommonDataKinds.Photo.PHOTO
+    };
 }

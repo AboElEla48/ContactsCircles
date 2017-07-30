@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
-import com.aboelela.circles.data.CirclesModel;
+import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
+
+import java.util.List;
 
 /**
  * Created by AboelelaA on 7/13/2017.
@@ -19,25 +21,23 @@ import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 
 public class CirclesGridAdapter extends BaseAdapter
 {
-    private CirclesModel circlesModel;
-
-    public CirclesGridAdapter(CirclesModel model) {
-        circlesModel = model;
+    public CirclesGridAdapter(List<Circle> circles) {
+        this.circles = circles;
     }
 
     @Override
     public int getCount() {
-        return circlesModel.getCircles().size();
+        return circles.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return circlesModel.getCircles().get(position);
+        return circles.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return circlesModel.getCircles().get(position).getID();
+        return circles.get(position).getID();
     }
 
     @Override
@@ -55,7 +55,7 @@ public class CirclesGridAdapter extends BaseAdapter
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
-        viewHolder.itemTextView.setText(circlesModel.getCircles().get(position).getName());
+        viewHolder.itemTextView.setText(circles.get(position).getName());
         viewHolder.itemTextView.setTag(position);
 
         viewHolder.itemTextView.setOnTouchListener(new View.OnTouchListener()
@@ -64,7 +64,7 @@ public class CirclesGridAdapter extends BaseAdapter
             public boolean onTouch(View textView, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     // Show the contacts of this circle
-                    HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circlesModel.getCircles().get((int)textView.getTag()));
+                    HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circles.get((int)textView.getTag()));
                 }
                 return true;
             }
@@ -76,5 +76,7 @@ public class CirclesGridAdapter extends BaseAdapter
     private class ViewHolder {
         TextView itemTextView;
     }
+
+    private List<Circle> circles;
 
 }

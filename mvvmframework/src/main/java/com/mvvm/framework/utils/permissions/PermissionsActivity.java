@@ -28,7 +28,7 @@ import io.reactivex.functions.Function;
 public class PermissionsActivity extends AppCompatActivity
 {
 
-    private static final String TAG = "PermissionsActivity";
+    private static final String LOG_TAG = "PermissionsActivity";
     public static String Bundle_Permission_Str_Arr_Key = "Bundle_Permission_Map_Key";
     public static String Bundle_Permission_Msgs_Str_Arr_Key = "Bundle_Permission_Msgs_Str_Arr_Key";
 

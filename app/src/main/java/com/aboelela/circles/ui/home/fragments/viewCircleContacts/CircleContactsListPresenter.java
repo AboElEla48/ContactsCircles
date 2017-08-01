@@ -32,7 +32,7 @@ import io.reactivex.functions.Consumer;
 
 class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragment, CircleContactsListPresenter>
 {
-    private final String TAG = "CircleContactsListPresenter";
+    private final String LOG_TAG = "CircleContactsListPresenter";
 
     private Circle circle;
 
@@ -61,7 +61,7 @@ class CircleContactsListPresenter extends BasePresenter<CircleContactsListFragme
                 {
                     @Override
                     public void accept(@NonNull ContactsUtil.ContactModel contactModel) throws Exception {
-                        LogUtil.writeErrorLog(TAG, "Circle Contact: " + contactModel.toString());
+                        LogUtil.writeErrorLog(LOG_TAG, "Circle Contact: " + contactModel.toString());
                     }
                 });
 

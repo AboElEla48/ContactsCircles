@@ -55,13 +55,13 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
             circleToAssignContacts = getBaseView().getArguments().getParcelable(DeviceContactsListFragment.Bundle_Circle_To_Assign_Key);
         }
 
-        // Show waiting message for loading device contacts
-        deviceContactsListViewModel.setProgressBarVisibility(View.VISIBLE);
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getBaseView().getContext());
         getBaseView().deviceContactsRecyclerView.setLayoutManager(mLayoutManager);
         getBaseView().deviceContactsRecyclerView.setItemAnimator(new DefaultItemAnimator());
         getBaseView().deviceContactsRecyclerView.setHasFixedSize(true);
+
+        // Show waiting message for loading device contacts
+        deviceContactsListViewModel.setProgressBarVisibility(View.VISIBLE);
 
         deviceContactsModel.loadDeviceContacts(new Consumer<Object>()
         {
@@ -130,13 +130,6 @@ class DeviceContactsListPresenter extends BasePresenter<DeviceContactsListFragme
                     });
         }
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//        checkEmptyContactsList();
-//    }
 
     private void checkEmptyContactsList() {
         int emptyTextVisibility = deviceContactsModel.getDeviceContacts().isEmpty() ? View.VISIBLE : View.GONE;

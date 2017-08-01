@@ -13,7 +13,7 @@ import com.mvvm.framework.utils.LogUtil;
 
 public class DeviceContactsListViewModel extends BaseViewModel<DeviceContactsListFragment, DeviceContactsListViewModel>
 {
-    private final String TAG = "DeviceContactsListViewModel";
+    private final String LOG_TAG = "DeviceContactsListViewModel";
 
     @ViewModelViewVisibilityField(R.id.fragment_device_contacts_empty_textView)
     private int emptyTextVisibility;
@@ -29,7 +29,7 @@ public class DeviceContactsListViewModel extends BaseViewModel<DeviceContactsLis
             setViewModelFieldValue(this, "emptyTextVisibility", emptyTextVisibility);
         }
         catch (Exception ex) {
-            LogUtil.writeErrorLog(TAG, "Error setting the visibility of empty text view");
+            LogUtil.writeErrorLog(LOG_TAG, "Error setting the visibility of empty text view");
         }
     }
 
@@ -39,7 +39,7 @@ public class DeviceContactsListViewModel extends BaseViewModel<DeviceContactsLis
             setViewModelFieldValue(this, "progressBarVisibility", progressBarVisibility);
         }
         catch (Exception ex) {
-            LogUtil.writeErrorLog(TAG, "Error setting the visibility of progress bar");
+            LogUtil.writeErrorLog(LOG_TAG, "Error setting the visibility of progress bar");
         }
     }
 
@@ -48,7 +48,7 @@ public class DeviceContactsListViewModel extends BaseViewModel<DeviceContactsLis
             setViewModelFieldValue(this, "selectionLayoutVisibility", selectionLayoutVisibility);
         }
         catch (Exception ex) {
-            LogUtil.writeErrorLog(TAG, "Error setting the visibility of selection view");
+            LogUtil.writeErrorLog(LOG_TAG, "Error setting the visibility of selection view");
         }
     }
 }

@@ -4,6 +4,7 @@ import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.data.runTimeErrors.ContactsNotLoadedException;
 import com.mvvm.framework.base.models.BaseModel;
 import com.mvvm.framework.utils.ContactsUtil;
+import com.mvvm.framework.utils.LogUtil;
 
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -22,24 +23,35 @@ public class DeviceContactsModel extends BaseModel
 {
     private Map<String, ContactsUtil.ContactModel> deviceContacts = null;
 
-    private final String TAG = "DeviceContactsModel";
+    private final String LOG_TAG = "DeviceContactsModel";
 
     /**
      * Load device contacts
      */
     public void loadDeviceContacts(Consumer<Object> receiver) {
-        Observable.
-                fromCallable(new Callable<Map<String, ContactsUtil.ContactModel>>()
-                {
-                    @Override
-                    public Map<String, ContactsUtil.ContactModel> call() throws Exception {
-                        deviceContacts = ContactsUtil.loadDeviceContacts(CirclesApplication.getInstance());
-                        return deviceContacts;
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(receiver);
+        if (deviceContacts == null) {
+            Observable.
+                    fromCallable(new Callable<Map<String, ContactsUtil.ContactModel>>()
+                    {
+                        @Override
+                        public Map<String, ContactsUtil.ContactModel> call() throws Exception {
+                            deviceContacts = ContactsUtil.loadDeviceContacts(CirclesApplication.getInstance());
+                            return deviceContacts;
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.newThread())
+                    .subscribe(receiver);
+        }
+        else {
+            try {
+                receiver.accept(deviceContacts);
+            }
+            catch (Exception ex) {
+                LogUtil.writeErrorLog(LOG_TAG, "Error loading device contacts");
+            }
+
+        }
     }
 
     /**

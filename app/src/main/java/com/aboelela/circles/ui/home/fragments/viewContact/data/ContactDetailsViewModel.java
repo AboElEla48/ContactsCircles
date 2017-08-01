@@ -14,7 +14,7 @@ import com.mvvm.framework.utils.LogUtil;
 
 public class ContactDetailsViewModel extends BaseViewModel<ContactDetailsFragment, ContactDetailsViewModel>
 {
-    private static final String TAG = "ContactDetailsViewModel";
+    private static final String LOG_TAG = "ContactDetailsViewModel";
 
     @ViewModelTextField(R.id.fragment_contact_details_name_text_view)
     private String contactDetailsName;
@@ -43,7 +43,7 @@ public class ContactDetailsViewModel extends BaseViewModel<ContactDetailsFragmen
             setViewModelFieldValue(this, field, val);
         }
         catch (Exception ex) {
-            LogUtil.writeErrorLog(TAG, "Error setting field: " + field + " with value: " + val, ex);
+            LogUtil.writeErrorLog(LOG_TAG, "Error setting field: " + field + " with value: " + val, ex);
         }
 
     }

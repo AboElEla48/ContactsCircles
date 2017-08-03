@@ -47,6 +47,7 @@ public class DeviceContactsListFragment extends BaseFragment
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
+     * @param circle object to the add contacts to
      * @return A new instance of fragment DeviceContactsListFragment.
      */
     public static DeviceContactsListFragment newInstance(Circle circle) {

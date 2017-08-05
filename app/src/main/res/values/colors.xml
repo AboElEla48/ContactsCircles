@@ -5,6 +5,9 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorPureBlack">#000000</color>
+    <color name="colorPureRed">#FF0000</color>
+    <color name="colorPureWhite">#FFFFFF</color>
+    <color name="colorLightBlue">#40b1f2</color>
     <color name="colorTextSelectionItem">#FFA000</color>
     <color name="colorButton">#EEEEEE</color>
 </resources>

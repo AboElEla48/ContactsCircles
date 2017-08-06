@@ -43,6 +43,7 @@ public class SwipeDetector
             }
 
             case MotionEvent.ACTION_DOWN: {
+                
                 lastX = motionEvent.getX();
                 lastY = motionEvent.getY();
 

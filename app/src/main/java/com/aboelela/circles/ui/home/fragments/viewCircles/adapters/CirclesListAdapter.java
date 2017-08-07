@@ -76,18 +76,72 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
                     @Override
                     public void onSwipeLeft(float initialX, float initialY, float currentX, float currentY, float delta) {
-                        viewHolder.horizontalDirection = SwipeHorizontalDirection.Swipe_Left;
+                        switch (viewHolder.listItemMode) {
+                            case MODE_Normal: {
+                                viewHolder.listItemMode = ListItemMode.MODE_Edit;
+                                viewHolder.itemEditorView.setVisibility(View.VISIBLE);
+                                break;
+                            }
 
+                            case MODE_Delete: {
+                                // finish undo mode and start swipe right
+                                viewHolder.listItemMode = ListItemMode.MODE_Normal;
+                                viewHolder.itemUndoView.setVisibility(View.GONE);
+                                break;
+                            }
+
+                            case MODE_Edit: {
+
+                                break;
+                            }
+                        }
                     }
 
                     @Override
                     public void onSwipeRight(float initialX, float initialY, float currentX, float currentY, float delta) {
-                        viewHolder.horizontalDirection = SwipeHorizontalDirection.Swipe_Right;
+                        switch (viewHolder.listItemMode) {
+                            case MODE_Normal: {
+                                viewHolder.listItemMode = ListItemMode.MODE_Delete;
+                                viewHolder.itemUndoView.setVisibility(View.VISIBLE);
+                                break;
+                            }
+
+                            case MODE_Delete: {
+                                break;
+                            }
+
+                            case MODE_Edit: {
+                                // finish edit mode
+                                viewHolder.listItemMode = ListItemMode.MODE_Normal;
+                                viewHolder.itemEditorView.setVisibility(View.GONE);
+                                break;
+                            }
+                        }
                     }
 
                     @Override
                     public void onSwipeFinished(float initialX, float initialY) {
-                        SwipeAnimator.moveItemFullHorizontalWidth(view, ((ViewHolder)view.getTag()).horizontalDirection);
+                        switch (viewHolder.listItemMode) {
+                            case MODE_Normal: {
+                                //TODO: restore item back to original state
+                                break;
+                            }
+
+                            case MODE_Edit: {
+                                // Show editor mode
+                                SwipeAnimator.scaleItemHorizontalDelta(view, viewHolder.itemEditorView.getWidth(),
+                                        SwipeHorizontalDirection.Swipe_Left);
+                                break;
+                            }
+
+                            case MODE_Delete: {
+                                // Show undo mode
+                                SwipeAnimator.moveItemHorizontalDelta(view, view.getWidth(),
+                                        SwipeHorizontalDirection.Swipe_Right);
+                                break;
+                            }
+                        }
+
                     }
                 });
 
@@ -114,7 +168,9 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
         CardView cardView;
         TextView itemTextView;
         View itemUndoView;
-        SwipeHorizontalDirection horizontalDirection;
+        View itemEditorView;
+        ListItemMode listItemMode;
+
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -123,6 +179,8 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             itemTextView = (TextView) cardView.findViewById(R.id.circle_item_textView);
             itemUndoView = itemView.findViewById(R.id.circle_item_delete_layout);
+            itemEditorView = itemView.findViewById(R.id.circle_item_edit_image_view);
+            listItemMode = ListItemMode.MODE_Normal;
         }
 
         void setText(String text) {
@@ -130,11 +188,14 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
         }
     }
 
+    // Define the different modes of list item
+    private enum ListItemMode
+    {
+        MODE_Normal, MODE_Delete, MODE_Edit
+    }
+
     // Hold circles model
     private List<Circle> circles;
-
-    // Hold selected item index
-//    private int selectedItem = -1;
 
     private SwipeDetector swipeDetector;
 

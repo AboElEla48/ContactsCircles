@@ -1,7 +1,8 @@
 package com.mvvm.framework.utils.swipe;
 
-import android.util.Log;
 import android.view.MotionEvent;
+
+import com.mvvm.framework.utils.LogUtil;
 
 /**
  * Created by aboelela on 05/08/17.
@@ -20,7 +21,7 @@ public class SwipeDetector
     private boolean isAnimating = false;
 
     public void detectSwipe(MotionEvent motionEvent, OnSwipeListener swipeListener) {
-        Log.e(LOG_TAG, "--> Action: " + motionEvent.getAction());
+        LogUtil.writeDebugLog(LOG_TAG, "--> Action: " + motionEvent.getAction());
 
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_UP:

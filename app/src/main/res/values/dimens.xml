@@ -27,4 +27,6 @@
     <dimen name="dimen_contact_details_sections_margins">10dp</dimen>
     <dimen name="dimen_undo_padding">10dp</dimen>
 
+    <dimen name="dimen_edit_item_margin">10dp</dimen>
+
 </resources>

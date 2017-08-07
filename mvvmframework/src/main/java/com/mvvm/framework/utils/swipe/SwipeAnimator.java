@@ -26,18 +26,4 @@ public final class SwipeAnimator
                 .start();
     }
 
-    /**
-     *
-     * @param view      : the view to scale
-     * @param delta     : the delta of scale
-     * @param direction : the direction for scale
-     */
-    public static void scaleItemHorizontalDelta(View view, float delta, SwipeHorizontalDirection direction) {
-        // swipe direction
-//        int val = (direction == SwipeHorizontalDirection.Swipe_Left) ? -1 : 1;
-        ViewCompat.animate(view)
-                .scaleXBy(delta)
-                .start();
-    }
-
 }

@@ -34,9 +34,9 @@ public final class SwipeAnimator
      */
     public static void scaleItemHorizontalDelta(View view, float delta, SwipeHorizontalDirection direction) {
         // swipe direction
-        int val = (direction == SwipeHorizontalDirection.Swipe_Left) ? -1 : 1;
+//        int val = (direction == SwipeHorizontalDirection.Swipe_Left) ? -1 : 1;
         ViewCompat.animate(view)
-                .scaleXBy(delta * val)
+                .scaleXBy(delta)
                 .start();
     }
 

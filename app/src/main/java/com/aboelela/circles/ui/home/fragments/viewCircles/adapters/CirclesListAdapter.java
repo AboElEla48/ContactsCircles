@@ -129,7 +129,10 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
                             case MODE_Edit: {
                                 // Show editor mode
-                                SwipeAnimator.scaleItemHorizontalDelta(view, viewHolder.itemEditorView.getWidth(),
+//                                SwipeAnimator.scaleItemHorizontalDelta(view,
+//                                        250,
+//                                        SwipeHorizontalDirection.Swipe_Left);
+                                SwipeAnimator.moveItemHorizontalDelta(view, view.getWidth(),
                                         SwipeHorizontalDirection.Swipe_Left);
                                 break;
                             }
@@ -179,7 +182,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             itemTextView = (TextView) cardView.findViewById(R.id.circle_item_textView);
             itemUndoView = itemView.findViewById(R.id.circle_item_delete_layout);
-            itemEditorView = itemView.findViewById(R.id.circle_item_edit_image_view);
+            itemEditorView = itemView.findViewById(R.id.circle_item_edit_layout);
             listItemMode = ListItemMode.MODE_Normal;
         }
 

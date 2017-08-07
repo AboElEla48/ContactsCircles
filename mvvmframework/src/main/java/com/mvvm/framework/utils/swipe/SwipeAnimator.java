@@ -10,30 +10,34 @@ import android.view.View;
 
 public final class SwipeAnimator
 {
+
     /**
-     * swipe item in x direction
-     * @param view : the view to swipe
-     * @param initialX : the initial x event
-     * @param currentX : the current x position
-     * @param delta : the horizontal x value of swipe
+     * move item horizontal with given width
+     *
+     * @param view      : the view to move
+     * @param delta     : the horizontal value to move item with
+     * @param direction : the direction of move
      */
-    public static void moveItemHorizontal(View view, float initialX, float currentX,
-                                          final float delta) {
+    public static void moveItemHorizontalDelta(View view, float delta, SwipeHorizontalDirection direction) {
+        // swipe direction
+        int val = (direction == SwipeHorizontalDirection.Swipe_Left) ? -1 : 1;
         ViewCompat.animate(view)
-                .translationXBy(currentX - initialX + delta )
+                .translationXBy(delta * val)
                 .start();
     }
 
     /**
-     * move item completely horizontal
-     * @param view : the view to move
-     * @param direction : the direction of move
+     *
+     * @param view      : the view to scale
+     * @param delta     : the delta of scale
+     * @param direction : the direction for scale
      */
-    public static void moveItemFullHorizontalWidth(View view, SwipeHorizontalDirection direction) {
-        // swipe completely
+    public static void scaleItemHorizontalDelta(View view, float delta, SwipeHorizontalDirection direction) {
+        // swipe direction
         int val = (direction == SwipeHorizontalDirection.Swipe_Left) ? -1 : 1;
         ViewCompat.animate(view)
-                .translationXBy(view.getWidth() * val)
+                .scaleXBy(delta * val)
                 .start();
     }
+
 }

@@ -129,8 +129,8 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
                             case MODE_Edit: {
                                 // Show editor mode
-                                SwipeAnimator.moveItemHorizontalDelta(view,
-                                        viewHolder.itemEditorView.getWidth(),
+                                SwipeAnimator.scaleItemHorizontalPercentageDelta(view,
+                                        (float)viewHolder.itemEditorView.getWidth() / (float)view.getWidth(),
                                         SwipeHorizontalDirection.Swipe_Left);
                                 break;
                             }

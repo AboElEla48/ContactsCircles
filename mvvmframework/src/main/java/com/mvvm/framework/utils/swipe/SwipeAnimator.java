@@ -26,4 +26,13 @@ public final class SwipeAnimator
                 .start();
     }
 
+    public static void scaleItemHorizontalPercentageDelta(View view, float percentage, SwipeHorizontalDirection direction) {
+        int val = (direction == SwipeHorizontalDirection.Swipe_Left) ? -1 : 1;
+        ViewCompat.setPivotX(view, 0);
+        ViewCompat.setPivotY(view, 0);
+        ViewCompat.animate(view)
+                .scaleXBy(percentage * val)
+                .start();
+    }
+
 }

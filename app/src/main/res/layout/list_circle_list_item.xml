@@ -9,8 +9,8 @@
         android:id="@+id/circle_item_delete_layout"
         android:layout_height="@dimen/dimen_circle_card_height"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:background="@color/colorPureRed">
+        android:background="@color/colorPureRed"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/circle_item_undo_btn"
@@ -60,7 +60,6 @@
 
     <!-- A CardView that contains a TextView -->
     <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_circle_card_height"
@@ -75,7 +74,9 @@
             android:paddingStart="@dimen/dimen_item_text_view_padding"
             android:paddingEnd="@dimen/dimen_item_text_view_padding"
             android:text="@string/app_name"
+            android:gravity="center_vertical"
             android:textColor="@color/colorPureBlack"/>
     </android.support.v7.widget.CardView>
+
 
 </RelativeLayout>

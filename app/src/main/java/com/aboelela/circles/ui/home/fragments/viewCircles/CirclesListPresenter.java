@@ -200,6 +200,7 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
     }
 
     private void cancelDeletionMarks() {
+        getBaseView().circlesRecyclerView.setAdapter(new CirclesListAdapter(circlesModel.getCircles()));
         refreshCirclesList();
     }
 

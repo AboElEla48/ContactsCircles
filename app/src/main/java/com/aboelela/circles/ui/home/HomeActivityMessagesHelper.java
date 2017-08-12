@@ -22,7 +22,16 @@ public final class HomeActivityMessagesHelper
      * send message to home activity to trigger add circle dialog
      */
     public static void sendMessageAddCircle() {
-        MessagesServer.getInstance().sendMessage(HomeActivity.class, new CustomMessage(CirclesMessages.MSGID_Add_Circle, 0, null));
+        MessagesServer.getInstance().sendMessage(HomeActivity.class,
+                new CustomMessage(CirclesMessages.MSGID_Add_Circle, 0, null));
+    }
+
+    /**
+     * send message to home activity to trigger edit circle name dialog
+     */
+    public static void sendMessageEditCircle(int circleIndex) {
+        MessagesServer.getInstance().sendMessage(HomeActivity.class,
+                new CustomMessage(CirclesMessages.MSGID_Edit_Circle_Name, circleIndex, null));
     }
 
     /**

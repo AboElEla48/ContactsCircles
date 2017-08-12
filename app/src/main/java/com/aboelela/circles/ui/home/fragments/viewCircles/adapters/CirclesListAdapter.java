@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
+import com.aboelela.circles.constants.Constants;
 import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 import com.mvvm.framework.utils.LogUtil;
@@ -95,7 +97,6 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                             }
 
                             case MODE_Edit: {
-
                                 break;
                             }
                         }
@@ -145,6 +146,9 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                                 // Show undo mode
                                 SwipeAnimator.moveItemHorizontalDelta(view, view.getWidth(),
                                         SwipeHorizontalDirection.Swipe_Right);
+
+                                // Show confirmation message
+                                showCirclesDeleteConfirmation();
                                 break;
                             }
                         }
@@ -175,6 +179,16 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
         // Show the contacts of this circle
         HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circles.get(+ viewHolder.getAdapterPosition()));
+    }
+
+    /**
+     * Show delete confirmation
+     */
+    private void showCirclesDeleteConfirmation() {
+        // Show confirm delete circles
+        HomeActivityMessagesHelper.sendMessageShowHomeMessagesFragment(
+                Constants.MessageFragmentType.Message_Type_Confirmation,
+                CirclesApplication.getInstance().getString(R.string.txt_confirm_delete_circles_msg));
     }
 
     /**

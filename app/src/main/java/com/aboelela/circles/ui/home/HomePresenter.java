@@ -5,7 +5,8 @@ import android.support.annotation.Nullable;
 
 import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.R;
-import com.aboelela.circles.constants.CirclesMessages;
+import com.aboelela.circles.constants.Constants;
+import com.aboelela.circles.data.HomeMessageModel;
 import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.ActivityNavigationManager;
 import com.aboelela.circles.ui.home.fragments.addCircle.NewCircleDialogFragment;
@@ -13,6 +14,7 @@ import com.aboelela.circles.ui.home.fragments.viewCircleContacts.CircleContactsL
 import com.aboelela.circles.ui.home.fragments.viewCircles.CirclesListFragment;
 import com.aboelela.circles.ui.home.fragments.viewContact.ContactDetailsFragment;
 import com.aboelela.circles.ui.home.fragments.viewDeviceContacts.DeviceContactsListFragment;
+import com.aboelela.circles.ui.home.fragments.viewMessage.MessageFragment;
 import com.mvvm.framework.base.presenters.BasePresenter;
 import com.mvvm.framework.base.views.BaseFragment;
 import com.mvvm.framework.messaging.CustomMessage;
@@ -48,37 +50,47 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
     public void onMessageReceived(CustomMessage msg) {
         super.onMessageReceived(msg);
         switch (msg.getMessageId()) {
-            case CirclesMessages.MSGID_Add_Circle: {
+            case Constants.CirclesMessages.MSGID_Add_Circle: {
                 // Show dialog for creating new circle
                 showNewCircleDialog();
                 break;
             }
 
-            case CirclesMessages.MSGID_Edit_Circle_Name: {
+            case Constants.CirclesMessages.MSGID_Edit_Circle_Name: {
                 showEditCircleDialog(msg.getPayLoad());
                 break;
             }
 
-            case CirclesMessages.MSGID_Open_Contacts_Of_Circle: {
+            case Constants.CirclesMessages.MSGID_Open_Contacts_Of_Circle: {
                 // Show contacts of given circle
                 showCircleContacts((Circle) msg.getData());
                 break;
             }
 
-            case CirclesMessages.MSGID_Open_Device_Contacts: {
+            case Constants.CirclesMessages.MSGID_Open_Device_Contacts: {
                 // Show device contacts
                 showDeviceContactsToAssignCircleContacts((Circle) msg.getData());
                 break;
             }
 
-            case CirclesMessages.MSGID_Open_Contact_Details: {
+            case Constants.CirclesMessages.MSGID_Open_Contact_Details: {
                 // Show contact details
                 showContactDetails((ContactsUtil.ContactModel) msg.getData());
                 break;
             }
 
-            case CirclesMessages.MSGID_Finish_Device_Contacts_Fragment: {
+            case Constants.CirclesMessages.MSGID_Finish_Device_Contacts_Fragment: {
                 removeFragment(DeviceContactsListFragment.class);
+                break;
+            }
+
+            case Constants.CirclesMessages.MSGID_Show_Message_Fragment: {
+                showMessageFragment(((HomeMessageModel)msg.getData()).getMessageType(), ((HomeMessageModel)msg.getData()).getMessageStr());
+                break;
+            }
+
+            case Constants.CirclesMessages.MSGID_Hide_Message_Fragment: {
+                hideMessageFragment();
                 break;
             }
         }
@@ -94,26 +106,12 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
 
     /**
      * Show edit circle name dialog
+     *
      * @param circleID : the ID of circle to edit its name
      */
     private void showEditCircleDialog(int circleID) {
         NewCircleDialogFragment circleDialogFragment = NewCircleDialogFragment.newInstance(circleID);
         circleDialogFragment.show(getBaseView().getSupportFragmentManager(), "");
-    }
-
-    private void removeFragment(Class fragmentClass) {
-        for (int i = 0; i < fragments.size(); i++ ) {
-            if(fragments.get(i).baseFragment.getClass().equals(fragmentClass)) {
-                fragments.remove(i);
-                break;
-            }
-        }
-    }
-
-    private void addFragment(Class fragmentClass, BaseFragment fragment, String title) {
-        removeFragment(fragmentClass);
-        fragments.add(new FragmentTitle(fragment, title));
-        setTitleText(title);
     }
 
     /**
@@ -138,8 +136,7 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
         if (circle != null) {
             screenTitle = String.format(getBaseView().getString(R.string.txt_add_device_contact_fragment_title),
                     circle.getName());
-        }
-        else {
+        } else {
             screenTitle = getBaseView().getTitle().toString();
         }
 
@@ -151,6 +148,7 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
 
     /**
      * Show contact details
+     *
      * @param contactModel : contact details
      */
     private void showContactDetails(ContactsUtil.ContactModel contactModel) {
@@ -159,6 +157,45 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
         addFragment(ContactDetailsFragment.class, ContactDetailsFragment.newInstance(contactModel), screenTitle);
         getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_home_frameLayout,
                 fragments.get(fragments.size() - 1).baseFragment).commit();
+    }
+
+    /**
+     * Show message fragment
+     *
+     * @param type : message type
+     * @param message : message string
+     */
+    private void showMessageFragment(int type, String message) {
+
+        if(msgFragment == null) {
+            msgFragment = MessageFragment.newInstance(new HomeMessageModel(type, message));
+            // Show messages
+            getBaseView().getSupportFragmentManager().beginTransaction().replace(R.id.activity_msgs_frameLayout,
+                    msgFragment).commit();
+        }
+    }
+
+    /**
+     * Remove message fragment
+     */
+    private void hideMessageFragment() {
+        getBaseView().getSupportFragmentManager().beginTransaction().remove(msgFragment).commit();
+        msgFragment = null;
+    }
+
+    private void addFragment(Class fragmentClass, BaseFragment fragment, String title) {
+        removeFragment(fragmentClass);
+        fragments.add(new FragmentTitle(fragment, title));
+        setTitleText(title);
+    }
+
+    private void removeFragment(Class fragmentClass) {
+        for (int i = 0; i < fragments.size(); i++) {
+            if (fragments.get(i).baseFragment.getClass().equals(fragmentClass)) {
+                fragments.remove(i);
+                break;
+            }
+        }
     }
 
     /**
@@ -197,5 +234,7 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
     }
 
     private ArrayList<FragmentTitle> fragments = new ArrayList<>();
+
+    private MessageFragment msgFragment;
 
 }

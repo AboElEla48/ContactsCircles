@@ -20,7 +20,7 @@ public final class MessagesServer
 
     /**
      * get singleton object to server
-     * @return
+     * @return single instance
      */
     public static MessagesServer getInstance() {
         if(sInstance == null) {
@@ -31,7 +31,7 @@ public final class MessagesServer
 
     /**
      * Register as receiver for messages
-     * @param inboxHolder
+     * @param inboxHolder : the inbox holder to register as listener for messages
      */
     public void registerInboxHolder(InboxHolder inboxHolder) {
         inboxHolders.add(inboxHolder);
@@ -58,7 +58,7 @@ public final class MessagesServer
 
     /**
      * Unregister from listening to messages
-     * @param inboxHolder
+     * @param inboxHolder : unregister this listener for messages
      */
     public void unRegisterInboxHolder(InboxHolder inboxHolder) {
         inboxHolders.remove(inboxHolder);
@@ -66,8 +66,8 @@ public final class MessagesServer
 
     /**
      * Send message to inbox
-     * @param inboxHolderClass
-     * @param msg
+     * @param inboxHolderClass : the class type of receiver
+     * @param msg : message to send
      */
     public void sendMessage(final Class<?> inboxHolderClass, final CustomMessage msg) {
         // temporary add message to pending messages. It will remain there if no one consumed this message
@@ -89,6 +89,21 @@ public final class MessagesServer
 
                         // message consumed, remove it from pending messages array
                         pendingMessages.remove(inboxHolderClass);
+                    }
+                });
+    }
+
+    /**
+     * Broadcast message to all inbox receivers
+     * @param msg : message to send to all recievers
+     */
+    public void broadcastMessage(final CustomMessage msg) {
+        Observable.fromIterable(inboxHolders)
+                .subscribe(new Consumer<InboxHolder>()
+                {
+                    @Override
+                    public void accept(@NonNull InboxHolder inboxHolder) throws Exception {
+                        inboxHolder.onMessageReceived(msg);
                     }
                 });
     }

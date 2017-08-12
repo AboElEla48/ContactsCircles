@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.BaseAdapter;
 
-import com.aboelela.circles.constants.CirclesMessages;
+import com.aboelela.circles.constants.Constants;
 import com.aboelela.circles.data.AppUIModel;
 import com.aboelela.circles.data.CirclesModel;
 import com.aboelela.circles.data.entities.Circle;
@@ -25,6 +25,7 @@ import com.mvvm.framework.messaging.CustomMessage;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -158,8 +159,18 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
     public void onMessageReceived(CustomMessage msg) {
         super.onMessageReceived(msg);
         switch (msg.getMessageId()) {
-            case CirclesMessages.MSGID_Refresh_Circles_List: {
-                updateCirclesList();
+            case Constants.CirclesMessages.MSGID_Refresh_Circles_List: {
+                refreshCirclesList();
+                break;
+            }
+
+            case Constants.CirclesMessages.MSGID_Message_Fragment_OK_Button_Pressed: {
+                removeCirclesMarkedForDeletion();
+                break;
+            }
+
+            case Constants.CirclesMessages.MSGID_Message_Fragment_Cancel_Button_Pressed: {
+                cancelDeletionMarks();
                 break;
             }
 
@@ -167,10 +178,29 @@ class CirclesListPresenter extends BasePresenter<CirclesListFragment, CirclesLis
         }
     }
 
-    private void updateCirclesList() {
+    private void refreshCirclesList() {
         getBaseView().circlesRecyclerView.getAdapter().notifyDataSetChanged();
         ((BaseAdapter)getBaseView().circlesGridView.getAdapter()).notifyDataSetChanged();
         checkEmptyList();
+    }
+
+    private void removeCirclesMarkedForDeletion() {
+        List<Integer> circleIDs =
+                ((CirclesListAdapter)getBaseView().circlesRecyclerView.getAdapter()).getCirclesIDsToDelete();
+        Observable.fromIterable(circleIDs)
+                .blockingSubscribe(new Consumer<Integer>()
+                {
+                    @Override
+                    public void accept(@NonNull Integer circleID) throws Exception {
+                        circlesModel.removeCircle(circleID);
+                    }
+                });
+
+        refreshCirclesList();
+    }
+
+    private void cancelDeletionMarks() {
+        refreshCirclesList();
     }
 
 

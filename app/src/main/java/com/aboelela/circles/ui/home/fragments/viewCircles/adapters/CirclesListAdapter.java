@@ -76,6 +76,9 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
                     @Override
                     public void onSwipeLeft(float initialX, float initialY, float currentX, float currentY, float delta) {
+
+                        // it is required to swipe item for edit
+
                         switch (viewHolder.listItemMode) {
                             case MODE_Normal: {
                                 viewHolder.listItemMode = ListItemMode.MODE_Edit;
@@ -84,9 +87,9 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                             }
 
                             case MODE_Delete: {
-                                // finish undo mode and start swipe right
-                                viewHolder.listItemMode = ListItemMode.MODE_Normal;
-                                viewHolder.itemUndoView.setVisibility(View.GONE);
+//                                // finish undo mode and start swipe right
+//                                viewHolder.listItemMode = ListItemMode.MODE_Normal;
+//                                viewHolder.itemUndoView.setVisibility(View.GONE);
                                 break;
                             }
 
@@ -99,6 +102,9 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
                     @Override
                     public void onSwipeRight(float initialX, float initialY, float currentX, float currentY, float delta) {
+
+                        // it is required to swipe item for delete
+
                         switch (viewHolder.listItemMode) {
                             case MODE_Normal: {
                                 viewHolder.listItemMode = ListItemMode.MODE_Delete;
@@ -111,9 +117,9 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                             }
 
                             case MODE_Edit: {
-                                // finish edit mode
-                                viewHolder.listItemMode = ListItemMode.MODE_Normal;
-                                viewHolder.itemEditorView.setVisibility(View.GONE);
+//                                // finish edit mode
+//                                viewHolder.listItemMode = ListItemMode.MODE_Normal;
+//                                viewHolder.itemEditorView.setVisibility(View.GONE);
                                 break;
                             }
                         }
@@ -122,11 +128,6 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                     @Override
                     public void onSwipeFinished(float initialX, float initialY) {
                         switch (viewHolder.listItemMode) {
-                            case MODE_Normal: {
-                                //TODO: restore item back to original state
-                                break;
-                            }
-
                             case MODE_Edit: {
                                 // Show editor mode
                                 SwipeAnimator.scaleItemHorizontalPercentageDelta(view,
@@ -181,6 +182,52 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
             itemTextView = (TextView) cardView.findViewById(R.id.circle_item_textView);
             itemUndoView = itemView.findViewById(R.id.circle_item_delete_layout);
             itemEditorView = itemView.findViewById(R.id.circle_item_edit_layout);
+            listItemMode = ListItemMode.MODE_Normal;
+
+            // Handle undo
+            itemUndoView.findViewById(R.id.circle_item_undo_btn)
+                    .setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view) {
+                            restoreItemToOriginalState();
+                            SwipeAnimator.moveItemHorizontalToPosition(cardView, 0);
+                        }
+                    });
+
+            // Handle edit
+            itemEditorView.findViewById(R.id.circle_item_view_image_view)
+                    .setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view) {
+                            restoreItemToOriginalState();
+                            SwipeAnimator.scaleItemHorizontalPercentageDelta(cardView,
+                                    (float)itemEditorView.getWidth() / (float)cardView.getWidth(),
+                                    SwipeHorizontalDirection.Swipe_Right);
+                        }
+                    });
+
+            // Handle view
+            itemEditorView.findViewById(R.id.circle_item_edit_image_view)
+                    .setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View view) {
+                            restoreItemToOriginalState();
+                            SwipeAnimator.scaleItemHorizontalPercentageDelta(cardView,
+                                    (float)itemEditorView.getWidth() / (float)cardView.getWidth(),
+                                    SwipeHorizontalDirection.Swipe_Right);
+                        }
+                    });
+        }
+
+        /**
+         * cancel current state of item
+         */
+        private void restoreItemToOriginalState() {
+            itemUndoView.setVisibility(View.GONE);
+            itemEditorView.setVisibility(View.GONE);
             listItemMode = ListItemMode.MODE_Normal;
         }
 

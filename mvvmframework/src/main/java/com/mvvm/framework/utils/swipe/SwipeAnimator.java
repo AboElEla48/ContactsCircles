@@ -26,6 +26,17 @@ public final class SwipeAnimator
                 .start();
     }
 
+    /**
+     * Put item to specific place horizontal
+     * @param view : the view to move
+     * @param xValue
+     */
+    public static void moveItemHorizontalToPosition(View view, float xValue) {
+        ViewCompat.animate(view)
+                .x(xValue)
+        .start();
+    }
+
     public static void scaleItemHorizontalPercentageDelta(View view, float percentage, SwipeHorizontalDirection direction) {
         int val = (direction == SwipeHorizontalDirection.Swipe_Left) ? -1 : 1;
         ViewCompat.setPivotX(view, 0);

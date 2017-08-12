@@ -32,13 +32,14 @@ public class CirclesModel extends BaseModel
         circles = (ArrayList<Circle>) PreferencesManager.loadCirclesList();
 
         // TODO: Load circles contacts images
-        return Observable.fromCallable(new Callable<List<Circle>>()
-        {
-            @Override
-            public List<Circle> call() throws Exception {
-                return fillInCircleContactsPhotos();
-            }
-        })
+        return Observable.fromCallable(
+                new Callable<List<Circle>>()
+                {
+                    @Override
+                    public List<Circle> call() throws Exception {
+                        return fillInCircleContactsPhotos();
+                    }
+                })
                 .subscribeOn(Schedulers.newThread());
     }
 
@@ -88,22 +89,6 @@ public class CirclesModel extends BaseModel
         addCircle(new Circle(++ID, circleName));
     }
 
-    public void editCircleName(int circleIndex, String newName) throws CirclesNotLoadedException,
-            CircleIndexOutOfBoundsException {
-        if (circles == null) {
-            throw new CirclesNotLoadedException();
-        }
-
-        if (circleIndex > -1 && circleIndex < circles.size()) {
-            circles.get(circleIndex).setName(newName);
-
-            // save to persistent data store
-            PreferencesManager.saveCirclesList(circles);
-        } else {
-            throw new CircleIndexOutOfBoundsException();
-        }
-    }
-
     /**
      * save new circle
      *
@@ -118,6 +103,29 @@ public class CirclesModel extends BaseModel
 
         // save to persistent data store
         PreferencesManager.saveCirclesList(circles);
+    }
+
+    /**
+     * Edit circle name
+     * @param circleIndex :  the index of circle to edit
+     * @param newName : the new name of the circle
+     * @throws CirclesNotLoadedException : throw exception in case circles were not loaded
+     * @throws CircleIndexOutOfBoundsException : throw exception in case given index is out of bounds
+     */
+    public void editCircleName(int circleIndex, String newName) throws CirclesNotLoadedException,
+            CircleIndexOutOfBoundsException {
+        if (circles == null) {
+            throw new CirclesNotLoadedException();
+        }
+
+        if (circleIndex > -1 && circleIndex < circles.size()) {
+            circles.get(circleIndex).setName(newName);
+
+            // save to persistent data store
+            PreferencesManager.saveCirclesList(circles);
+        } else {
+            throw new CircleIndexOutOfBoundsException();
+        }
     }
 
     private ArrayList<Circle> circles;

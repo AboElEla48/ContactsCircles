@@ -24,7 +24,7 @@ public class NewCircleDialogFragment extends BaseDialogFragment
     @Presenter
     NewCircleDialogPresenter newCircleDialogPresenter;
 
-    static final String Bundle_Circle_Index = "Bundle_Circle_Index";
+    static final String Bundle_Circle_ID = "Bundle_Circle_ID";
 
     @BindView(R.id.fragment_add_circle_name_edit_text)
     EditText circleNameEditText;
@@ -43,13 +43,13 @@ public class NewCircleDialogFragment extends BaseDialogFragment
 
     /**
      * Factory method for editing circle name
-     * @param circleIndex : the circle index to edit its name
+     * @param circleID : the circle ID to edit its name
      * @return : object to fragment created
      */
-    public static NewCircleDialogFragment newInstance(int circleIndex) {
+    public static NewCircleDialogFragment newInstance(int circleID) {
         NewCircleDialogFragment fragment = new NewCircleDialogFragment();
         Bundle args = new Bundle();
-        args.putInt(Bundle_Circle_Index, circleIndex);
+        args.putInt(Bundle_Circle_ID, circleID);
         fragment.setArguments(args);
         return fragment;
     }

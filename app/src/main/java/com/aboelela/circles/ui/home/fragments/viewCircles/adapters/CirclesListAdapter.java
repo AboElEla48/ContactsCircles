@@ -17,6 +17,7 @@ import com.mvvm.framework.utils.swipe.SwipeAnimator;
 import com.mvvm.framework.utils.swipe.SwipeDetector;
 import com.mvvm.framework.utils.swipe.SwipeHorizontalDirection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -137,6 +138,10 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                             }
 
                             case MODE_Delete: {
+
+                                // Save ID for list to delete upon confirmation
+                                circlesIDsToDelete.add(((ViewHolder)view.getTag()).circle.getID());
+
                                 // Show undo mode
                                 SwipeAnimator.moveItemHorizontalDelta(view, view.getWidth(),
                                         SwipeHorizontalDirection.Swipe_Right);
@@ -158,6 +163,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.setText(circles.get(position).getName());
+        holder.circle = circles.get(position);
     }
 
     /**
@@ -171,16 +177,24 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
         HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circles.get(+ viewHolder.getAdapterPosition()));
     }
 
+    /**
+     * Edit circle name
+     * @param viewHolder : the hold of item
+     */
     private void editCircleName(ViewHolder viewHolder) {
         LogUtil.writeDebugLog(LOG_TAG, "Edit circle Name. Circle Index: " + viewHolder.getAdapterPosition());
 
         // Edit circle
-        HomeActivityMessagesHelper.sendMessageEditCircle(viewHolder.getAdapterPosition());
+        HomeActivityMessagesHelper.sendMessageEditCircle(viewHolder.circle.getID());
     }
 
     @Override
     public int getItemCount() {
         return circles.size();
+    }
+
+    public List<Integer> getCirclesIDsToDelete() {
+        return circlesIDsToDelete;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder
@@ -190,6 +204,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
         View itemUndoView;
         View itemEditorView;
         ListItemMode listItemMode;
+        Circle circle;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -263,6 +278,9 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
 
     // Hold circles model
     private List<Circle> circles;
+
+    // Hold list of IDs that will be deleted upon confirmation
+    private ArrayList<Integer> circlesIDsToDelete = new ArrayList<>();
 
     private SwipeDetector swipeDetector;
 

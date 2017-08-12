@@ -29,9 +29,9 @@ public final class HomeActivityMessagesHelper
     /**
      * send message to home activity to trigger edit circle name dialog
      */
-    public static void sendMessageEditCircle(int circleIndex) {
+    public static void sendMessageEditCircle(int circleID) {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
-                new CustomMessage(CirclesMessages.MSGID_Edit_Circle_Name, circleIndex, null));
+                new CustomMessage(CirclesMessages.MSGID_Edit_Circle_Name, circleID, null));
     }
 
     /**

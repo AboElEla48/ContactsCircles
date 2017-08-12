@@ -94,10 +94,10 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
 
     /**
      * Show edit circle name dialog
-     * @param circleIndex : the index of circle to edit its name
+     * @param circleID : the ID of circle to edit its name
      */
-    private void showEditCircleDialog(int circleIndex) {
-        NewCircleDialogFragment circleDialogFragment = NewCircleDialogFragment.newInstance(circleIndex);
+    private void showEditCircleDialog(int circleID) {
+        NewCircleDialogFragment circleDialogFragment = NewCircleDialogFragment.newInstance(circleID);
         circleDialogFragment.show(getBaseView().getSupportFragmentManager(), "");
     }
 

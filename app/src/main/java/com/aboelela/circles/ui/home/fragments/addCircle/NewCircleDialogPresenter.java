@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.aboelela.circles.data.CirclesModel;
+import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.HomeActivityMessagesHelper;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.mvvm.framework.annotation.DataModel;
@@ -24,16 +25,23 @@ class NewCircleDialogPresenter extends BasePresenter<NewCircleDialogFragment, Ne
     @DataModel
     CirclesModel circlesModel;
 
-    private int editCircleIndex = -1;
+    private int editCircleID = -1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getBaseView().getArguments() != null) {
-            editCircleIndex = getBaseView().getArguments().getInt(NewCircleDialogFragment.Bundle_Circle_Index, -1);
-            if (editCircleIndex > -1) {
-                getBaseView().circleNameEditText.setText(circlesModel.getCircles().get(editCircleIndex).getName());
+            editCircleID = getBaseView().getArguments().getInt(NewCircleDialogFragment.Bundle_Circle_ID, -1);
+            if (editCircleID > -1) {
+                circlesModel.searchForCircle(editCircleID, new Consumer<Circle>()
+                {
+                    @Override
+                    public void accept(@NonNull Circle circle) throws Exception {
+                        getBaseView().circleNameEditText.setText(circle.getName());
+                    }
+                });
+
             }
         }
 
@@ -46,12 +54,12 @@ class NewCircleDialogPresenter extends BasePresenter<NewCircleDialogFragment, Ne
                         String circleName = getBaseView().circleNameEditText.getText().toString();
 
                         // save to data store
-                        if (editCircleIndex == -1) {
+                        if (editCircleID == -1) {
                             // this is a new item
                             circlesModel.addCircle(circleName);
                         } else {
                             // edit circle name
-                            circlesModel.editCircleName(editCircleIndex, circleName);
+                            circlesModel.editCircleName(editCircleID, circleName);
                         }
 
                         // Notify list fragment to refresh

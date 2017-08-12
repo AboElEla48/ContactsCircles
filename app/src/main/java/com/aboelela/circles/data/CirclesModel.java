@@ -3,7 +3,6 @@ package com.aboelela.circles.data;
 import com.aboelela.circles.CirclesApplication;
 import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.data.preferences.PreferencesManager;
-import com.aboelela.circles.data.runTimeErrors.CircleIndexOutOfBoundsException;
 import com.aboelela.circles.data.runTimeErrors.CirclesNotLoadedException;
 import com.mvvm.framework.base.models.BaseModel;
 import com.mvvm.framework.utils.ContactsUtil;
@@ -13,6 +12,9 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -107,25 +109,69 @@ public class CirclesModel extends BaseModel
 
     /**
      * Edit circle name
-     * @param circleIndex :  the index of circle to edit
-     * @param newName : the new name of the circle
-     * @throws CirclesNotLoadedException : throw exception in case circles were not loaded
-     * @throws CircleIndexOutOfBoundsException : throw exception in case given index is out of bounds
+     *
+     * @param circleID :  the ID of circle to edit
+     * @param newName     : the new name of the circle
+     * @throws CirclesNotLoadedException       : throw exception in case circles were not loaded
      */
-    public void editCircleName(int circleIndex, String newName) throws CirclesNotLoadedException,
-            CircleIndexOutOfBoundsException {
+    public void editCircleName(int circleID, final String newName) throws CirclesNotLoadedException {
         if (circles == null) {
             throw new CirclesNotLoadedException();
         }
 
-        if (circleIndex > -1 && circleIndex < circles.size()) {
-            circles.get(circleIndex).setName(newName);
+        searchForCircle(circleID, new Consumer<Circle>()
+        {
+            @Override
+            public void accept(@NonNull Circle circle) throws Exception {
+                circle.setName(newName);
 
-            // save to persistent data store
-            PreferencesManager.saveCirclesList(circles);
-        } else {
-            throw new CircleIndexOutOfBoundsException();
+                // save to persistent data store
+                PreferencesManager.saveCirclesList(circles);
+            }
+        });
+
+    }
+
+    /**
+     * Delete circle
+     *
+     * @param circleID : the id of the circle
+     * @throws CirclesNotLoadedException : throw exception in case circles were not loaded
+     */
+    public void removeCircle(final int circleID) throws CirclesNotLoadedException {
+        if (circles == null) {
+            throw new CirclesNotLoadedException();
         }
+
+        // delete circle
+        searchForCircle(circleID, new Consumer<Circle>()
+        {
+            @Override
+            public void accept(@NonNull Circle circle) throws Exception {
+                circles.remove(circle);
+
+                // save to persistent data store
+                PreferencesManager.saveCirclesList(circles);
+            }
+        });
+
+    }
+
+    /**
+     * search for circle
+     * @param circleID : The ID of the circle
+     * @param circleConsumer : the receiver for circle if found
+     */
+    public void searchForCircle(final int circleID, Consumer<Circle> circleConsumer) {
+        Observable.fromIterable(circles)
+                .filter(new Predicate<Circle>()
+                {
+                    @Override
+                    public boolean test(@NonNull Circle circle) throws Exception {
+                        return circle.getID() == circleID;
+                    }
+                })
+                .subscribe(circleConsumer);
     }
 
     private ArrayList<Circle> circles;

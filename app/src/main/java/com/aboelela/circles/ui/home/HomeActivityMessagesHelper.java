@@ -1,6 +1,7 @@
 package com.aboelela.circles.ui.home;
 
-import com.aboelela.circles.constants.CirclesMessages;
+import com.aboelela.circles.constants.Constants;
+import com.aboelela.circles.data.HomeMessageModel;
 import com.aboelela.circles.data.entities.Circle;
 import com.aboelela.circles.ui.home.fragments.viewCircles.CirclesListFragment;
 import com.mvvm.framework.messaging.CustomMessage;
@@ -23,7 +24,7 @@ public final class HomeActivityMessagesHelper
      */
     public static void sendMessageAddCircle() {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
-                new CustomMessage(CirclesMessages.MSGID_Add_Circle, 0, null));
+                new CustomMessage(Constants.CirclesMessages.MSGID_Add_Circle, 0, null));
     }
 
     /**
@@ -31,7 +32,7 @@ public final class HomeActivityMessagesHelper
      */
     public static void sendMessageEditCircle(int circleID) {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
-                new CustomMessage(CirclesMessages.MSGID_Edit_Circle_Name, circleID, null));
+                new CustomMessage(Constants.CirclesMessages.MSGID_Edit_Circle_Name, circleID, null));
     }
 
     /**
@@ -39,7 +40,7 @@ public final class HomeActivityMessagesHelper
      */
     public static void sendMessageRefreshCirclesList() {
         MessagesServer.getInstance().sendMessage(CirclesListFragment.class,
-                CirclesMessages.MSG_Refresh_Circles_List);
+                Constants.CirclesMessages.MSG_Refresh_Circles_List);
     }
 
     /**
@@ -48,7 +49,7 @@ public final class HomeActivityMessagesHelper
      */
     public static void sendMessageOpenCircleContacts(Circle circle) {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
-                new CustomMessage(CirclesMessages.MSGID_Open_Contacts_Of_Circle, 0, circle));
+                new CustomMessage(Constants.CirclesMessages.MSGID_Open_Contacts_Of_Circle, 0, circle));
     }
 
     /**
@@ -57,7 +58,7 @@ public final class HomeActivityMessagesHelper
      */
     public static void sendMessageShowDeviceContacts(@Nullable  Circle circleToAssignContacts) {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
-                new CustomMessage(CirclesMessages.MSGID_Open_Device_Contacts, 0, circleToAssignContacts));
+                new CustomMessage(Constants.CirclesMessages.MSGID_Open_Device_Contacts, 0, circleToAssignContacts));
     }
 
     /**
@@ -66,7 +67,7 @@ public final class HomeActivityMessagesHelper
      */
     public static void sendMessageShowContactDetails(ContactsUtil.ContactModel contactModel) {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
-                new CustomMessage(CirclesMessages.MSGID_Open_Contact_Details, 0, contactModel));
+                new CustomMessage(Constants.CirclesMessages.MSGID_Open_Contact_Details, 0, contactModel));
     }
 
     /**
@@ -74,7 +75,27 @@ public final class HomeActivityMessagesHelper
      */
     public static void sendMessageFinishDeviceContactsFragment() {
         MessagesServer.getInstance().sendMessage(HomeActivity.class,
-                new CustomMessage(CirclesMessages.MSGID_Finish_Device_Contacts_Fragment, 0, null));
+                new CustomMessage(Constants.CirclesMessages.MSGID_Finish_Device_Contacts_Fragment, 0, null));
+    }
+
+    /**
+     * send message to show home message
+     * @param type : message type
+     * @param message : message string
+     */
+    public static void sendMessageShowHomeMessagesFragment(int type, String message) {
+        MessagesServer.getInstance().sendMessage(HomeActivity.class,
+                new CustomMessage(Constants.CirclesMessages.MSGID_Show_Message_Fragment,
+                        0, new HomeMessageModel(type, message)));
+    }
+
+    /**
+     * Hide home message
+     */
+    public static void sendMessageHideHomeMessagesFragment() {
+        MessagesServer.getInstance().sendMessage(HomeActivity.class,
+                new CustomMessage(Constants.CirclesMessages.MSGID_Hide_Message_Fragment,
+                        0, null));
     }
 
 

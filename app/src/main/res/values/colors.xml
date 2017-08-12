@@ -10,4 +10,7 @@
     <color name="colorLightBlue">#40b1f2</color>
     <color name="colorTextSelectionItem">#FFA000</color>
     <color name="colorButton">#EEEEEE</color>
+    <color name="colorMsgBackground">#969191</color>
+    <color name="colorMsgButtonsBackground">#635c5c</color>
+    <color name="colorMsgTextColor">#fae92e</color>
 </resources>

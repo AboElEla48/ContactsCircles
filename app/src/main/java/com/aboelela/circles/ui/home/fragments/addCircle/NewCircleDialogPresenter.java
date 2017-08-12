@@ -24,17 +24,35 @@ class NewCircleDialogPresenter extends BasePresenter<NewCircleDialogFragment, Ne
     @DataModel
     CirclesModel circlesModel;
 
+    private int editCircleIndex = -1;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getBaseView().getArguments() != null) {
+            editCircleIndex = getBaseView().getArguments().getInt(NewCircleDialogFragment.Bundle_Circle_Index, -1);
+            if (editCircleIndex > -1) {
+                getBaseView().circleNameEditText.setText(circlesModel.getCircles().get(editCircleIndex).getName());
+            }
+        }
 
         RxView.clicks(getBaseView().saveBtn)
                 .subscribe(new Consumer<Object>()
                 {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
+
+                        String circleName = getBaseView().circleNameEditText.getText().toString();
+
                         // save to data store
-                        circlesModel.addCircle(getBaseView().circleNameEditText.getText().toString());
+                        if (editCircleIndex == -1) {
+                            // this is a new item
+                            circlesModel.addCircle(circleName);
+                        } else {
+                            // edit circle name
+                            circlesModel.editCircleName(editCircleIndex, circleName);
+                        }
 
                         // Notify list fragment to refresh
                         HomeActivityMessagesHelper.sendMessageRefreshCirclesList();

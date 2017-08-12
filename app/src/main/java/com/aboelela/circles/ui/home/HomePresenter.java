@@ -54,6 +54,11 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
                 break;
             }
 
+            case CirclesMessages.MSGID_Edit_Circle_Name: {
+                showEditCircleDialog(msg.getPayLoad());
+                break;
+            }
+
             case CirclesMessages.MSGID_Open_Contacts_Of_Circle: {
                 // Show contacts of given circle
                 showCircleContacts((Circle) msg.getData());
@@ -84,6 +89,15 @@ class HomePresenter extends BasePresenter<HomeActivity, HomePresenter>
      */
     private void showNewCircleDialog() {
         NewCircleDialogFragment circleDialogFragment = NewCircleDialogFragment.newInstance();
+        circleDialogFragment.show(getBaseView().getSupportFragmentManager(), "");
+    }
+
+    /**
+     * Show edit circle name dialog
+     * @param circleIndex : the index of circle to edit its name
+     */
+    private void showEditCircleDialog(int circleIndex) {
+        NewCircleDialogFragment circleDialogFragment = NewCircleDialogFragment.newInstance(circleIndex);
         circleDialogFragment.show(getBaseView().getSupportFragmentManager(), "");
     }
 

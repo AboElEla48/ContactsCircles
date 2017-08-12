@@ -56,7 +56,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                         LogUtil.writeDebugLog(LOG_TAG, "Action Up");
 
                         // Show the contacts of this circle
-                        HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circles.get(viewHolder.getAdapterPosition()));
+                        showContactsOfCircle(viewHolder);
                     }
 
                     @Override
@@ -160,6 +160,24 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
         holder.setText(circles.get(position).getName());
     }
 
+    /**
+     * Show contacts of circle
+     * @param viewHolder : the holder of item
+     */
+    private void showContactsOfCircle(ViewHolder viewHolder) {
+        LogUtil.writeDebugLog(LOG_TAG, "Show circle contacts. Circle Index: " + viewHolder.getAdapterPosition());
+
+        // Show the contacts of this circle
+        HomeActivityMessagesHelper.sendMessageOpenCircleContacts(circles.get(+ viewHolder.getAdapterPosition()));
+    }
+
+    private void editCircleName(ViewHolder viewHolder) {
+        LogUtil.writeDebugLog(LOG_TAG, "Edit circle Name. Circle Index: " + viewHolder.getAdapterPosition());
+
+        // Edit circle
+        HomeActivityMessagesHelper.sendMessageEditCircle(viewHolder.getAdapterPosition());
+    }
+
     @Override
     public int getItemCount() {
         return circles.size();
@@ -172,7 +190,6 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
         View itemUndoView;
         View itemEditorView;
         ListItemMode listItemMode;
-
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -202,6 +219,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                         @Override
                         public void onClick(View view) {
                             restoreItemToOriginalState();
+                            showContactsOfCircle(ViewHolder.this);
                             SwipeAnimator.scaleItemHorizontalPercentageDelta(cardView,
                                     (float)itemEditorView.getWidth() / (float)cardView.getWidth(),
                                     SwipeHorizontalDirection.Swipe_Right);
@@ -215,6 +233,7 @@ public class CirclesListAdapter extends RecyclerView.Adapter<CirclesListAdapter.
                         @Override
                         public void onClick(View view) {
                             restoreItemToOriginalState();
+                            editCircleName(ViewHolder.this);
                             SwipeAnimator.scaleItemHorizontalPercentageDelta(cardView,
                                     (float)itemEditorView.getWidth() / (float)cardView.getWidth(),
                                     SwipeHorizontalDirection.Swipe_Right);

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="label_txt_size">20sp</dimen>
-    <dimen name="label_error_txt_size">13sp</dimen>
-
-</resources>

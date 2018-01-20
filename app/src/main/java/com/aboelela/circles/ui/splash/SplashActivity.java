@@ -1,13 +1,13 @@
 package com.aboelela.circles.ui.splash;
 
 import com.aboelela.circles.R;
-import com.mvvm.framework.annotation.InflateLayout;
-import com.mvvm.framework.annotation.Presenter;
-import com.mvvm.framework.base.views.BaseActivity;
+import com.foureg.baseframework.annotations.ContentViewId;
+import com.foureg.baseframework.annotations.ViewPresenter;
+import com.foureg.baseframework.ui.BaseActivity;
 
-@InflateLayout(R.layout.activity_splash)
+@ContentViewId(R.layout.activity_splash)
 public class SplashActivity extends BaseActivity
 {
-    @Presenter
+    @ViewPresenter
     SplashPresenter splashPresenter;
 }

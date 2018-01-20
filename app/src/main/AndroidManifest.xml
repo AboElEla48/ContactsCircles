@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".CirclesApplication"
@@ -26,15 +27,10 @@
             </intent-filter>
         </activity>
 
-        <!-- Home screen -->
-        <activity android:name=".ui.home.HomeActivity"/>
-
-        <!-- Permissions screen -->
-        <activity android:name="com.mvvm.framework.utils.permissions.PermissionsActivity" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="29bd6de0d42e3f272bc7b5432856e134f29bba6e" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

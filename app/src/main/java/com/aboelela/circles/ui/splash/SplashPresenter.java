@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.aboelela.circles.constants.Constants;
 import com.aboelela.circles.ui.ActivityNavigationManager;
-import com.mvvm.framework.base.presenters.BasePresenter;
+import com.foureg.baseframework.ui.BaseViewPresenter;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,7 +15,7 @@ import java.util.TimerTask;
  * Presenter for splash screen
  */
 
-public class SplashPresenter extends BasePresenter<SplashActivity, SplashPresenter>
+public class SplashPresenter extends BaseViewPresenter<SplashActivity>
 {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,8 +26,8 @@ public class SplashPresenter extends BasePresenter<SplashActivity, SplashPresent
         {
             @Override
             public void run() {
-                ActivityNavigationManager.startCirclesHomeActivity(getBaseView());
-                getBaseView().finish();
+                ActivityNavigationManager.startCirclesHomeActivity(getView());
+                getView().finish();
             }
         }, Constants.Splash.SPLASH_DURATION);
     }

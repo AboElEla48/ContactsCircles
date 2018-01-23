@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support:support-v4:27.0.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -61,7 +62,6 @@ dependencies {
     testCompile 'org.powermock:powermock-module-junit4:1.7.0RC4'
     testCompile 'org.mockito:mockito-all:1.10.19'
     testCompile 'org.powermock:powermock-api-mockito:1.7.0RC4'
-
 
 //    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {

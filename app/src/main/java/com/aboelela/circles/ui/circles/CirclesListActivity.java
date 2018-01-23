@@ -1,5 +1,7 @@
 package com.aboelela.circles.ui.circles;
 
+import com.aboelela.circles.R;
+import com.foureg.baseframework.annotations.ContentViewId;
 import com.foureg.baseframework.ui.BaseActivity;
 
 /**
@@ -7,6 +9,7 @@ import com.foureg.baseframework.ui.BaseActivity;
  * This activity shows the list of circles
  */
 
+@ContentViewId(R.layout.activity_circles_list)
 public class CirclesListActivity extends BaseActivity
 {
 }

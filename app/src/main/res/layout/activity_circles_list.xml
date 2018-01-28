@@ -8,4 +8,9 @@
     android:background="@drawable/home_background"
     tools:context=".ui.circles.CirclesListActivity">
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.aboelela.circles.ui.circles.CirclesListFragment" />
+
 </LinearLayout>

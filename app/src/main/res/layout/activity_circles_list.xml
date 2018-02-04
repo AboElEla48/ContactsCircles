@@ -11,6 +11,6 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.aboelela.circles.ui.circles.CirclesListFragment" />
+        android:name="com.aboelela.circles.ui.circles.fragment.CirclesListFragment" />
 
 </LinearLayout>

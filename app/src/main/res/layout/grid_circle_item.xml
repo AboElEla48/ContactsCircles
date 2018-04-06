@@ -4,6 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/one_circle_frame"
+    android:backgroundTintMode="add"
     android:orientation="vertical">
 
     <!-- Circle image -->
@@ -33,8 +34,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:paddingBottom="80dp"
-        android:text="0"
         android:textSize="@dimen/dimen_circle_num_text_size"/>
 
     <!-- Editor view -->

@@ -1,131 +1,26 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context=".ui.home.fragments.viewCircles.CirclesListFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+             tools:context="com.aboelela.circles.ui.circles.fragment.CirclesListFragment">
 
-    <LinearLayout
+    <!--&lt;!&ndash; All contacts circle &ndash;&gt;-->
+    <!--<include-->
+        <!--layout="@layout/grid_circle_item"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal" />-->
+
+    <!-- Circles grid -->
+    <GridView
+        android:id="@+id/fragment_circles_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center" />
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center"
-            android:orientation="horizontal">
-
-            <!-- View as list button -->
-            <ImageButton
-                android:id="@+id/fragment_circles_view_as_list_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_action_add"/>
-
-            <!-- View as grid button -->
-            <ImageButton
-                android:id="@+id/fragment_circles_view_as_grid_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_action_add"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/fragment_circles_list_default_cirlce"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/txt_default_circle_title"
-                android:textSize="@dimen/dimen_item_text_view_text_size"
-                android:paddingStart="@dimen/dimen_item_text_view_padding"
-                android:paddingEnd="@dimen/dimen_item_text_view_padding"
-                android:textColor="@color/colorPureBlack"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:contentDescription="@string/app_name"
-                android:paddingStart="@dimen/dimen_item_text_view_padding"
-                android:paddingEnd="@dimen/dimen_item_text_view_padding"
-                android:src="@drawable/separator"/>
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/fragment_circles_list_circles_recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical"/>
-
-            <!-- Grid view for circles -->
-            <GridView
-                android:id="@+id/fragment_circles_grid_circles_gridView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:columnWidth="@dimen/dimen_circle_grid_column_width"
-                android:gravity="center"
-                android:horizontalSpacing="@dimen/dimen_circle_grid_column_horizontal_spacing"
-                android:numColumns="auto_fit"
-                android:scrollbars="vertical"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="@dimen/dimen_circle_grid_column_vertical_spacing"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/fragment_circles_list_empty_textView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/txt_no_circles_text"
-                android:visibility="gone"/>
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/fragment_circles_list_progress_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ProgressBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textSize="@dimen/dimen_subtitle_text_view_text_size"
-            android:textColor="@color/colorPureBlack"
-            android:text="@string/txt_contacts_loading_waiting_message"/>
-
-    </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fragment_circles_list_add_circle_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="@dimen/dimen_floating_btn_margin_bottom"
-        android:layout_marginEnd="@dimen/dimen_floating_btn_margin_right"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_action_add"/>
-
-</RelativeLayout>
+</LinearLayout>

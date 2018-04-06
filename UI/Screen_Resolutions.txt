@@ -1,0 +1,48 @@
+http://developer.android.com/guide/practices/screens_support.html
+
+			Width X Hight
+
+
+xxhdpi:
+Icon: 144 x 144
+Screen: 1080 X 1920
+------
+
+xhdpi: (From XXHigh)
+Icon: 96 x 96
+Screen: 720 x 1280
+------
+
+hdpi: (From XXHigh)
+Icon: 72 x 72
+Screen: 540 x 960
+------
+
+mdpi:
+Icon: 48 x 48
+Screen: 240 X 360
+------
+
+ldpi: 
+Icon: 32 x 32
+Screen: 320 x 426
+
+
+All in pixels.
+
+
+--------------------------------------------
+For Android Tablet Devices
+
+XHDPI:
+    Portrait: 720px1280px
+    Landscape: 1280x720px
+HDPI:
+    Portrait: 480x800px
+    Landscape: 800x480px
+MDPI:
+    Portrait: 320x480px
+    Landscape: 480x320px
+LDPI:
+    Portrait: 200x320px
+    Landscape: 320x200px

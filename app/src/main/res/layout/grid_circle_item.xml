@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/one_circle_frame"
+    android:backgroundTintMode="add"
+    android:orientation="vertical">
+
+    <!-- Circle image -->
+    <ImageView
+        android:id="@+id/grid_circle_item_image_view"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/family_512"/>
+
+    <!-- Circle Name -->
+    <TextView
+        android:id="@+id/grid_circle_item_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/app_name"
+        android:textSize="@dimen/dimen_circle_text_size"
+        android:textStyle="bold"/>
+
+
+
+    <!-- Number of items in Circle -->
+    <TextView
+        android:id="@+id/grid_circle_item_num_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/dimen_circle_num_text_size"/>
+
+    <!-- Editor view -->
+    <LinearLayout
+        android:id="@+id/grid_circle_item_edit_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <!-- Open circle -->
+        <ImageButton
+            android:id="@+id/gird_circle_item_open_circle_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/circle_action_open"/>
+
+        <!-- Edit circle Data -->
+        <ImageButton
+            android:id="@+id/gird_circle_item_edit_circle_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/circle_action_edit"/>
+
+        <!-- Delete circle -->
+        <ImageButton
+            android:id="@+id/gird_circle_item_delete_circle_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/circle_action_delete"/>
+
+        <!-- Cancel Editing circle -->
+        <ImageButton
+            android:id="@+id/gird_circle_item_cancel_edit_circle_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/circle_action_cancel"/>
+
+    </LinearLayout>
+</LinearLayout>

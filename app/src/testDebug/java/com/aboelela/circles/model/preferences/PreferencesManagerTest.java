@@ -1,7 +1,7 @@
-package com.aboelela.circles.data.preferences;
+package com.aboelela.circles.model.preferences;
 
 import com.aboelela.circles.CirclesApplication;
-import com.aboelela.circles.data.entities.Circle;
+import com.aboelela.circles.model.entities.Circle;
 import com.mvvm.framework.utils.PreferencesUtil;
 
 import org.junit.Assert;

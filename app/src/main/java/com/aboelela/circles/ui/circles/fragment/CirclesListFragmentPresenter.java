@@ -1,5 +1,7 @@
 package com.aboelela.circles.ui.circles.fragment;
 
+import com.aboelela.circles.model.CirclesModel;
+import com.foureg.baseframework.annotations.DataModel;
 import com.foureg.baseframework.ui.BaseViewPresenter;
 
 /**
@@ -9,9 +11,19 @@ import com.foureg.baseframework.ui.BaseViewPresenter;
 
 class CirclesListFragmentPresenter extends BaseViewPresenter<CirclesListFragment>
 {
+    @DataModel
+    CirclesModel circlesModel;
+
+    private CirclesListAdapter circlesListAdapter;
+
     @Override
     public void initFragmentValues() {
         super.initFragmentValues();
+
+        // fill grid with circles items
+        circlesListAdapter = new CirclesListAdapter(getView().getContext(), circlesModel.loadCircles());
+        getView().circlesGrid.setAdapter(circlesListAdapter);
+
     }
     
 }

@@ -5,6 +5,7 @@ import eg.foureg.circles.common.message.data.Message
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Predicate
+import kotlin.jvm.internal.ClassReference
 import kotlin.reflect.KClass
 
 /**
@@ -54,7 +55,7 @@ class MessageServer private constructor(){
     fun sendMessage(clazz: KClass<Any>, message: Message) {
 
         Observable.fromIterable(actorsList)
-                .filter(Predicate { actor: Actor ->  actor.javaClass.equals(clazz)})
+                .filter(Predicate { actor: Actor ->  (actor::class as ClassReference).jClass.name.equals((clazz as ClassReference).jClass.name)})
                 .subscribe(Consumer { actor: Actor -> actor.handleMessage(message) })
     }
 

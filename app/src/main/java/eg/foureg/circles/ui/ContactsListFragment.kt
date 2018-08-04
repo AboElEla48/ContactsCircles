@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import eg.foureg.circles.R
+import eg.foureg.circles.common.ui.BaseFragment
 
 /**
  * A simple [Fragment] subclass.
@@ -15,7 +16,7 @@ import eg.foureg.circles.R
  * create an instance of this fragment.
  *
  */
-class ContactsListFragment : Fragment() {
+class ContactsListFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -7,13 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import eg.foureg.circles.R
+import eg.foureg.circles.common.ui.BaseFragment
 
 
 /**
  * This fragment to display the contact circles into navigator
  *
  */
-class CirclesNavigatorFragment : Fragment() {
+class CirclesNavigatorFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

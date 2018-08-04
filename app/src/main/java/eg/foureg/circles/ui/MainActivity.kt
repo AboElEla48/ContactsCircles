@@ -1,7 +1,8 @@
-package eg.foureg.circles
+package eg.foureg.circles.ui
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import eg.foureg.circles.R
 
 class MainActivity : AppCompatActivity() {
 

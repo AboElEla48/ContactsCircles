@@ -5,12 +5,8 @@ import eg.foureg.circles.common.message.data.Message
 
 open class AbstractActor : Actor {
 
-    companion object {
-        const val PARAM = "PARAM_NAME"
-    }
-
     override fun handleMessage(message: Message) {
-        text = message.data.getString(PARAM)
+        text = message.data.get(Message.DEFAULT_PARAM_NAME) as String
     }
 
     var text : String = ""

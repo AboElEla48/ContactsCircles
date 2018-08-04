@@ -45,7 +45,7 @@ class MessageServer private constructor(){
     fun sendMessage(clazz: KClass<Any>, id : Int, text : String) {
         val message = Message()
         message.id = id
-        message.data.putString(Message.DEFAULT_PARAM_NAME, text)
+        message.data.put(Message.DEFAULT_PARAM_NAME, text)
         sendMessage(clazz, message)
     }
 

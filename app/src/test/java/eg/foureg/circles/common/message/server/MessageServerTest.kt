@@ -1,15 +1,10 @@
 package eg.foureg.circles.common.message.server
 
-import eg.foureg.circles.common.actor.Actor
 import eg.foureg.circles.common.message.server.sample.data.Actor1
 import eg.foureg.circles.common.message.server.sample.data.Actor2
-import io.reactivex.Observable
-import io.reactivex.functions.Consumer
-import io.reactivex.functions.Predicate
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import kotlin.jvm.internal.ClassReference
 import kotlin.reflect.KClass
 
 
@@ -49,17 +44,11 @@ class MessageServerTest {
     @Test
     fun sendMessage() {
         val clazz : KClass<Any> = Actor2::class as KClass<Any>
-        var result = false
-        var className = ""
+        val messageData = "This is message data"
 
-        Observable.fromIterable(MessageServer.getInstance().actorsList)
-                .filter(Predicate { actor: Actor ->  (actor::class as ClassReference).jClass.name.equals((clazz as ClassReference).jClass.name)})
-                .subscribe(Consumer {
-                    actor: Actor -> className = actor.javaClass.name
-                    result = true})
-
-        Assert.assertTrue(result)
-        Assert.assertTrue(!className.equals(""))
+        MessageServer.getInstance().sendMessage(clazz, 11, messageData)
+        Assert.assertTrue(actor1.text.equals("This is actor 1"))
+        Assert.assertTrue(actor2.text.equals(messageData))
 
     }
 }

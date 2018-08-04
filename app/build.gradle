@@ -1,32 +1,18 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.23.0'
-    }
-}
-//noinspection GradleCompatible
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
+apply plugin: 'kotlin-android'
 
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.2'
+    compileSdkVersion 28
     defaultConfig {
-        applicationId "com.aboelela.circles"
+        applicationId "eg.foureg.circles"
         minSdkVersion 22
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -34,36 +20,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
 }
 
 dependencies {
-    implementation 'com.android.support:support-v4:27.0.2'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
-    compile 'com.android.support:support-v13:27.0.2'
-
-    compile 'com.android.support:cardview-v7:27.0.2'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
-
-    testCompile 'junit:junit:4.12'
-
-    compile 'com.github.AboElEla48:mvvmdemo:1.0.1'
-
-    testCompile 'org.mockito:mockito-core:2.13.0'
-    testCompile 'org.powermock:powermock-module-junit4:1.7.0RC4'
-    testCompile 'org.mockito:mockito-all:1.10.19'
-    testCompile 'org.powermock:powermock-api-mockito:1.7.0RC4'
-
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-        transitive = true
-    }
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:28.0.0-beta01'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

@@ -44,12 +44,6 @@ class ContactsRetriever {
         // close content provider
         contacts.close()
 
-        contactsList.clear()
-        contactsList.add(ContactData("Ahmed", null, null, ""))
-        contactsList.add(ContactData("Hassan", null, null, ""))
-        contactsList.add(ContactData("Mostafa", null, null, ""))
-        contactsList.add(ContactData("Kamal", null, null, ""))
-
         return contactsList
     }
 

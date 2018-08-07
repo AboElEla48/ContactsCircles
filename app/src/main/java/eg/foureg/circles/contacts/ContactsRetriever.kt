@@ -3,8 +3,6 @@ package eg.foureg.circles.contacts
 import android.content.Context
 import android.provider.ContactsContract
 import eg.foureg.circles.common.Logger
-import io.reactivex.Observable
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -36,8 +34,8 @@ class ContactsRetriever {
             // extract contact
             val contactData = ContactData()
             contactData.name = name
-            contactData.phones.add(phoneNumber)
-            contactData.emails.add(email)
+            contactData.phones?.add(phoneNumber)
+            contactData.emails?.add(email)
 
             // add contact
             contactsList.add(contactData)
@@ -45,6 +43,12 @@ class ContactsRetriever {
 
         // close content provider
         contacts.close()
+
+        contactsList.clear()
+        contactsList.add(ContactData("Ahmed", null, null, ""))
+        contactsList.add(ContactData("Hassan", null, null, ""))
+        contactsList.add(ContactData("Mostafa", null, null, ""))
+        contactsList.add(ContactData("Kamal", null, null, ""))
 
         return contactsList
     }

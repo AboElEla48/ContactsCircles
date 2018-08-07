@@ -35,7 +35,8 @@ class ContactsListFragment : BaseFragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.fragment_contacts_list_recycler_view)
         val context =  getActivity() as Context
 
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(context) 
 
         // load contacts
         val contactsList = ContactsRetriever().loadContacts(context)

@@ -5,6 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/contacts_list_item_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:src="@android:drawable/ic_menu_gallery"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/app_name"/>
+
     <TextView
         android:id="@+id/contacts_list_item_name_text_view"
         android:layout_width="0dp"
@@ -12,6 +21,8 @@
         android:layout_marginEnd="2dp"
         android:layout_marginStart="2dp"
         android:text="@string/txt_contacts_list_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/contacts_list_item_image_view" />
 </android.support.constraint.ConstraintLayout>

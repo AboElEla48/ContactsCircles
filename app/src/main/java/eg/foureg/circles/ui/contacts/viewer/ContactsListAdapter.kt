@@ -5,19 +5,28 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import eg.foureg.circles.R
 import eg.foureg.circles.contacts.ContactData
 import kotlinx.android.synthetic.main.fragment_contacts_list_item.view.*
 
-
+/**
+ * Define Adapter for contacts list
+ */
 class ContactsListAdapter(val context: Context, val contacts : List<ContactData>) : RecyclerView.Adapter<ViewHolder>() {
     override fun getItemCount(): Int {
         return contacts.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.fragment_contacts_list_item, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
+        val viewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.fragment_contacts_list_item, parent, false))
+        viewHolder.itemView.setTag(position)
+
+        viewHolder.itemView.setOnClickListener(View.OnClickListener {
+            view: View? ->  val itemIndex = view?.tag as Int
+
+        })
+
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

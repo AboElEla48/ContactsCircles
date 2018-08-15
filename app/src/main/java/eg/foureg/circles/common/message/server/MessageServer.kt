@@ -55,8 +55,27 @@ class MessageServer private constructor(){
     fun sendMessage(clazz: KClass<Any>, message: Message) {
 
         Observable.fromIterable(actorsList)
-                .filter(Predicate { actor: Actor ->  (actor::class as ClassReference).jClass.name.equals((clazz as ClassReference).jClass.name)})
-                .subscribe(Consumer { actor: Actor -> actor.handleMessage(message) })
+                .filter( { actor: Actor ->  (actor::class as ClassReference).jClass.name.equals((clazz as ClassReference).jClass.name)})
+                .subscribe( { actor: Actor -> actor.handleMessage(message) })
+    }
+
+    /**
+     * send message for everyone
+     */
+    fun broadcastMessage(msgID : Int, text : String) {
+        val  message = Message()
+        message.id = msgID
+        message.data.put(Message.DEFAULT_PARAM_NAME, text)
+
+        broadcastMessage(message)
+    }
+
+    /**
+     * broadcast message for everyone
+     */
+    fun broadcastMessage(message: Message) {
+        Observable.fromIterable(actorsList)
+                .subscribe( { actor: Actor -> actor.handleMessage(message) })
     }
 
     // Hold list of actors

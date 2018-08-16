@@ -12,9 +12,9 @@ import kotlinx.android.synthetic.main.fragment_contacts_list_item.view.*
 /**
  * Define Adapter for contacts list
  */
-class ContactsListAdapter(val context: Context, val contacts : List<ContactData>) : RecyclerView.Adapter<ViewHolder>() {
+class ContactsListAdapter(val context: Context, val contacts : List<ContactData>?) : RecyclerView.Adapter<ViewHolder>() {
     override fun getItemCount(): Int {
-        return contacts.size
+        return contacts!!.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
@@ -30,7 +30,7 @@ class ContactsListAdapter(val context: Context, val contacts : List<ContactData>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.nameTextView.text = contacts.get(position).name
+        holder.nameTextView.text = contacts?.get(position)?.name
     }
 
 }

@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".feature.MainActivity">
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_contacts_list"
-        class="eg.foureg.circles.ui.ContactsListFragment" />
+        class="eg.foureg.circles.feature.contacts.viewer.ContactsListFragment" />
 
 </android.support.constraint.ConstraintLayout>

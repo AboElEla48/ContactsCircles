@@ -51,4 +51,20 @@ class MessageServerTest {
         Assert.assertTrue(actor2.text.equals(messageData))
 
     }
+
+    @Test
+    fun broadcastMessage() {
+
+        val messageData = "This is a broadcast message"
+
+        Assert.assertTrue(actor1.text.equals("This is actor 1"))
+        Assert.assertTrue(actor2.text.equals("This is actor 2"))
+
+        MessageServer.getInstance().broadcastMessage(27, messageData)
+        Assert.assertTrue(actor1.text.equals(messageData))
+        Assert.assertTrue(actor2.text.equals(messageData))
+
+    }
+
+
 }

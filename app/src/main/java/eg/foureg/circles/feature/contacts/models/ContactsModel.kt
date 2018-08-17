@@ -8,13 +8,29 @@ import io.reactivex.ObservableEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-open class ContactsModel {
+open class ContactsModel protected constructor(){
+
+    var contactsList : ArrayList<ContactData> = ArrayList()
+    companion object {
+        private val model : ContactsModel = ContactsModel()
+
+        fun getInstance() : ContactsModel {
+            return model
+        }
+    }
+
 
     fun loadContacts(context: Context): Observable<ArrayList<ContactData>> {
-        return Observable.just(ContactsRetriever().loadContacts(context))
-                .subscribeOn(Schedulers.newThread())
-                .flatMap { rawContacts: ArrayList<ContactData> -> removeDuplicate(rawContacts) }
-                .observeOn(AndroidSchedulers.mainThread())
+        if(contactsList.size == 0) {
+            return Observable.just(ContactsRetriever().loadContacts(context))
+                    .subscribeOn(Schedulers.newThread())
+                    .flatMap { rawContacts: ArrayList<ContactData> -> removeDuplicate(rawContacts) }
+                    .observeOn(AndroidSchedulers.mainThread())
+        }
+        else {
+            return Observable.just(contactsList)
+        }
+
     }
 
     fun loadContactsImages(context: Context, contactsList : ArrayList<ContactData>?) : Observable<ArrayList<ContactData>?> {
@@ -47,16 +63,16 @@ open class ContactsModel {
                         }
                     })
 
-            val nonDuplicateContacts: ArrayList<ContactData> = ArrayList()
+            contactsList = ArrayList()
             Observable.fromIterable(contactsNamesKeysOrdered)
                     .subscribe({ contactNameKey : String ->
                         val contact: ContactData?  = contactsMap.get(contactNameKey)
 
                         if(contact != null){
-                            nonDuplicateContacts.add(contact)
+                            contactsList.add(contact)
                         } })
 
-            emitter.onNext(nonDuplicateContacts)
+            emitter.onNext(contactsList)
             emitter.onComplete()
         }
     }

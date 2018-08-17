@@ -1,4 +1,4 @@
-package eg.foureg.circles.feature.contacts.viewer
+package eg.foureg.circles.feature.contacts.listing
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -6,8 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import eg.foureg.circles.R
+import eg.foureg.circles.common.message.data.Message
+import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.feature.main.MainActivity
+import eg.foureg.circles.feature.main.MainActivityMessages
 import kotlinx.android.synthetic.main.fragment_contacts_list_item.view.*
+import kotlin.reflect.KClass
 
 /**
  * Define Adapter for contacts list
@@ -24,6 +29,10 @@ class ContactsListAdapter(val context: Context, val contacts: List<ContactData>?
         viewHolder.itemView.setOnClickListener({ view: View? ->
             val itemIndex = view?.tag as Int
 
+            val msg = Message()
+            msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACT_DETAILS
+            msg.data.put(MainActivityMessages.DATA_PARAM_CONTACT_INDEX, itemIndex)
+            MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
         })
 
         return viewHolder

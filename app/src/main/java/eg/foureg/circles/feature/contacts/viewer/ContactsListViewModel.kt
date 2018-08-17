@@ -5,8 +5,6 @@ import android.arch.lifecycle.ViewModel
 import android.content.Context
 import eg.foureg.circles.contacts.ContactData
 import eg.foureg.circles.feature.contacts.models.ContactsModel
-import io.reactivex.Observable
-import io.reactivex.functions.Consumer
 
 
 class ContactsListViewModel : ViewModel() {
@@ -16,7 +14,7 @@ class ContactsListViewModel : ViewModel() {
      * load device contacts
      */
     fun loadContacts(context : Context) {
-        Observable.just(ContactsModel().loadContacts(context))
+        ContactsModel().loadContacts(context)
                 .subscribe({ contactsList: List<ContactData> -> contacts.value = contactsList })
     }
 }

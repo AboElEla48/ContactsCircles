@@ -1,6 +1,8 @@
 package eg.foureg.circles.contacts
 
+import io.reactivex.Observable
 import io.reactivex.annotations.Nullable
+import io.reactivex.functions.Consumer
 
 /**
  * Define the data model for contact
@@ -18,5 +20,19 @@ class ContactData constructor(){
         notes = nts
 
     }
+
+    /**
+     * Merge given contact data into existing contact data
+     */
+    fun mergeContact(newContact : ContactData) {
+        Observable.fromIterable(newContact.phones)
+                .filter { newPhone : String -> !(phones!!.contains(newPhone)) }     // phone doesn't exist before
+                .subscribe({ newPhone : String -> phones?.add(newPhone) })
+
+        Observable.fromIterable(newContact.emails)
+                .filter { newEmail : String -> !(emails!!.contains(newEmail)) }     // email doesn't exist before
+                .subscribe({ newEmail : String -> emails?.add(newEmail) })
+    }
+
 
 }

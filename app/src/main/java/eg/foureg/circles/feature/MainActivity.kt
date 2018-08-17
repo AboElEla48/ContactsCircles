@@ -1,4 +1,4 @@
-package eg.foureg.circles.ui
+package eg.foureg.circles.feature
 
 import android.os.Bundle
 import eg.foureg.circles.R

@@ -1,8 +1,7 @@
-package eg.foureg.circles.ui.contacts.viewer
+package eg.foureg.circles.feature.contacts.viewer
 
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle

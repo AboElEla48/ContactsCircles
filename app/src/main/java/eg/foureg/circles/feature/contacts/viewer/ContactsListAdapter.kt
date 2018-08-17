@@ -1,4 +1,4 @@
-package eg.foureg.circles.ui.contacts.viewer
+package eg.foureg.circles.feature.contacts.viewer
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -21,7 +21,7 @@ class ContactsListAdapter(val context: Context, val contacts : List<ContactData>
         val viewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.fragment_contacts_list_item, parent, false))
         viewHolder.itemView.setTag(position)
 
-        viewHolder.itemView.setOnClickListener(View.OnClickListener {
+        viewHolder.itemView.setOnClickListener({
             view: View? ->  val itemIndex = view?.tag as Int
 
         })

@@ -1,91 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="5dp"
     tools:context=".feature.contacts.view.ContactViewerFragment">
 
-    <ImageView
-        android:id="@+id/fragment_contact_viewer_image_view"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/app_name"
-        android:src="@android:drawable/ic_menu_gallery" />
-
-    <TextView
-        android:id="@+id/fragment_content_view_name_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
-        android:textColor="@color/color_contact_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_contact_viewer_image_view" />
-
-    <LinearLayout
-        android:id="@+id/fragment_content_view_actions_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:weightSum="3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_content_view_name_text_view">
+        android:layout_height="match_parent"
+        android:paddingTop="5dp">
 
         <ImageView
-            android:id="@+id/fragment_content_view_actions_call"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
+            android:id="@+id/fragment_contact_viewer_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/call" />
+            android:src="@android:drawable/ic_menu_gallery" />
 
-        <ImageView
-            android:id="@+id/fragment_content_view_actions_sms"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/sms" />
+        <TextView
+            android:id="@+id/fragment_content_view_name_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/color_contact_text"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_contact_viewer_image_view" />
 
-        <ImageView
-            android:id="@+id/fragment_content_view_actions_email"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/email" />
+        <LinearLayout
+            android:id="@+id/fragment_content_view_actions_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_content_view_name_text_view">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/fragment_content_view_actions_call"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/call" />
 
-    <LinearLayout
-        android:id="@+id/fragment_content_view_phones_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_content_view_actions_layout" />
+            <ImageView
+                android:id="@+id/fragment_content_view_actions_sms"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/sms" />
 
-    <LinearLayout
-        android:id="@+id/fragment_content_view_emails_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_content_view_phones_layout" />
+            <ImageView
+                android:id="@+id/fragment_content_view_actions_email"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/email" />
 
-</android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_content_view_phones_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_content_view_actions_layout" />
+
+        <LinearLayout
+            android:id="@+id/fragment_content_view_emails_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_content_view_phones_layout" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

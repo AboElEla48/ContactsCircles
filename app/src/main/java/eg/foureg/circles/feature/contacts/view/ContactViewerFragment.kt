@@ -68,6 +68,16 @@ class ContactViewerFragment : BaseFragment() {
                     })
         })
 
+        contactViewViewModel.emails.observe(this, Observer { emails : List<String>? ->
+            Observable.fromIterable(emails)
+                    .subscribe( { email: String ->
+                        val emailView : View = inflater.inflate(R.layout.fragment_contact_view_email_item, null, false)
+                        val emailTextView : TextView = emailView.findViewById(R.id.fragment_contact_view_phone_item_email_text_view)
+                        emailTextView.text = email
+                        contactEmailsLayout.addView(emailView)
+                    })
+        })
+
         contactViewViewModel.initContact(contactIndex)
 
         return view

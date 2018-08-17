@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name" translatable="false">Circles</string>
-    <string name="txt_contacts_list_title">Contacts</string>
+    <string name="txt_contacts_list_title">Phone book</string>
 </resources>

@@ -10,18 +10,24 @@ import io.reactivex.schedulers.Schedulers
 
 open class ContactsModel {
 
-    fun loadContacts(context: Context): Observable<List<ContactData>> {
+    fun loadContacts(context: Context): Observable<ArrayList<ContactData>> {
         return Observable.just(ContactsRetriever().loadContacts(context))
                 .subscribeOn(Schedulers.newThread())
-                .flatMap { rawContacts: List<ContactData> -> removeDuplicate(rawContacts) }
+                .flatMap { rawContacts: ArrayList<ContactData> -> removeDuplicate(rawContacts) }
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun loadContactsImages(context: Context, contactsList : ArrayList<ContactData>?) : Observable<ArrayList<ContactData>?> {
+        return Observable.just(ContactsRetriever().loadContactsImages(context, contactsList))
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
     /**
      * Remove duplicate contacts
      */
-    protected fun removeDuplicate(rawContacts: List<ContactData>): Observable<List<ContactData>> {
-        return Observable.create { emitter: ObservableEmitter<List<ContactData>> ->
+    protected fun removeDuplicate(rawContacts: ArrayList<ContactData>): Observable<ArrayList<ContactData>> {
+        return Observable.create { emitter: ObservableEmitter<ArrayList<ContactData>> ->
             val contactsMap: HashMap<String, ContactData> = HashMap()
             val contactsNamesKeysOrdered : ArrayList<String> = ArrayList()
 

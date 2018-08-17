@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.provider.ContactsContract
 import eg.foureg.circles.common.Logger
+import io.reactivex.Observable
 import kotlin.collections.ArrayList
 
 /**
@@ -14,7 +15,7 @@ class ContactsRetriever {
     /**
      * Load contacts book
      */
-    fun loadContacts(context : Context) : List<ContactData> {
+    fun loadContacts(context: Context): ArrayList<ContactData> {
 
         // Open content resolver to retrieve contactsCursor
         val contactsCursor = context.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -23,7 +24,7 @@ class ContactsRetriever {
                 null,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
 
-        val contactsList : ArrayList<ContactData> = ArrayList()
+        val contactsList: ArrayList<ContactData> = ArrayList()
 
         // iterate contactsCursor
         while (contactsCursor!!.moveToNext()) {
@@ -32,11 +33,6 @@ class ContactsRetriever {
             val email = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS))
 
             val photoID = contactsCursor.getInt(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_ID))
-            var bitmap : Bitmap? = null
-
-            if(photoID != 0) {
-                bitmap = loadContactImage(context, photoID)
-            }
 
             Logger.debug(TAG, "Contact: " + name + ", " + phoneNumber + ", " + email)
 
@@ -45,7 +41,7 @@ class ContactsRetriever {
             contactData.name = name
             contactData.phones?.add(phoneNumber)
             contactData.emails?.add(email)
-            contactData.image = bitmap
+            contactData.photoID = photoID
 
             // add contact
             contactsList.add(contactData)
@@ -57,16 +53,31 @@ class ContactsRetriever {
         return contactsList
     }
 
-    private fun loadContactImage(context : Context, photoID : Int) : Bitmap? {
-        val photoCursor = context.contentResolver.query(ContactsContract.Data.CONTENT_URI,
-                Array<String>(1){ContactsContract.CommonDataKinds.Photo.PHOTO},
-                ContactsContract.Data._ID + "=?",
-                Array<String>(1){photoID.toString()},
-                null
-                )
+    /**
+     * load contacts images in different stream
+     */
+    fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?) : ArrayList<ContactData>?{
+        Observable.fromIterable(contactsList)
+                .blockingSubscribe({ contact: ContactData? ->
+                    if (contact != null && contact.photoID != 0) {
+                        contact.image = fetchContactImage(context, contact.photoID)
+                    }
+                })
 
-        if(photoCursor!!.moveToFirst()) {
-            val imageBytes : ByteArray = photoCursor.getBlob(0)
+        return contactsList
+
+    }
+
+    private fun fetchContactImage(context: Context, photoID: Int?): Bitmap? {
+        val photoCursor = context.contentResolver.query(ContactsContract.Data.CONTENT_URI,
+                Array<String>(1) { ContactsContract.CommonDataKinds.Photo.PHOTO },
+                ContactsContract.Data._ID + "=?",
+                Array<String>(1) { photoID.toString() },
+                null
+        )
+
+        if (photoCursor!!.moveToFirst()) {
+            val imageBytes: ByteArray = photoCursor.getBlob(0)
             photoCursor.close()
             return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
         }

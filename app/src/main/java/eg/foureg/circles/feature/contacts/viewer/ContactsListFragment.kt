@@ -24,7 +24,7 @@ import eg.foureg.circles.contacts.ContactData
  */
 class ContactsListFragment : BaseFragment() {
 
-    var viewModel : ContactsListViewModel = ContactsListViewModel()
+    var viewModel: ContactsListViewModel = ContactsListViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,23 +36,21 @@ class ContactsListFragment : BaseFragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_contacts_list, container, false)
 
-        val recyclerView : RecyclerView = view.findViewById(R.id.fragment_contacts_list_recycler_view)
-        val context =  getActivity() as Context
+        val recyclerView: RecyclerView = view.findViewById(R.id.fragment_contacts_list_recycler_view)
+        val context = getActivity() as Context
 
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         viewModel = ViewModelProviders.of(this).get(ContactsListViewModel::class.java)
-        viewModel.contacts.observe(this, Observer {
-            contactsList: List<ContactData>? ->  recyclerView.adapter = ContactsListAdapter(context, contactsList)
+        viewModel.contacts.observe(this, Observer { contactsList: List<ContactData>? ->
+            recyclerView.adapter = ContactsListAdapter(context, contactsList)
         })
 
-        // load contacts
         viewModel.loadContacts(context)
 
         return view
     }
-
 
     companion object {
         /**

@@ -12,6 +12,7 @@ class ContactData constructor(){
     var name : String = ""
     var phones : ArrayList<String>? = ArrayList()
     var emails : ArrayList<String>? = ArrayList()
+    var photoID : Int = 0
     var image : Bitmap? = null
     var notes : String? = ""
 

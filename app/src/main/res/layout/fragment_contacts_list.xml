@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".feature.contacts.viewer.ContactsListFragment">
 
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/splash"/>-->
+
 
     <TextView
         android:id="@+id/titleTextView"

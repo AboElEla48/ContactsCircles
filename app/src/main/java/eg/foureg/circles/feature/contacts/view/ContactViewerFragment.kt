@@ -15,6 +15,8 @@ import android.widget.TextView
 
 import eg.foureg.circles.R
 import eg.foureg.circles.common.ui.BaseFragment
+import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.feature.contacts.models.ContactsModel
 
 /**
  * A simple [Fragment] subclass.
@@ -25,10 +27,12 @@ import eg.foureg.circles.common.ui.BaseFragment
 class ContactViewerFragment : BaseFragment() {
 
     var contactViewViewModel = ContactViewViewModel()
+    var contactIndex : Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            contactIndex = it.getInt(CONTACT_INDEX_PARAM)
         }
     }
 
@@ -43,10 +47,16 @@ class ContactViewerFragment : BaseFragment() {
         val contactEmailsLayout : LinearLayout = view.findViewById(R.id.fragment_content_view_emails_layout)
 
         contactViewViewModel = ViewModelProviders.of(this).get(ContactViewViewModel::class.java)
+
         contactViewViewModel.image.observe(this, Observer { img : Bitmap? ->
-            contactImageView.setImageBitmap(img) })
+            if(img != null){
+            contactImageView.setImageBitmap(img)}
+        })
+
         contactViewViewModel.contactName.observe(this, Observer { name : String? ->
             contactNameTextView.setText(name) })
+
+        contactViewViewModel.initContact(contactIndex)
 
         return view
     }
@@ -63,7 +73,10 @@ class ContactViewerFragment : BaseFragment() {
         fun newInstance(contactIndex : Int) =
                 ContactViewerFragment().apply {
                     arguments = Bundle().apply {
+                        putInt(CONTACT_INDEX_PARAM, contactIndex)
                     }
                 }
+
+        const val CONTACT_INDEX_PARAM = "CONTACT_INDEX_PARAM"
     }
 }

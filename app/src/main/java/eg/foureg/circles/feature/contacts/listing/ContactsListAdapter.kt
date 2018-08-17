@@ -24,9 +24,8 @@ class ContactsListAdapter(val context: Context, val contacts: List<ContactData>?
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
         val viewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.fragment_contacts_list_item, parent, false))
-        viewHolder.itemView.setTag(position)
 
-        viewHolder.itemView.setOnClickListener({ view: View? ->
+        viewHolder.layout.setOnClickListener({ view: View? ->
             val itemIndex = view?.tag as Int
 
             val msg = Message()
@@ -39,16 +38,19 @@ class ContactsListAdapter(val context: Context, val contacts: List<ContactData>?
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.nameTextView.text = contacts?.get(position)?.name
-
+        holder.layout.tag = position
         if (contacts?.get(position)?.image != null) {
             holder.contactIageView.setImageBitmap(contacts.get(position).image)
         }
+        holder.nameTextView.text = contacts?.get(position)?.name
+
+
     }
 
 }
 
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    var layout = view.contacts_list_item_layout
     var nameTextView = view.contacts_list_item_name_text_view
     var contactIageView = view.contacts_list_item_image_view
 }

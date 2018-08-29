@@ -1,4 +1,4 @@
-package eg.foureg.circles.feature.contacts.viewer
+package eg.foureg.circles.feature.contacts.listing
 
 
 import android.arch.lifecycle.Observer

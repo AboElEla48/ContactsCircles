@@ -7,6 +7,8 @@ import android.provider.ContactsContract
 import eg.foureg.circles.common.Logger
 import io.reactivex.Observable
 import kotlin.collections.ArrayList
+import android.content.ContentResolver
+
 
 /**
  * Retriever class for contacts saved on device
@@ -28,19 +30,21 @@ class ContactsRetriever {
 
         // iterate contactsCursor
         while (contactsCursor!!.moveToNext()) {
+            val emailID = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
+
             val name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val phoneNumber = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-            val email = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS))
+
+            Logger.error(TAG, "Name: " + name + ", Phone Number:" + phoneNumber)
 
             val photoID = contactsCursor.getInt(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_ID))
-
-            Logger.debug(TAG, "Contact: " + name + ", " + phoneNumber + ", " + email)
 
             // extract contact
             val contactData = ContactData()
             contactData.name = name
+
             contactData.phones?.add(phoneNumber)
-            contactData.emails?.add(email)
+            contactData.emails = loadEmailAddress(emailID, context.contentResolver)
             contactData.photoID = photoID
 
             // add contact
@@ -56,7 +60,7 @@ class ContactsRetriever {
     /**
      * load contacts images in different stream
      */
-    fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?) : ArrayList<ContactData>?{
+    fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): ArrayList<ContactData>? {
         Observable.fromIterable(contactsList)
                 .blockingSubscribe({ contact: ContactData? ->
                     if (contact != null && contact.photoID != 0) {
@@ -65,7 +69,6 @@ class ContactsRetriever {
                 })
 
         return contactsList
-
     }
 
     private fun fetchContactImage(context: Context, photoID: Int?): Bitmap? {
@@ -84,6 +87,31 @@ class ContactsRetriever {
 
         photoCursor.close()
         return null
+    }
+
+    /**
+     * Load email address of given contact
+     */
+    private fun loadEmailAddress(id: String, contentResolver: ContentResolver): ArrayList<String> {
+
+        // Open content resolver to retrieve contactsCursor
+        val emailsCursor = contentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                null,
+                ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?",
+                arrayOf(id),
+                null)
+
+        val emails: ArrayList<String> = ArrayList()
+
+        while (emailsCursor.moveToNext()) {
+            val email = emailsCursor.getString(emailsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
+            emails.add(email)
+
+            Logger.error(TAG, "ID: " + id + ", Email: " + email)
+        }
+
+        emailsCursor.close()
+        return emails
     }
 
     companion object {

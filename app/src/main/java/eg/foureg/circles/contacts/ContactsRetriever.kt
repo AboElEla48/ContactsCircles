@@ -30,7 +30,7 @@ class ContactsRetriever {
 
         // iterate contactsCursor
         while (contactsCursor!!.moveToNext()) {
-            val id = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
+            val emailID = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
 
             val name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val phoneNumber = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
@@ -44,7 +44,7 @@ class ContactsRetriever {
             contactData.name = name
 
             contactData.phones?.add(phoneNumber)
-            contactData.emails = loadEmailAddress(id, context.contentResolver)
+            contactData.emails = loadEmailAddress(emailID, context.contentResolver)
             contactData.photoID = photoID
 
             // add contact

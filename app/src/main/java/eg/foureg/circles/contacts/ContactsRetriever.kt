@@ -30,12 +30,10 @@ class ContactsRetriever {
 
         // iterate contactsCursor
         while (contactsCursor!!.moveToNext()) {
-//            val id = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.Contacts._ID))
             val id = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
 
             val name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val phoneNumber = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-//            val email = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
 
             Logger.error(TAG, "Name: " + name + ", Phone Number:" + phoneNumber)
 
@@ -47,7 +45,6 @@ class ContactsRetriever {
 
             contactData.phones?.add(phoneNumber)
             contactData.emails = loadEmailAddress(id, context.contentResolver)
-//            contactData.emails?.add(email)
             contactData.photoID = photoID
 
             // add contact
@@ -92,6 +89,9 @@ class ContactsRetriever {
         return null
     }
 
+    /**
+     * Load email address of given contact
+     */
     private fun loadEmailAddress(id: String, contentResolver: ContentResolver): ArrayList<String> {
 
         // Open content resolver to retrieve contactsCursor

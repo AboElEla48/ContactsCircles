@@ -19,9 +19,12 @@ import eg.foureg.circles.common.ui.BaseFragment
  */
 class ContactEditorFragment : BaseFragment() {
 
+    var contactIndex : Int? = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            contactIndex = it.getInt(ContactEditorFragment.CONTACT_INDEX_PARAM)
 
         }
     }
@@ -40,11 +43,15 @@ class ContactEditorFragment : BaseFragment() {
          *
          */
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(contactIndex : Int) =
                 ContactEditorFragment().apply {
                     arguments = Bundle().apply {
+                        putInt(ContactEditorFragment.CONTACT_INDEX_PARAM, contactIndex)
 
                     }
                 }
+
+        const val CONTACT_INDEX_PARAM = "CONTACT_INDEX_PARAM"
     }
+
 }

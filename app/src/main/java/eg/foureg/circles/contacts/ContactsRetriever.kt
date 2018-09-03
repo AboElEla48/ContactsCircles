@@ -35,7 +35,7 @@ class ContactsRetriever {
             val name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val phoneNumber = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
 
-            Logger.error(TAG, "Name: " + name + ", Phone Number:" + phoneNumber)
+            Logger.debug(TAG, "Name: " + name + ", Phone Number:" + phoneNumber)
 
             val photoID = contactsCursor.getInt(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_ID))
 
@@ -107,7 +107,7 @@ class ContactsRetriever {
             val email = emailsCursor.getString(emailsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
             emails.add(email)
 
-            Logger.error(TAG, "ID: " + id + ", Email: " + email)
+            Logger.debug(TAG, "ID: " + id + ", Email: " + email)
         }
 
         emailsCursor.close()

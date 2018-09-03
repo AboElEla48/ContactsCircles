@@ -21,6 +21,11 @@ class MainActivity : BaseActivity() {
                 val contactIndex = message.data.get(MainActivityMessages.DATA_PARAM_CONTACT_INDEX) as Int
                 mainActivityFragmentsNavigator.setContactViewFragment(this, contactIndex)
             }
+
+            MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS -> {
+                val contactIndex = message.data.get(MainActivityMessages.DATA_PARAM_CONTACT_INDEX) as Int
+                mainActivityFragmentsNavigator.setContactEditorFragment(this, contactIndex)
+            }
         }
     }
 

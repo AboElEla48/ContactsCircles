@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +13,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-
 import eg.foureg.circles.R
+import eg.foureg.circles.common.message.data.Message
+import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
-import eg.foureg.circles.contacts.ContactData
-import eg.foureg.circles.feature.contacts.models.ContactsModel
+import eg.foureg.circles.feature.main.MainActivity
+import eg.foureg.circles.feature.main.MainActivityMessages
 import io.reactivex.Observable
-import io.reactivex.functions.Consumer
+import kotlin.reflect.KClass
 
 /**
  * A simple [Fragment] subclass.
@@ -48,6 +50,8 @@ class ContactViewerFragment : BaseFragment() {
         val contactPhonesLayout : LinearLayout = view.findViewById(R.id.fragment_content_view_phones_layout)
         val contactEmailsLayout : LinearLayout = view.findViewById(R.id.fragment_content_view_emails_layout)
 
+        val editButton : FloatingActionButton = view.findViewById(R.id.fragment_content_view_edit_contact_floating_button)
+
         contactViewViewModel = ViewModelProviders.of(this).get(ContactViewViewModel::class.java)
 
         contactViewViewModel.image.observe(this, Observer { img : Bitmap? ->
@@ -76,6 +80,14 @@ class ContactViewerFragment : BaseFragment() {
                         emailTextView.text = email
                         contactEmailsLayout.addView(emailView)
                     })
+        })
+
+        editButton.setOnClickListener( { btn ->
+            val msg = Message()
+
+            msg.id = MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS
+            msg.data.put(MainActivityMessages.DATA_PARAM_CONTACT_INDEX, contactIndex as Int)
+            MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
         })
 
         contactViewViewModel.initContact(contactIndex)

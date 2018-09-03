@@ -31,7 +31,7 @@ import kotlin.reflect.KClass
 class ContactViewerFragment : BaseFragment() {
 
     var contactViewViewModel = ContactViewViewModel()
-    var contactIndex : Int? = 0
+    var contactIndex: Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,46 +43,48 @@ class ContactViewerFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view : View = inflater.inflate(R.layout.fragment_contact_viewer, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_contact_viewer, container, false)
 
-        val contactImageView : ImageView = view.findViewById(R.id.fragment_contact_viewer_image_view)
-        val contactNameTextView : TextView = view.findViewById(R.id.fragment_content_view_name_text_view)
-        val contactPhonesLayout : LinearLayout = view.findViewById(R.id.fragment_content_view_phones_layout)
-        val contactEmailsLayout : LinearLayout = view.findViewById(R.id.fragment_content_view_emails_layout)
+        val contactImageView: ImageView = view.findViewById(R.id.fragment_contact_viewer_image_view)
+        val contactNameTextView: TextView = view.findViewById(R.id.fragment_content_view_name_text_view)
+        val contactPhonesLayout: LinearLayout = view.findViewById(R.id.fragment_content_view_phones_layout)
+        val contactEmailsLayout: LinearLayout = view.findViewById(R.id.fragment_content_view_emails_layout)
 
-        val editButton : FloatingActionButton = view.findViewById(R.id.fragment_content_view_edit_contact_floating_button)
+        val editButton: FloatingActionButton = view.findViewById(R.id.fragment_content_view_edit_contact_floating_button)
 
         contactViewViewModel = ViewModelProviders.of(this).get(ContactViewViewModel::class.java)
 
-        contactViewViewModel.image.observe(this, Observer { img : Bitmap? ->
-            if(img != null){
-            contactImageView.setImageBitmap(img)}
+        contactViewViewModel.image.observe(this, Observer { img: Bitmap? ->
+            if (img != null) {
+                contactImageView.setImageBitmap(img)
+            }
         })
 
-        contactViewViewModel.contactName.observe(this, Observer { name : String? ->
-            contactNameTextView.setText(name) })
+        contactViewViewModel.contactName.observe(this, Observer { name: String? ->
+            contactNameTextView.setText(name)
+        })
 
-        contactViewViewModel.phones.observe(this, Observer { phones : List<String>? ->
+        contactViewViewModel.phones.observe(this, Observer { phones: List<String>? ->
             Observable.fromIterable(phones)
-                    .subscribe( { phoneNumber: String ->
-                        val phoneView : View = inflater.inflate(R.layout.fragment_contact_view_phone_item, null, false)
-                        val phoneTextView : TextView = phoneView.findViewById(R.id.fragment_contact_view_phone_item_phone_text_view)
+                    .subscribe({ phoneNumber: String ->
+                        val phoneView: View = inflater.inflate(R.layout.fragment_contact_view_phone_item, null, false)
+                        val phoneTextView: TextView = phoneView.findViewById(R.id.fragment_contact_view_phone_item_phone_text_view)
                         phoneTextView.text = phoneNumber
                         contactPhonesLayout.addView(phoneView)
                     })
         })
 
-        contactViewViewModel.emails.observe(this, Observer { emails : List<String>? ->
+        contactViewViewModel.emails.observe(this, Observer { emails: List<String>? ->
             Observable.fromIterable(emails)
-                    .subscribe( { email: String ->
-                        val emailView : View = inflater.inflate(R.layout.fragment_contact_view_email_item, null, false)
-                        val emailTextView : TextView = emailView.findViewById(R.id.fragment_contact_view_phone_item_email_text_view)
+                    .subscribe({ email: String ->
+                        val emailView: View = inflater.inflate(R.layout.fragment_contact_view_email_item, null, false)
+                        val emailTextView: TextView = emailView.findViewById(R.id.fragment_contact_view_phone_item_email_text_view)
                         emailTextView.text = email
                         contactEmailsLayout.addView(emailView)
                     })
         })
 
-        editButton.setOnClickListener( { btn ->
+        editButton.setOnClickListener({ btn ->
             val msg = Message()
 
             msg.id = MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS
@@ -104,7 +106,7 @@ class ContactViewerFragment : BaseFragment() {
          * @return A new instance of fragment ContactViewerFragment.
          */
         @JvmStatic
-        fun newInstance(contactIndex : Int) =
+        fun newInstance(contactIndex: Int) =
                 ContactViewerFragment().apply {
                     arguments = Bundle().apply {
                         putInt(CONTACT_INDEX_PARAM, contactIndex)

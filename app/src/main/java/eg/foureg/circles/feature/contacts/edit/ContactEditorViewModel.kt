@@ -9,10 +9,13 @@ import eg.foureg.circles.feature.contacts.models.ContactsModel
 class ContactEditorViewModel : ViewModel() {
 
     var contactName : MutableLiveData<String> = MutableLiveData()
-    var phones : MutableLiveData<List<String>> = MutableLiveData()
-    var emails : MutableLiveData<List<String>> = MutableLiveData()
+    var phones : MutableLiveData<ArrayList<String>> = MutableLiveData()
+    var emails : MutableLiveData<ArrayList<String>> = MutableLiveData()
     var image : MutableLiveData<Bitmap> = MutableLiveData()
 
+    /**
+     * init contact value
+     */
     fun initContact(contactIndex : Int?) {
         val contactVal : ContactData = ContactsModel.getInstance().contactsList.get(contactIndex?:0)
 
@@ -20,5 +23,12 @@ class ContactEditorViewModel : ViewModel() {
         phones.value = contactVal.phones
         emails.value = contactVal.emails
         image.value = contactVal.image
+    }
+
+    /**
+     * save contact
+     */
+    fun saveContact() {
+
     }
 }

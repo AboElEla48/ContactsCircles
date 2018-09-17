@@ -5,4 +5,6 @@
     <string name="txt_contact_editor_name_hint">Enter Contact Name</string>
     <string name="txt_contact_editor_phone_number_hint">Enter Phone Number</string>
     <string name="txt_contact_editor_email_hint">Enter Email Address</string>
+
+    <string name="txt_save_contact_editing">Save Contact</string>
 </resources>

@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,22 +16,18 @@ import com.jakewharton.rxbinding2.view.RxView
 import eg.foureg.circles.R
 import eg.foureg.circles.common.ui.BaseFragment
 import io.reactivex.Observable
-import io.reactivex.functions.Consumer
-import kotlinx.android.synthetic.main.fragment_contacts_list_item.*
 
 
 /**
- * A simple [Fragment] subclass.
- * Use the [ContactEditorFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * Fragment for editing contact
  *
  */
 class ContactEditorFragment : BaseFragment() {
 
-    var contactIndex: Int? = 0
-    var contactEditorViewModel = ContactEditorViewModel()
-    var phoneEditorsViewsList : ArrayList<EditText> = ArrayList()
-    var emailEditorsViewsList : ArrayList<EditText> = ArrayList()
+    private var contactIndex: Int? = 0
+    private var contactEditorViewModel = ContactEditorViewModel()
+    private var phoneEditorsViewsList: ArrayList<EditText> = ArrayList()
+    private var emailEditorsViewsList: ArrayList<EditText> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +47,7 @@ class ContactEditorFragment : BaseFragment() {
         val contactPhonesLayout: LinearLayout = view.findViewById(R.id.fragment_content_editor_phones_layout)
         val contactEmailsLayout: LinearLayout = view.findViewById(R.id.fragment_content_editor_emails_layout)
 
-        val saveBtn : Button = view.findViewById(R.id.fragment_content_editor_save_button)
+        val saveBtn: Button = view.findViewById(R.id.fragment_content_editor_save_button)
 
         contactEditorViewModel = ViewModelProviders.of(this).get(ContactEditorViewModel::class.java)
 
@@ -67,17 +62,17 @@ class ContactEditorFragment : BaseFragment() {
         })
 
         contactEditorViewModel.phones.observe(this, Observer { phonesList: List<String>? ->
-            addPhonesLayout(contactPhonesLayout, inflater, phonesList)
+            addPhonesLayout(container, contactPhonesLayout, inflater, phonesList)
         })
 
         contactEditorViewModel.emails.observe(this, Observer { emailsList: List<String>? ->
-            addEmailsLayout(contactEmailsLayout, inflater, emailsList)
+            addEmailsLayout(container, contactEmailsLayout, inflater, emailsList)
         })
 
         RxView.clicks(saveBtn)
-                .subscribe({
+                .subscribe{
                     saveContact(contactNameEditText)
-                })
+                }
 
         contactEditorViewModel.initContact(contactIndex)
 
@@ -87,35 +82,35 @@ class ContactEditorFragment : BaseFragment() {
     /**
      * Dynamically add phones edit items in phones layout
      */
-    private fun addPhonesLayout(contactPhonesLayout: LinearLayout, inflater: LayoutInflater, phonesList : List<String>?) {
+    private fun addPhonesLayout(container: ViewGroup?, contactPhonesLayout: LinearLayout, inflater: LayoutInflater, phonesList: List<String>?) {
         Observable.fromIterable(phonesList)
-                .subscribe({ phone: String ->
-                    val phoneEditView : View = inflater.inflate(R.layout.fragment_contact_editor_phone_item, null, false)
-                    val phoneEditText : EditText = phoneEditView.findViewById(R.id.fragment_content_editor_item_phone_edit_view)
+                .subscribe { phone: String ->
+                    val phoneEditView: View = inflater.inflate(R.layout.fragment_contact_editor_phone_item, container, false)
+                    val phoneEditText: EditText = phoneEditView.findViewById(R.id.fragment_content_editor_item_phone_edit_view)
 
                     phoneEditText.setText(phone)
 
                     phoneEditorsViewsList.add(phoneEditText)
 
                     contactPhonesLayout.addView(phoneEditView)
-                })
+                }
     }
 
     /**
      * Dynamically add emails edit items in emails layout
      */
-    private fun addEmailsLayout(contactEmailsLayout: LinearLayout, inflater: LayoutInflater, emailsList : List<String>?) {
+    private fun addEmailsLayout(container: ViewGroup?, contactEmailsLayout: LinearLayout, inflater: LayoutInflater, emailsList: List<String>?) {
         Observable.fromIterable(emailsList)
-                .subscribe({ email: String ->
-                    val emailEditView : View = inflater.inflate(R.layout.fragment_contact_editor_email_item, null, false)
-                    val emailEditText : EditText = emailEditView.findViewById(R.id.fragment_content_editor_item_email_edit_view)
+                .subscribe { email: String ->
+                    val emailEditView: View = inflater.inflate(R.layout.fragment_contact_editor_email_item, container, false)
+                    val emailEditText: EditText = emailEditView.findViewById(R.id.fragment_content_editor_item_email_edit_view)
 
                     emailEditText.setText(email)
 
                     emailEditorsViewsList.add(emailEditText)
 
                     contactEmailsLayout.addView(emailEditView)
-                })
+                }
 
     }
 
@@ -126,16 +121,16 @@ class ContactEditorFragment : BaseFragment() {
         // get contact phones
         contactEditorViewModel.phones.value?.clear()
         Observable.fromIterable(phoneEditorsViewsList)
-                .subscribe( { editText : EditText ->
+                .subscribe { editText: EditText ->
                     contactEditorViewModel.phones.value?.add(editText.text.toString())
-                })
+                }
 
         // get contact emails
         contactEditorViewModel.emails.value?.clear()
         Observable.fromIterable(emailEditorsViewsList)
-                .subscribe( { editText : EditText ->
+                .subscribe{ editText: EditText ->
                     contactEditorViewModel.emails.value?.add(editText.text.toString())
-                })
+                }
 
         contactEditorViewModel.saveContact()
     }

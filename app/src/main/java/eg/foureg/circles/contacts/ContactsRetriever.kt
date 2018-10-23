@@ -62,11 +62,11 @@ class ContactsRetriever {
      */
     fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): ArrayList<ContactData>? {
         Observable.fromIterable(contactsList)
-                .blockingSubscribe({ contact: ContactData? ->
+                .blockingSubscribe{ contact: ContactData? ->
                     if (contact != null && contact.photoID != 0) {
                         contact.image = fetchContactImage(context, contact.photoID)
                     }
-                })
+                }
 
         return contactsList
     }

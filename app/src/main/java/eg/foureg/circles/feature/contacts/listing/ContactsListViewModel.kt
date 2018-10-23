@@ -7,6 +7,7 @@ import eg.foureg.circles.contacts.ContactData
 import eg.foureg.circles.feature.contacts.models.ContactsModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 
 
 class ContactsListViewModel : ViewModel() {
@@ -15,7 +16,9 @@ class ContactsListViewModel : ViewModel() {
     /**
      * load device contacts
      */
-    fun loadContacts(context: Context) {
+    fun loadContacts(context: Context) : PublishSubject<Boolean> {
+        val publishSubject : PublishSubject<Boolean> = PublishSubject.create()
+
         // Display contacts
         ContactsModel.getInstance().loadContacts(context)
                 .subscribeOn(Schedulers.io())
@@ -27,7 +30,11 @@ class ContactsListViewModel : ViewModel() {
 
                     loadContactsImages(context, contactsList)
 
+                    publishSubject.onNext(true)
+
                 }
+
+        return publishSubject
 
     }
 

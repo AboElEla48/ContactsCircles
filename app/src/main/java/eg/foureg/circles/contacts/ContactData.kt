@@ -9,6 +9,7 @@ import io.reactivex.functions.Consumer
  * Define the data model for contact
  */
 class ContactData constructor(){
+    var id: String = ""
     var name : String = ""
     var phones : ArrayList<String>? = ArrayList()
     var emails : ArrayList<String>? = ArrayList()

@@ -3,19 +3,24 @@ package eg.foureg.circles.feature.contacts.edit
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.*
 import com.jakewharton.rxbinding2.view.RxView
 import eg.foureg.circles.R
+import eg.foureg.circles.common.message.data.Message
+import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
+import eg.foureg.circles.feature.main.MainActivity
+import eg.foureg.circles.feature.main.MainActivityMessages
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlin.reflect.KClass
 
 
 /**
@@ -28,6 +33,8 @@ class ContactEditorFragment : BaseFragment() {
     private var contactEditorViewModel = ContactEditorViewModel()
     private var phoneEditorsViewsList: ArrayList<EditText> = ArrayList()
     private var emailEditorsViewsList: ArrayList<EditText> = ArrayList()
+
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +55,8 @@ class ContactEditorFragment : BaseFragment() {
         val contactEmailsLayout: LinearLayout = view.findViewById(R.id.fragment_content_editor_emails_layout)
 
         val saveBtn: Button = view.findViewById(R.id.fragment_content_editor_save_button)
+
+        progressBar = view.findViewById(R.id.fragment_contact_editor_loading_progress)
 
         contactEditorViewModel = ViewModelProviders.of(this).get(ContactEditorViewModel::class.java)
 
@@ -125,6 +134,8 @@ class ContactEditorFragment : BaseFragment() {
                     contactEditorViewModel.phones.value?.add(editText.text.toString())
                 }
 
+        progressBar.visibility = View.VISIBLE
+
         // get contact emails
         contactEditorViewModel.emails.value?.clear()
         Observable.fromIterable(emailEditorsViewsList)
@@ -132,7 +143,17 @@ class ContactEditorFragment : BaseFragment() {
                     contactEditorViewModel.emails.value?.add(editText.text.toString())
                 }
 
-        contactEditorViewModel.saveContact()
+        // save contact
+        contactEditorViewModel.saveContact(activity as Context, contactIndex)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+
+        progressBar.visibility = View.GONE
+
+        val msg = Message()
+        msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
+        MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
     }
 
 

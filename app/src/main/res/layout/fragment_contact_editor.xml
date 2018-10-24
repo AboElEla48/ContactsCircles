@@ -68,6 +68,16 @@
             android:textAllCaps="false"
             android:text="@string/txt_save_contact_editing"/>
 
+        <ProgressBar
+            android:id="@+id/fragment_contact_editor_loading_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
+
     </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

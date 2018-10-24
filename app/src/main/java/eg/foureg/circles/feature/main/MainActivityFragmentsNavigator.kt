@@ -28,4 +28,5 @@ class MainActivityFragmentsNavigator {
         val contactsListFragment = ContactEditorFragment.newInstance(contactIndex)
         transaction.replace(R.id.main_activity_content_frame_layout, contactsListFragment).commit()
     }
+
 }

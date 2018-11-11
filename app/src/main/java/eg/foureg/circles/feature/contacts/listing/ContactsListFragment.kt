@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
+import android.widget.LinearLayout
 import eg.foureg.circles.R
 import eg.foureg.circles.common.ui.BaseFragment
 import eg.foureg.circles.contacts.ContactData
@@ -37,7 +37,7 @@ class ContactsListFragment : BaseFragment() {
         val view = inflater.inflate(R.layout.fragment_contacts_list, container, false)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.fragment_contacts_list_recycler_view)
-        val progressBar: ProgressBar = view.findViewById(R.id.fragment_contacts_list_loading_progress)
+        val progressBarLayout: LinearLayout = view.findViewById(R.id.fragment_contacts_list_loading_progress_layout)
         val context = activity as Context
 
         recyclerView.setHasFixedSize(true)
@@ -52,7 +52,7 @@ class ContactsListFragment : BaseFragment() {
         Observable.fromCallable {
             disposable = viewModel.loadContacts(activity as Context)
                     .subscribe {
-                        progressBar.visibility = View.GONE
+                        progressBarLayout.visibility = View.GONE
                     }
         }.subscribe()
 

@@ -2,6 +2,8 @@
     <string name="app_name" translatable="false">Circles</string>
     <string name="txt_contacts_list_title">Phone book</string>
 
+    <string name="txt_contacts_list_loading_message">Loading contacts …</string>
+
     <string name="txt_contact_editor_name_hint">Enter Contact Name</string>
     <string name="txt_contact_editor_phone_number_hint">Enter Phone Number</string>
     <string name="txt_contact_editor_email_hint">Enter Email Address</string>

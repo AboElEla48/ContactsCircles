@@ -111,7 +111,7 @@ class ContactsRetriever {
                 val email = emailsCursor.getString(emailsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
                 emails.add(email)
 
-                Logger.debug(TAG, "ID: " + id + ", Email: " + email)
+                Logger.error(TAG, "ID: " + id + ", Email: " + email)
             }
 
             emailsCursor.close()

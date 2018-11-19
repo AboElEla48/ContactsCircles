@@ -1,9 +1,8 @@
 package eg.foureg.circles.contacts
 
-import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Context
 import android.provider.ContactsContract
-import android.content.ContentValues
 import eg.foureg.circles.common.Logger
 import io.reactivex.Observable
 
@@ -16,12 +15,12 @@ class ContactsEditor {
 
             contentValues.put(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, contactNewName)
 
-            val whereClause = ContactsContract.Data.RAW_CONTACT_ID+ " = " + contactID
+            val whereClause = ContactsContract.Data.RAW_CONTACT_ID + " =? " + contactID
 
-//            val update = context.contentResolver.update(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-//                    contentValues,
-//                    whereClause,
-//                    null)
+            val update = context.contentResolver.update(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    contentValues,
+                    whereClause,
+                    null)
 
 
         }

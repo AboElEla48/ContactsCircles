@@ -28,7 +28,7 @@ class ContactsModelTest {
         duplicateContactsList.add(createDummyContact("c1", "0101", "0177", "1@g.com", "88@g.com", "notes1"))
 
         contactModel.removeDuplicatesFromMode(duplicateContactsList)
-                .subscribe({ contacts: List<ContactData> ->
+                .subscribe{ contacts: List<ContactData> ->
                     Assert.assertTrue(contacts.size == 3)
 
                     Assert.assertTrue(contacts.get(0).name.equals("c1"))
@@ -37,7 +37,7 @@ class ContactsModelTest {
 
                     Assert.assertTrue(contacts.get(0).phones?.size == 3)
 
-                })
+                }
     }
 
     fun createDummyContact(name: String, p1: String, p2: String, e1: String, e2: String, notes: String): ContactData {

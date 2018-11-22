@@ -25,14 +25,14 @@ class ContactsListAdapter(val context: Context, val contacts: List<ContactData>?
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
         val viewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.fragment_contacts_list_item, parent, false))
 
-        viewHolder.layout.setOnClickListener({ view: View? ->
+        viewHolder.layout.setOnClickListener{ view: View? ->
             val itemIndex = view?.tag as Int
 
             val msg = Message()
             msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACT_DETAILS
             msg.data.put(MainActivityMessages.DATA_PARAM_CONTACT_INDEX, itemIndex)
             MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
-        })
+        }
 
         return viewHolder
     }

@@ -30,17 +30,20 @@ class ContactsRetriever {
 
         // iterate contactsCursor
         while (contactsCursor!!.moveToNext()) {
+            val id = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.Data.RAW_CONTACT_ID))
+
             val emailID = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
 
             val name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val phoneNumber = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
 
-            Logger.error(TAG, "Name: " + name + ", Phone Number:" + phoneNumber)
+            Logger.error(TAG, "ID: " + id + ", Name: " + name + ", Phone Number:" + phoneNumber)
 
             val photoID = contactsCursor.getInt(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_ID))
 
             // extract contact
             val contactData = ContactData()
+            contactData.id = id
             contactData.name = name
 
             contactData.phones?.add(phoneNumber)
@@ -62,11 +65,11 @@ class ContactsRetriever {
      */
     fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): ArrayList<ContactData>? {
         Observable.fromIterable(contactsList)
-                .blockingSubscribe({ contact: ContactData? ->
+                .blockingSubscribe{ contact: ContactData? ->
                     if (contact != null && contact.photoID != 0) {
                         contact.image = fetchContactImage(context, contact.photoID)
                     }
-                })
+                }
 
         return contactsList
     }
@@ -92,7 +95,7 @@ class ContactsRetriever {
     /**
      * Load email address of given contact
      */
-    private fun loadEmailAddress(id: String, contentResolver: ContentResolver): ArrayList<String> {
+    fun loadEmailAddress(id: String, contentResolver: ContentResolver): ArrayList<String> {
 
         // Open content resolver to retrieve contactsCursor
         val emailsCursor = contentResolver.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI,
@@ -103,14 +106,16 @@ class ContactsRetriever {
 
         val emails: ArrayList<String> = ArrayList()
 
-        while (emailsCursor.moveToNext()) {
-            val email = emailsCursor.getString(emailsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
-            emails.add(email)
+        if(emailsCursor != null) {
+            while (emailsCursor.moveToNext()) {
+                val email = emailsCursor.getString(emailsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
+                emails.add(email)
 
-            Logger.error(TAG, "ID: " + id + ", Email: " + email)
+                Logger.error(TAG, "ID: " + id + ", Email: " + email)
+            }
+
+            emailsCursor.close()
         }
-
-        emailsCursor.close()
         return emails
     }
 

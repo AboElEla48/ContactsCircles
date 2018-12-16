@@ -2,9 +2,12 @@ package eg.foureg.circles.feature.contacts.models
 
 import android.content.Context
 import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.contacts.ContactsEditor
 import eg.foureg.circles.contacts.ContactsRetriever
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 open class ContactsModel protected constructor() {
 
@@ -71,5 +74,18 @@ open class ContactsModel protected constructor() {
             emitter.onNext(contactsList)
             emitter.onComplete()
         }
+    }
+
+    fun deleteContact(context: Context, contactIndex: Int, phones : List<String>, listener : Observable<Boolean>) {
+        Observable.fromIterable(phones)
+                .subscribe { phoneNumber ->
+                    ContactsEditor().deleteContact(context, phoneNumber)
+
+                    // delete contact from loaded contacts list
+                    ContactsModel.getInstance().contactsList.removeAt(contactIndex)
+
+                    listener.subscribe()
+
+                }.dispose()
     }
 }

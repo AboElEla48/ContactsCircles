@@ -1,12 +1,12 @@
 package eg.foureg.circles.feature.contacts.view
 
 
+import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -16,7 +16,6 @@ import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
 import eg.foureg.circles.feature.main.MainActivity
-import eg.foureg.circles.feature.main.MainActivityFragmentsNavigator
 import eg.foureg.circles.feature.main.MainActivityMessages
 import io.reactivex.Observable
 import kotlin.reflect.KClass
@@ -107,14 +106,46 @@ class ContactViewerFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_item_contact_viewer_delete -> {
-                contactViewViewModel.deleteContact(context!!, Observable.create { emitter ->
-                    val msg = Message()
-                    msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
-                    MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
-                })
+                deleteContact()
             }
         }
         return super.onOptionsItemSelected(item)
+
+    }
+
+    /**
+     * Delete current displayed contact
+     */
+    private fun deleteContact(){
+
+        // Initialize a new instance of
+        val builder = AlertDialog.Builder(context)
+
+        // Set the alert dialog title
+        builder.setTitle(getString(R.string.txt_confirm_delete_contact_title))
+
+        // Display a message on alert dialog
+        builder.setMessage(getString(R.string.txt_confirm_delete_contact_msg))
+
+        // Set a positive button and its click listener on alert dialog
+        builder.setPositiveButton(getString(R.string.txt_confirm_delete_ok_btn)){dialog, which ->
+            contactViewViewModel.deleteContact(context!!, Observable.create {
+                val msg = Message()
+                msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
+                MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+            })
+        }
+
+
+        // Display a negative button on alert dialog
+        builder.setNegativeButton(getString(R.string.txt_confirm_delete_no_btn)){dialog,which ->
+        }
+
+        // Finally, make the alert dialog using builder
+        val dialog: AlertDialog = builder.create()
+
+        // Display the alert dialog on app interface
+        dialog.show()
 
     }
 

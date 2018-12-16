@@ -12,10 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import eg.foureg.circles.R
+import eg.foureg.circles.common.message.data.Message
+import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
 import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.feature.main.MainActivity
+import eg.foureg.circles.feature.main.MainActivityMessages
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.fragment_contacts_list.view.*
+import kotlin.reflect.KClass
 
 /**
  * Fragment for listing contacts
@@ -39,6 +45,13 @@ class ContactsListFragment : BaseFragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.fragment_contacts_list_recycler_view)
         val progressBarLayout: LinearLayout = view.findViewById(R.id.fragment_contacts_list_loading_progress_layout)
         val context = activity as Context
+
+        view.fragment_contents_list_add_contact_floating_button.setOnClickListener { listener ->
+            val msg = Message()
+
+            msg.id = MainActivityMessages.MSG_ID_ADD_NEW_CONTACT
+            MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+        }
 
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(context)

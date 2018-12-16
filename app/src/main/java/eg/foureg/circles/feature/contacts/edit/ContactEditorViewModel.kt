@@ -20,12 +20,14 @@ class ContactEditorViewModel : ViewModel() {
      * init contact value
      */
     fun initContact(contactIndex : Int?) {
-        val contactVal : ContactData = ContactsModel.getInstance().contactsList.get(contactIndex?:0)
+        if(contactIndex!! > -1) {
+            val contactVal: ContactData = ContactsModel.getInstance().contactsList.get(contactIndex)
 
-        contactName.value = contactVal.name
-        phones.value = contactVal.phones
-        emails.value = contactVal.emails
-        image.value = contactVal.image
+            contactName.value = contactVal.name
+            phones.value = contactVal.phones
+            emails.value = contactVal.emails
+            image.value = contactVal.image
+        }
     }
 
     /**

@@ -12,7 +12,12 @@ import eg.foureg.circles.common.ui.BaseActivity
 
 class MainActivity : BaseActivity() {
     val mainActivityFragmentsNavigator : MainActivityFragmentsNavigator = MainActivityFragmentsNavigator()
-    val PERMISSION_CONTACT_ID = 15
+    var tempEditContactIndex = 0
+
+    companion object {
+        const val PERMISSION_READ_CONTACT_ID = 150
+        const val PERMISSION_WRITE_CONTACT_ID = 151
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +29,7 @@ class MainActivity : BaseActivity() {
             }
             else {
                 requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS),
-                        PERMISSION_CONTACT_ID)
+                        PERMISSION_READ_CONTACT_ID)
             }
         }
         else {
@@ -37,9 +42,18 @@ class MainActivity : BaseActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when(requestCode) {
-            PERMISSION_CONTACT_ID -> {
+            PERMISSION_READ_CONTACT_ID -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mainActivityFragmentsNavigator.setContactsListFragment(this)
+                }
+                else {
+                    Toast.makeText(this, getString(R.string.txt_permission_must_be_granted), Toast.LENGTH_LONG).show()
+                }
+            }
+
+            PERMISSION_WRITE_CONTACT_ID -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mainActivityFragmentsNavigator.setContactEditorFragment(this, tempEditContactIndex)
                 }
                 else {
                     Toast.makeText(this, getString(R.string.txt_permission_must_be_granted), Toast.LENGTH_LONG).show()
@@ -61,10 +75,30 @@ class MainActivity : BaseActivity() {
                 mainActivityFragmentsNavigator.setContactViewFragment(this, contactIndex)
             }
 
+            MainActivityMessages.MSG_ID_ADD_NEW_CONTACT -> {
+                viewEditor(-1)
+            }
+
             MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS -> {
                 val contactIndex = message.data.get(MainActivityMessages.DATA_PARAM_CONTACT_INDEX) as Int
+                viewEditor(contactIndex)
+            }
+        }
+    }
+
+    private fun viewEditor(contactIndex : Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
+            if (checkSelfPermission(Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
                 mainActivityFragmentsNavigator.setContactEditorFragment(this, contactIndex)
             }
+            else {
+                tempEditContactIndex = contactIndex
+                requestPermissions(arrayOf(Manifest.permission.WRITE_CONTACTS),
+                        PERMISSION_WRITE_CONTACT_ID)
+            }
+        }
+        else {
+            mainActivityFragmentsNavigator.setContactEditorFragment(this, contactIndex)
         }
     }
 }

@@ -76,6 +76,12 @@ open class ContactsModel protected constructor() {
         }
     }
 
+    fun addNewContact(context: Context, contactData: ContactData, listener : Observable<Boolean>) {
+        ContactsEditor().insertNewContact(context, contactData)
+
+        listener.subscribe()
+    }
+
     fun deleteContact(context: Context, contactIndex: Int, phones : List<String>, listener : Observable<Boolean>) {
         Observable.fromIterable(phones)
                 .subscribe { phoneNumber ->

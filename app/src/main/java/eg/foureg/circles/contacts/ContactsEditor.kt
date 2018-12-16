@@ -4,14 +4,31 @@ import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
 import android.provider.ContactsContract
+import android.provider.ContactsContract.CommonDataKinds.Phone
 import eg.foureg.circles.common.Logger
 import io.reactivex.Observable
 
 
 class ContactsEditor {
-    fun updateContactName(context: Context, contactID : String, contactNewName : String) : Observable<Boolean> {
+    fun insertNewContact(context: Context, contact: ContactData) {
+        Observable.fromIterable(contact.phones)
+                .blockingSubscribe { phoneNumber ->
+                    val values = ContentValues()
+//        values.put(Data.RAW_CONTACT_ID, 1)
+                    values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+                    values.put(Phone.NUMBER, phoneNumber)
+                    values.put(Phone.TYPE, Phone.TYPE_MOBILE)
+                    values.put(Phone.LABEL, contact.name)
+                    context.getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values)
 
-        return Observable.create { // Create content values object.
+                }
+
+    }
+
+    fun updateContactName(context: Context, contactID: String, contactNewName: String): Observable<Boolean> {
+
+        return Observable.create {
+            // Create content values object.
             val contentValues = ContentValues()
 
             contentValues.put(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, contactNewName)
@@ -29,9 +46,10 @@ class ContactsEditor {
 
     }
 
-    fun updateContactNumbers(context: Context, contactID: String, phoneNumber: String) : Observable<Boolean> {
+    fun updateContactNumbers(context: Context, contactID: String, phoneNumber: String): Observable<Boolean> {
 
-        return Observable.create { // Create content values object.
+        return Observable.create {
+            // Create content values object.
             val contentValues = ContentValues()
 
             contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
@@ -51,7 +69,7 @@ class ContactsEditor {
 
     }
 
-    fun deleteContact(context: Context, phoneNumber : String) {
+    fun deleteContact(context: Context, phoneNumber: String) {
         val contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber))
         val cur = context.getContentResolver().query(contactUri, null, null, null, null)
         try {
@@ -75,7 +93,7 @@ class ContactsEditor {
 
     }
 
-    fun getContactByID(context: Context, contactID : String) : ContactData {
+    fun getContactByID(context: Context, contactID: String): ContactData {
         // Create where condition clause
         val whereClause = ContactsContract.RawContacts._ID + " = '" + contactID + "'"
 

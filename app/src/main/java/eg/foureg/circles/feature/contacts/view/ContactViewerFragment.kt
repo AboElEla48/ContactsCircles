@@ -16,6 +16,7 @@ import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
 import eg.foureg.circles.feature.main.MainActivity
+import eg.foureg.circles.feature.main.MainActivityFragmentsNavigator
 import eg.foureg.circles.feature.main.MainActivityMessages
 import io.reactivex.Observable
 import kotlin.reflect.KClass
@@ -106,7 +107,11 @@ class ContactViewerFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_item_contact_viewer_delete -> {
-                contactViewViewModel.deleteContact(context!!)
+                contactViewViewModel.deleteContact(context!!, Observable.create { emitter ->
+                    val msg = Message()
+                    msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
+                    MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+                })
             }
         }
         return super.onOptionsItemSelected(item)

@@ -16,11 +16,13 @@ import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
 import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.feature.contacts.models.ContactsModel
 import eg.foureg.circles.feature.main.MainActivity
 import eg.foureg.circles.feature.main.MainActivityMessages
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_contacts_list.view.*
+import org.koin.android.ext.android.inject
 import kotlin.reflect.KClass
 
 /**
@@ -31,6 +33,8 @@ class ContactsListFragment : BaseFragment() {
 
     private var viewModel: ContactsListViewModel = ContactsListViewModel()
     private lateinit var disposable: Disposable
+
+    val contactsModel : ContactsModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

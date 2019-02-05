@@ -13,11 +13,11 @@ import android.content.ContentResolver
 /**
  * Retriever class for contacts saved on device
  */
-class ContactsRetriever {
+class ContactsRetriever : ContactsProvider {
     /**
      * Load contacts book
      */
-    fun loadContacts(context: Context): ArrayList<ContactData> {
+    override fun loadContacts(context: Context): ArrayList<ContactData> {
 
         // Open content resolver to retrieve contactsCursor
         val contactsCursor = context.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -63,7 +63,7 @@ class ContactsRetriever {
     /**
      * load contacts images in different stream
      */
-    fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): ArrayList<ContactData>? {
+    override fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): ArrayList<ContactData>? {
         Observable.fromIterable(contactsList)
                 .blockingSubscribe{ contact: ContactData? ->
                     if (contact != null && contact.photoID != 0) {

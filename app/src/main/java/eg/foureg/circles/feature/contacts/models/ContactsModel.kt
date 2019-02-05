@@ -3,20 +3,20 @@ package eg.foureg.circles.feature.contacts.models
 import android.content.Context
 import eg.foureg.circles.contacts.ContactData
 import eg.foureg.circles.contacts.ContactsEditor
-import eg.foureg.circles.contacts.ContactsRetriever
+import eg.foureg.circles.contacts.ContactsProvider
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 open class ContactsModel protected constructor() {
 
     var contactsList: ArrayList<ContactData> = ArrayList()
+    lateinit var contactsProvider : ContactsProvider
 
     companion object {
         private val model: ContactsModel = ContactsModel()
 
-        fun getInstance(): ContactsModel {
+        fun getInstance(provider: ContactsProvider): ContactsModel {
+            model.contactsProvider = provider
             return model
         }
     }
@@ -24,7 +24,7 @@ open class ContactsModel protected constructor() {
 
     fun loadContacts(context: Context): Observable<ArrayList<ContactData>> {
         return if (contactsList.size == 0) {
-            Observable.fromCallable { ContactsRetriever().loadContacts(context) }
+            Observable.fromCallable { contactsProvider.loadContacts(context) }
 
         } else {
             Observable.fromCallable { contactsList }
@@ -34,7 +34,7 @@ open class ContactsModel protected constructor() {
 
 
     fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): Observable<ArrayList<ContactData>?> {
-        return Observable.fromCallable { ContactsRetriever().loadContactsImages(context, contactsList) }
+        return Observable.fromCallable { contactsProvider.loadContactsImages(context, contactsList) }
     }
 
     /**
@@ -88,7 +88,7 @@ open class ContactsModel protected constructor() {
                     ContactsEditor().deleteContact(context, phoneNumber)
 
                     // delete contact from loaded contacts list
-                    ContactsModel.getInstance().contactsList.removeAt(contactIndex)
+                    contactsList.removeAt(contactIndex)
 
                     listener.subscribe()
 

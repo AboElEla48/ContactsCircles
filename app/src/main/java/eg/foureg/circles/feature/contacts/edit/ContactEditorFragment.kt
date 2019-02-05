@@ -83,7 +83,7 @@ class ContactEditorFragment : BaseFragment() {
                     saveContact(contactNameEditText)
                 }
 
-        contactEditorViewModel.initContact(contactIndex)
+        contactEditorViewModel.initContact(activity as Context, contactIndex)
 
         return view
     }

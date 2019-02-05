@@ -1,5 +1,6 @@
 package eg.foureg.circles.feature.contacts.view
 
+import android.app.Activity
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Context
@@ -7,6 +8,7 @@ import android.graphics.Bitmap
 import eg.foureg.circles.contacts.ContactData
 import eg.foureg.circles.feature.contacts.models.ContactsModel
 import io.reactivex.Observable
+import org.koin.android.ext.android.get
 
 
 class ContactViewViewModel : ViewModel() {
@@ -17,8 +19,12 @@ class ContactViewViewModel : ViewModel() {
 
     var contactIndex: Int = 0
 
-    fun initContact(contactIndex: Int?) {
-        val contactVal: ContactData = ContactsModel.getInstance().contactsList.get(contactIndex
+    lateinit var contactsModel : ContactsModel
+
+    fun initContact(context: Context, contactIndex: Int?) {
+        contactsModel = (context as Activity).get()
+
+        val contactVal: ContactData = contactsModel.contactsList.get(contactIndex
                 ?: 0)
 
         this.contactIndex = contactIndex!!
@@ -30,6 +36,9 @@ class ContactViewViewModel : ViewModel() {
     }
 
     fun deleteContact(context: Context, listener : Observable<Boolean>) {
-        ContactsModel.getInstance().deleteContact(context, contactIndex, phones.value!!, listener)
+
+        contactsModel = (context as Activity).get()
+
+        contactsModel.deleteContact(context, contactIndex, phones.value!!, listener)
     }
 }

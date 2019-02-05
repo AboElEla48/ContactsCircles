@@ -4,6 +4,7 @@ package eg.foureg.circles.feature.contacts.view
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -88,7 +89,7 @@ class ContactViewerFragment : BaseFragment() {
             MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
         }
 
-        contactViewViewModel.initContact(contactIndex)
+        contactViewViewModel.initContact(activity as Context, contactIndex)
 
         setHasOptionsMenu(true)
 

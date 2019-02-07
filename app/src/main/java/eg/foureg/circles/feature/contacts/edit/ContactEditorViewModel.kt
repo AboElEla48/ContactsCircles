@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModel
 import android.content.Context
 import android.graphics.Bitmap
 import eg.foureg.circles.contacts.ContactData
-import eg.foureg.circles.contacts.ContactsEditor
+import eg.foureg.circles.contacts.ContactsEditorImpl
 import eg.foureg.circles.feature.contacts.models.ContactsModel
 import io.reactivex.Observable
 import org.koin.android.ext.android.get
@@ -44,6 +44,6 @@ class ContactEditorViewModel : ViewModel() {
 
         val contactVal : ContactData = contactsModel.contactsList.get(contactIndex?:0)
 
-        return ContactsEditor().updateContactName(context, contactVal.id, contactName.value!!)
+        return ContactsEditorImpl().updateContactName(context, contactVal.id, contactName.value!!)
     }
 }

@@ -3,28 +3,32 @@ package eg.foureg.circles.feature.contacts.models
 import android.content.Context
 import eg.foureg.circles.contacts.ContactData
 import eg.foureg.circles.contacts.ContactsEditor
-import eg.foureg.circles.contacts.ContactsProvider
+import eg.foureg.circles.contacts.ContactsEditorImpl
+import eg.foureg.circles.contacts.ContactsRetriever
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
 open class ContactsModel protected constructor() {
 
     var contactsList: ArrayList<ContactData> = ArrayList()
-    lateinit var contactsProvider : ContactsProvider
+    lateinit var contactsRetriever : ContactsRetriever
+    lateinit var contactsEditor: ContactsEditor
 
     companion object {
         private val model: ContactsModel = ContactsModel()
 
-        fun getInstance(provider: ContactsProvider): ContactsModel {
-            model.contactsProvider = provider
+        fun getInstance(retriever: ContactsRetriever, editor: ContactsEditor): ContactsModel {
+            model.contactsRetriever = retriever
+            model.contactsEditor = editor
             return model
         }
+
     }
 
 
     fun loadContacts(context: Context): Observable<ArrayList<ContactData>> {
         return if (contactsList.size == 0) {
-            Observable.fromCallable { contactsProvider.loadContacts(context) }
+            Observable.fromCallable { contactsRetriever.loadContacts(context) }
 
         } else {
             Observable.fromCallable { contactsList }
@@ -34,7 +38,7 @@ open class ContactsModel protected constructor() {
 
 
     fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): Observable<ArrayList<ContactData>?> {
-        return Observable.fromCallable { contactsProvider.loadContactsImages(context, contactsList) }
+        return Observable.fromCallable { contactsRetriever.loadContactsImages(context, contactsList) }
     }
 
     /**
@@ -77,7 +81,7 @@ open class ContactsModel protected constructor() {
     }
 
     fun addNewContact(context: Context, contactData: ContactData, listener : Observable<Boolean>) {
-        ContactsEditor().insertNewContact(context, contactData)
+        ContactsEditorImpl().insertNewContact(context, contactData)
 
         listener.subscribe()
     }
@@ -85,7 +89,7 @@ open class ContactsModel protected constructor() {
     fun deleteContact(context: Context, contactIndex: Int, phones : List<String>, listener : Observable<Boolean>) {
         Observable.fromIterable(phones)
                 .subscribe { phoneNumber ->
-                    ContactsEditor().deleteContact(context, phoneNumber)
+                    ContactsEditorImpl().deleteContact(context, phoneNumber)
 
                     // delete contact from loaded contacts list
                     contactsList.removeAt(contactIndex)

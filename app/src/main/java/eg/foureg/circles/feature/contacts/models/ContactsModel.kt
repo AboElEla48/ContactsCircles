@@ -80,10 +80,8 @@ open class ContactsModel protected constructor() {
         }
     }
 
-    fun addNewContact(context: Context, contactData: ContactData, listener : Observable<Boolean>) {
-        ContactsEditorImpl().insertNewContact(context, contactData)
-
-        listener.subscribe()
+    fun addNewContact(context: Context, contactData: ContactData) {
+        contactsEditor.insertNewContact(context, contactData)
     }
 
     fun deleteContact(context: Context, contactIndex: Int, phones : List<String>, listener : Observable<Boolean>) {

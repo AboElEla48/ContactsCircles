@@ -36,14 +36,20 @@ class ContactEditorViewModel : ViewModel() {
         }
     }
 
+    fun saveContact(context: Context, contactData: ContactData) {
+        contactsModel = (context as Activity).get()
+        contactsModel.addNewContact(context, contactData)
+    }
+
     /**
-     * save contact
+     * update contact
      */
-    fun saveContact(context: Context, contactIndex: Int?) : Observable<Boolean> {
+    fun updateContact(context: Context, contactIndex: Int?) : Observable<Boolean> {
         contactsModel = (context as Activity).get()
 
         val contactVal : ContactData = contactsModel.contactsList.get(contactIndex?:0)
 
+//        contactsModel.addNewContact(context, contactVal)
         return ContactsEditorImpl().updateContactName(context, contactVal.id, contactName.value!!)
     }
 }

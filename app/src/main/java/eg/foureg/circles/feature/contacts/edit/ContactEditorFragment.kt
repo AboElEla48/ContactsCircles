@@ -15,11 +15,14 @@ import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
+import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.feature.contacts.models.ContactsModel
 import eg.foureg.circles.feature.main.MainActivity
 import eg.foureg.circles.feature.main.MainActivityMessages
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.koin.android.ext.android.inject
 import kotlin.reflect.KClass
 
 
@@ -35,6 +38,8 @@ class ContactEditorFragment : BaseFragment() {
     private var emailEditorsViewsList: ArrayList<EditText> = ArrayList()
 
     private lateinit var progressBar: ProgressBar
+
+    val contactsModel : ContactsModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,11 +149,21 @@ class ContactEditorFragment : BaseFragment() {
                 }
 
         // save contact
-        contactEditorViewModel.saveContact(activity as Context, contactIndex)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+        if(contactIndex == -1) {
 
+            // New contact
+            val contactData = ContactData()
+            contactData.name = contactEditorViewModel.contactName.value.toString()
+            contactData.phones?.add("01000000000000")
+            contactEditorViewModel.saveContact(activity as Context, contactData)
+        }
+        else {
+            // existing contact
+            contactEditorViewModel.updateContact(activity as Context, contactIndex)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe()
+        }
         progressBar.visibility = View.GONE
 
         val msg = Message()

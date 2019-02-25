@@ -10,11 +10,11 @@ import io.reactivex.Observable
 
 
 class ContactsEditorImpl : ContactsEditor{
-    fun insertNewContact(context: Context, contact: ContactData) {
+    override fun insertNewContact(context: Context, contact: ContactData) {
         Observable.fromIterable(contact.phones)
                 .blockingSubscribe { phoneNumber ->
                     val values = ContentValues()
-//        values.put(Data.RAW_CONTACT_ID, 1)
+        values.put(ContactsContract.Data.RAW_CONTACT_ID, 1)
                     values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
                     values.put(Phone.NUMBER, phoneNumber)
                     values.put(Phone.TYPE, Phone.TYPE_MOBILE)

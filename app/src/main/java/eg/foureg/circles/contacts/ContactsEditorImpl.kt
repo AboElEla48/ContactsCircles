@@ -7,19 +7,31 @@ import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import eg.foureg.circles.common.Logger
 import io.reactivex.Observable
+import android.provider.ContactsContract.RawContacts
+import android.content.ContentUris
 
 
-class ContactsEditorImpl : ContactsEditor{
+
+
+
+
+class ContactsEditorImpl : ContactsEditor {
     override fun insertNewContact(context: Context, contact: ContactData) {
         Observable.fromIterable(contact.phones)
                 .blockingSubscribe { phoneNumber ->
                     val values = ContentValues()
-        values.put(ContactsContract.Data.RAW_CONTACT_ID, 1)
+
+                    val rawContactUri = context.contentResolver.insert(
+                            RawContacts.CONTENT_URI, values)
+                    val rawContactId = ContentUris.parseId(rawContactUri).toInt()
+
+                    values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
                     values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
                     values.put(Phone.NUMBER, phoneNumber)
                     values.put(Phone.TYPE, Phone.TYPE_MOBILE)
-                    values.put(Phone.LABEL, contact.name)
-                    context.getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values)
+                    values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, contact.name)
+                    val uri = context.getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values)
+                    Logger.error("ContactsEditorImpl", uri.toString())
 
                 }
 

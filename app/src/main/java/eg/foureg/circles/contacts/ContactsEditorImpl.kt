@@ -26,12 +26,14 @@ class ContactsEditorImpl : ContactsEditor {
                     val rawContactId = ContentUris.parseId(rawContactUri).toInt()
 
                     values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+
                     values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+                    values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, contact.name)
                     values.put(Phone.NUMBER, phoneNumber)
                     values.put(Phone.TYPE, Phone.TYPE_MOBILE)
-                    values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, contact.name)
+
                     val uri = context.getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values)
-                    Logger.error("ContactsEditorImpl", uri.toString())
+                    Logger.error(TAG, uri.toString())
 
                 }
 
@@ -141,5 +143,9 @@ class ContactsEditorImpl : ContactsEditor {
 
         return contactData
 
+    }
+
+    companion object {
+        private const val TAG = "ContactsEditorImpl"
     }
 }

@@ -24,13 +24,15 @@ class ContactsEditorImpl : ContactsEditor {
                     val rawContactUri = context.contentResolver.insert(
                             RawContacts.CONTENT_URI, values)
                     val rawContactId = ContentUris.parseId(rawContactUri).toInt()
+                    Logger.error(TAG, "Raw Contact uri $rawContactUri")
 
-                    // Contact Name
+                            // Contact Name
                     values.clear();
                     values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
                     values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
                     values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, contact.name)
-                    Logger.error(TAG, "URI after inserting contact name: " + context.contentResolver.insert(ContactsContract.Data.CONTENT_URI, values))
+                    Logger.error(TAG, "URI after inserting contact name: "
+                            + context.contentResolver.insert(ContactsContract.Data.CONTENT_URI, values))
 
                     // Contact data
                     values.clear()
@@ -38,7 +40,8 @@ class ContactsEditorImpl : ContactsEditor {
                     values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
                     values.put(Phone.NUMBER, phoneNumber)
                     values.put(Phone.TYPE, Phone.TYPE_MOBILE)
-                    Logger.error(TAG, "URI after inserting phone" + context.contentResolver.insert(android.provider.ContactsContract.Data.CONTENT_URI, values))
+                    Logger.error(TAG, "URI after inserting phone"
+                            + context.contentResolver.insert(android.provider.ContactsContract.Data.CONTENT_URI, values))
 
                 }
 

@@ -25,15 +25,20 @@ class ContactsEditorImpl : ContactsEditor {
                             RawContacts.CONTENT_URI, values)
                     val rawContactId = ContentUris.parseId(rawContactUri).toInt()
 
+                    // Contact Name
+                    values.clear();
                     values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
-
                     values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
                     values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, contact.name)
+                    Logger.error(TAG, "URI after inserting contact name: " + context.contentResolver.insert(ContactsContract.Data.CONTENT_URI, values))
+
+                    // Contact data
+                    values.clear()
+                    values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+                    values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
                     values.put(Phone.NUMBER, phoneNumber)
                     values.put(Phone.TYPE, Phone.TYPE_MOBILE)
-
-                    val uri = context.getContentResolver().insert(android.provider.ContactsContract.Data.CONTENT_URI, values)
-                    Logger.error(TAG, uri.toString())
+                    Logger.error(TAG, "URI after inserting phone" + context.contentResolver.insert(android.provider.ContactsContract.Data.CONTENT_URI, values))
 
                 }
 
@@ -85,14 +90,14 @@ class ContactsEditorImpl : ContactsEditor {
 
     fun deleteContact(context: Context, phoneNumber: String) {
         val contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber))
-        val cur = context.getContentResolver().query(contactUri, null, null, null, null)
+        val cur = context.contentResolver.query(contactUri, null, null, null, null)
         try {
             if (cur!!.moveToFirst()) {
                 do {
 
                     val lookupKey = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY))
                     val uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI, lookupKey)
-                    context.getContentResolver().delete(uri, null, null)
+                    context.contentResolver.delete(uri, null, null)
 
                 } while (cur.moveToNext())
 
@@ -121,7 +126,7 @@ class ContactsEditorImpl : ContactsEditor {
 
         if (contactsCursor != null) {
             // Get contact count that has same display name, generally it should be one.
-            val queryResultCount = contactsCursor.getCount()
+            val queryResultCount = contactsCursor.count
 
             // This check is used to avoid cursor index out of bounds exception. android.database.CursorIndexOutOfBoundsException
             if (queryResultCount > 0) {

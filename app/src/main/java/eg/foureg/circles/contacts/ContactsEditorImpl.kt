@@ -11,28 +11,26 @@ import android.provider.ContactsContract.RawContacts
 import android.content.ContentUris
 
 
-
-
-
-
 class ContactsEditorImpl : ContactsEditor {
     override fun insertNewContact(context: Context, contact: ContactData) {
         Observable.fromIterable(contact.phones)
                 .blockingSubscribe { phoneNumber ->
-                    val values = ContentValues()
 
+                    val values = ContentValues()
                     val rawContactUri = context.contentResolver.insert(
                             RawContacts.CONTENT_URI, values)
                     val rawContactId = ContentUris.parseId(rawContactUri).toInt()
                     Logger.error(TAG, "Raw Contact uri $rawContactUri")
 
-                            // Contact Name
+                    // Contact Name
                     values.clear();
                     values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
                     values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
                     values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, contact.name)
-                    Logger.error(TAG, "URI after inserting contact name: "
-                            + context.contentResolver.insert(ContactsContract.Data.CONTENT_URI, values))
+                    var numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI, values,
+                            ContactsContract.Data.RAW_CONTACT_ID + "=? and " + ContactsContract.Data.MIMETYPE  + "=?",
+                            arrayOf("" + rawContactId, Phone.CONTENT_ITEM_TYPE))
+                    Logger.error(TAG, "Number of updated contacts by contact name: $numberOfUpdatedContacts")
 
                     // Contact data
                     values.clear()
@@ -40,8 +38,10 @@ class ContactsEditorImpl : ContactsEditor {
                     values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
                     values.put(Phone.NUMBER, phoneNumber)
                     values.put(Phone.TYPE, Phone.TYPE_MOBILE)
-                    Logger.error(TAG, "URI after inserting phone"
-                            + context.contentResolver.insert(android.provider.ContactsContract.Data.CONTENT_URI, values))
+                    numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI, values,
+                            ContactsContract.Data.RAW_CONTACT_ID + "=? and " + ContactsContract.Data.MIMETYPE  + "=?",
+                            arrayOf("" + rawContactId, Phone.CONTENT_ITEM_TYPE))
+                    Logger.error(TAG, "Number of updated contacts by phone number: $numberOfUpdatedContacts")
 
                 }
 

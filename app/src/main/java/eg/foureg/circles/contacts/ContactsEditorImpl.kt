@@ -1,47 +1,120 @@
 package eg.foureg.circles.contacts
 
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
 import android.provider.ContactsContract
-import android.provider.ContactsContract.CommonDataKinds.Phone
+import android.provider.ContactsContract.RawContacts
 import eg.foureg.circles.common.Logger
 import io.reactivex.Observable
-import android.provider.ContactsContract.RawContacts
-import android.content.ContentUris
+import io.reactivex.schedulers.Schedulers
 
 
 class ContactsEditorImpl : ContactsEditor {
+    /**
+     * Insert empty contact into contacts
+     */
+    private fun insertEmptyContact(context: Context): Int {
+        val values = ContentValues()
+        val rawContactUri = context.contentResolver.insert(
+                RawContacts.CONTENT_URI, values)
+        val rawContactId = ContentUris.parseId(rawContactUri).toInt()
+        Logger.error(TAG, "Raw Contact uri $rawContactUri")
+        Logger.error(TAG, "Raw Contact Id $rawContactId")
+
+        return rawContactId
+    }
+
+    /**
+     * Update contact name of given contact Id
+     */
+    private fun updateContactName(context: Context, rawContactId: Int, contactName: String): Int {
+
+//        val rawContactId = ContentUris.parseId(rawContactUri).toInt()
+
+        val values = ContentValues()
+//        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+//        values.put(ContactsContract.Data.CONTACT_ID, rawContactId)
+//        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+        values.put(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, contactName)
+
+        Logger.error(TAG, "Contact Name to be updated")
+        val numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI,
+                values,
+                null,
+//                ContactsContract.Data.RAW_CONTACT_ID + " = " + rawContactId
+//                + " and " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "'",
+                 null)
+        Logger.error(TAG, "Number of updated contacts by contact name: $numberOfUpdatedContacts")
+
+        return rawContactId
+    }
+
+    /**
+     * Update contact Number of given contact Id
+     */
+    private fun updateContactNumber(context: Context, rawContactId: Int, phoneNumber: String): Int {
+        val values = ContentValues()
+        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+
+        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+        values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
+        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+
+        Logger.error(TAG, "Contact Number to be updated")
+        val numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI,
+                values, null, null )
+//                ContactsContract.Data.RAW_CONTACT_ID + "=? ",
+//                arrayOf("" + rawContactId))
+        Logger.error(TAG, "Number of updated contacts by contact number: $numberOfUpdatedContacts")
+
+        return rawContactId
+    }
+
+    /**
+     * Insert new contact
+     */
     override fun insertNewContact(context: Context, contact: ContactData) {
         Observable.fromIterable(contact.phones)
                 .blockingSubscribe { phoneNumber ->
+                    Observable.fromCallable { insertEmptyContact(context) }
+                            .observeOn(Schedulers.io())
+                            .map { rawContactId ->
+                                updateContactNumber(context, rawContactId, phoneNumber)
+                            }
+                            .observeOn(Schedulers.io())
+//                            .map { rawContactId ->
+//                                updateContactNumber(context, rawContactId, phoneNumber)
+//                            }
+                            .subscribe()
 
-                    val values = ContentValues()
-                    val rawContactUri = context.contentResolver.insert(
-                            RawContacts.CONTENT_URI, values)
-                    val rawContactId = ContentUris.parseId(rawContactUri).toInt()
-                    Logger.error(TAG, "Raw Contact uri $rawContactUri")
 
                     // Contact Name
-                    values.clear();
-                    values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
-                    values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
-                    values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, contact.name)
-                    var numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI, values,
-                            ContactsContract.Data.RAW_CONTACT_ID + "=? and " + ContactsContract.Data.MIMETYPE  + "=?",
-                            arrayOf("" + rawContactId, Phone.CONTENT_ITEM_TYPE))
-                    Logger.error(TAG, "Number of updated contacts by contact name: $numberOfUpdatedContacts")
+
+
+//                    values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+//                    values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, contact.name)
+//                    var numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI, values,
+//                            ContactsContract.Data.RAW_CONTACT_ID + "=? and " + ContactsContract.Data.MIMETYPE  + "=?",
+//                            arrayOf("" + rawContactId, Phone.CONTENT_ITEM_TYPE))
+
+//                    var numberOfUpdatedContacts = context.contentResolver.update(rawContactUri!!,
+//                            values,
+//                            ContactsContract.Data.RAW_CONTACT_ID + "=? and " + ContactsContract.Data.MIMETYPE  + "=?",
+//                            arrayOf("" + rawContactId, Phone.CONTENT_ITEM_TYPE))
+
 
                     // Contact data
-                    values.clear()
-                    values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
-                    values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
-                    values.put(Phone.NUMBER, phoneNumber)
-                    values.put(Phone.TYPE, Phone.TYPE_MOBILE)
-                    numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI, values,
-                            ContactsContract.Data.RAW_CONTACT_ID + "=? and " + ContactsContract.Data.MIMETYPE  + "=?",
-                            arrayOf("" + rawContactId, Phone.CONTENT_ITEM_TYPE))
-                    Logger.error(TAG, "Number of updated contacts by phone number: $numberOfUpdatedContacts")
+//                    values.clear()
+//                    values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+//                    values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+//                    values.put(Phone.NUMBER, phoneNumber)
+//                    values.put(Phone.TYPE, Phone.TYPE_MOBILE)
+//                    numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI, values,
+//                            ContactsContract.Data.RAW_CONTACT_ID + "=? and " + ContactsContract.Data.MIMETYPE  + "=?",
+//                            arrayOf("" + rawContactId, Phone.CONTENT_ITEM_TYPE))
+//                    Logger.error(TAG, "Number of updated contacts by phone number: $numberOfUpdatedContacts")
 
                 }
 

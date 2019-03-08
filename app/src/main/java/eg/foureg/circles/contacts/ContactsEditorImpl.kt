@@ -62,6 +62,11 @@ class ContactsEditorImpl : ContactsEditor {
         values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
         values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
 
+        // change first name
+        values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, "Zabady")
+        //change last name
+        values.put(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, "Family")
+
         Logger.error(TAG, "Contact Number to be updated")
         val numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI,
                 values, null, null )

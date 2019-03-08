@@ -60,7 +60,7 @@ class ContactsEditorImpl : ContactsEditor {
 
         values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
         values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
-        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
 
         Logger.error(TAG, "Contact Number to be updated")
         val numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI,
@@ -80,13 +80,13 @@ class ContactsEditorImpl : ContactsEditor {
                 .blockingSubscribe { phoneNumber ->
                     Observable.fromCallable { insertEmptyContact(context) }
                             .observeOn(Schedulers.io())
+//                            .map { rawContactId ->
+//                                updateContactName(context, rawContactId, contact.name)
+//                            }
+//                            .observeOn(Schedulers.io())
                             .map { rawContactId ->
                                 updateContactNumber(context, rawContactId, phoneNumber)
                             }
-                            .observeOn(Schedulers.io())
-//                            .map { rawContactId ->
-//                                updateContactNumber(context, rawContactId, phoneNumber)
-//                            }
                             .subscribe()
 
 

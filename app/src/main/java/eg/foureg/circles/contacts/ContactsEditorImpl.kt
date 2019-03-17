@@ -56,15 +56,22 @@ class ContactsEditorImpl : ContactsEditor {
      */
     private fun updateContactNumber(context: Context, rawContactId: Int, phoneNumber: String): Int {
         val values = ContentValues()
-        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId + 1)
 
         values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
         values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
-        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
+
+        // change first name
+        values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, "Zabady")
+        //change last name
+        values.put(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, "Family")
+
+//        values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME_PRIMARY, "Contact Given Name")
 
         Logger.error(TAG, "Contact Number to be updated")
-        val numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI,
-                values, null, null )
+        val numberOfUpdatedContacts = context.contentResolver.insert(ContactsContract.Data.CONTENT_URI,
+                values)
 //                ContactsContract.Data.RAW_CONTACT_ID + "=? ",
 //                arrayOf("" + rawContactId))
         Logger.error(TAG, "Number of updated contacts by contact number: $numberOfUpdatedContacts")
@@ -89,32 +96,6 @@ class ContactsEditorImpl : ContactsEditor {
 //                            }
                             .subscribe()
 
-
-                    // Contact Name
-
-
-//                    values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
-//                    values.put(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, contact.name)
-//                    var numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI, values,
-//                            ContactsContract.Data.RAW_CONTACT_ID + "=? and " + ContactsContract.Data.MIMETYPE  + "=?",
-//                            arrayOf("" + rawContactId, Phone.CONTENT_ITEM_TYPE))
-
-//                    var numberOfUpdatedContacts = context.contentResolver.update(rawContactUri!!,
-//                            values,
-//                            ContactsContract.Data.RAW_CONTACT_ID + "=? and " + ContactsContract.Data.MIMETYPE  + "=?",
-//                            arrayOf("" + rawContactId, Phone.CONTENT_ITEM_TYPE))
-
-
-                    // Contact data
-//                    values.clear()
-//                    values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
-//                    values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
-//                    values.put(Phone.NUMBER, phoneNumber)
-//                    values.put(Phone.TYPE, Phone.TYPE_MOBILE)
-//                    numberOfUpdatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI, values,
-//                            ContactsContract.Data.RAW_CONTACT_ID + "=? and " + ContactsContract.Data.MIMETYPE  + "=?",
-//                            arrayOf("" + rawContactId, Phone.CONTENT_ITEM_TYPE))
-//                    Logger.error(TAG, "Number of updated contacts by phone number: $numberOfUpdatedContacts")
 
                 }
 

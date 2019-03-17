@@ -15,15 +15,55 @@ class ContactsEditorImpl : ContactsEditor {
     /**
      * Insert empty contact into contacts
      */
-    private fun insertEmptyContact(context: Context): Int {
+    private fun insertEmptyContact(context: Context): Uri {
         val values = ContentValues()
         val rawContactUri = context.contentResolver.insert(
                 RawContacts.CONTENT_URI, values)
-        val rawContactId = ContentUris.parseId(rawContactUri).toInt()
+
         Logger.error(TAG, "Raw Contact uri $rawContactUri")
+        return rawContactUri
+    }
+
+    private fun updateContactDisplayName(context: Context, rawContactUri: Uri, displayName: String) {
+        val contentValues = ContentValues()
+
+        val rawContactId = ContentUris.parseId(rawContactUri).toInt()
         Logger.error(TAG, "Raw Contact Id $rawContactId")
 
-        return rawContactId
+        contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+
+        // Each contact must has an mime type to avoid java.lang.IllegalArgumentException: mimetype is required error.
+        contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+
+        // Put contact display name value.
+        contentValues.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, displayName)
+
+        val updatedItems = context.contentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues)
+        Logger.error(TAG, "Updated contacts by contact name: $updatedItems")
+
+
+    }
+
+    /**
+     * Insert new contact
+     */
+    override fun insertNewContact(context: Context, contact: ContactData) {
+        Observable.fromIterable(contact.phones)
+                .blockingSubscribe { phoneNumber ->
+                    Observable.fromCallable { insertEmptyContact(context) }
+                            .observeOn(Schedulers.io())
+                            .map { rawContactUri ->
+                                updateContactDisplayName(context, rawContactUri, contact.name)
+                            }
+//                            .observeOn(Schedulers.io())
+//                            .map { rawContactId ->
+//                                updateContactNumber(context, rawContactId, phoneNumber)
+//                            }
+                            .subscribe()
+
+
+                }
+
     }
 
     /**
@@ -45,7 +85,7 @@ class ContactsEditorImpl : ContactsEditor {
                 null,
 //                ContactsContract.Data.RAW_CONTACT_ID + " = " + rawContactId
 //                + " and " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE + "'",
-                 null)
+                null)
         Logger.error(TAG, "Number of updated contacts by contact name: $numberOfUpdatedContacts")
 
         return rawContactId
@@ -79,27 +119,7 @@ class ContactsEditorImpl : ContactsEditor {
         return rawContactId
     }
 
-    /**
-     * Insert new contact
-     */
-    override fun insertNewContact(context: Context, contact: ContactData) {
-        Observable.fromIterable(contact.phones)
-                .blockingSubscribe { phoneNumber ->
-                    Observable.fromCallable { insertEmptyContact(context) }
-                            .observeOn(Schedulers.io())
-                            .map { rawContactId ->
-                                updateContactNumber(context, rawContactId, phoneNumber)
-                            }
-                            .observeOn(Schedulers.io())
-//                            .map { rawContactId ->
-//                                updateContactNumber(context, rawContactId, phoneNumber)
-//                            }
-                            .subscribe()
 
-
-                }
-
-    }
 
     fun updateContactName(context: Context, contactID: String, contactNewName: String): Observable<Boolean> {
 

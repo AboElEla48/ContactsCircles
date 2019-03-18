@@ -23,7 +23,7 @@ class ContactsEditorImpl : ContactsEditor {
                 RawContacts.CONTENT_URI, values)
 
         Logger.error(TAG, "Raw Contact uri $rawContactUri")
-        return rawContactUri
+        return rawContactUri!!
     }
 
     /**

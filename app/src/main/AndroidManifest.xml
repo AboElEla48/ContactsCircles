@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="eg.foureg.circles">
 
-    <!--<uses-permission android:name="android.permission.READ_CONTACTS"/>-->
-    <!--<uses-permission android:name="android.permission.WRITE_CONTACTS"/>-->
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
 

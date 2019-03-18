@@ -81,7 +81,7 @@ class ContactViewerFragment : BaseFragment() {
                     }
         })
 
-        editButton.setOnClickListener{ btn ->
+        editButton.setOnClickListener{
             val msg = Message()
 
             msg.id = MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS
@@ -129,7 +129,7 @@ class ContactViewerFragment : BaseFragment() {
         builder.setMessage(getString(R.string.txt_confirm_delete_contact_msg))
 
         // Set a positive button and its click listener on alert dialog
-        builder.setPositiveButton(getString(R.string.txt_confirm_delete_ok_btn)){dialog, which ->
+        builder.setPositiveButton(getString(R.string.txt_confirm_delete_ok_btn)){ _, _ ->
             contactViewViewModel.deleteContact(context!!, Observable.create {
                 val msg = Message()
                 msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
@@ -139,7 +139,7 @@ class ContactViewerFragment : BaseFragment() {
 
 
         // Display a negative button on alert dialog
-        builder.setNegativeButton(getString(R.string.txt_confirm_delete_no_btn)){dialog,which ->
+        builder.setNegativeButton(getString(R.string.txt_confirm_delete_no_btn)){ _, _ ->
         }
 
         // Finally, make the alert dialog using builder

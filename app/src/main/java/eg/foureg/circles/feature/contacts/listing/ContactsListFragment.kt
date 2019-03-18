@@ -50,7 +50,7 @@ class ContactsListFragment : BaseFragment() {
         val progressBarLayout: LinearLayout = view.findViewById(R.id.fragment_contacts_list_loading_progress_layout)
         val context = activity as Context
 
-        view.fragment_contents_list_add_contact_floating_button.setOnClickListener { listener ->
+        view.fragment_contents_list_add_contact_floating_button.setOnClickListener { _ ->
             val msg = Message()
 
             msg.id = MainActivityMessages.MSG_ID_ADD_NEW_CONTACT

@@ -172,6 +172,8 @@ class ContactsEditorImpl : ContactsEditor {
                     whereClause,
                     null)
 
+            Logger.error(TAG, "Number of updated items $update")
+
 
         }
 

@@ -49,7 +49,7 @@ class ContactsEditorImpl : ContactsEditor {
         val updatedContactUri = context.contentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues)
         Logger.error(TAG, "updateContactDisplayName() : Updated contact URI by contact name: $updatedContactUri")
 
-        return updatedContactUri!!
+        return rawContactUri
     }
 
 
@@ -72,12 +72,46 @@ class ContactsEditorImpl : ContactsEditor {
 
         // Put contact Phone Number value.
         contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
-        contentValues.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+//        contentValues.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
 
-        val updatedContactUri = context.contentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues)
-        Logger.error(TAG, "updateContactPhoneNumber() : Updated contact URI by contact Phone Number: $updatedContactUri")
+//        contentValues.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, "Temp name")
 
-        return updatedContactUri!!
+//        val updatedContactUri = context.contentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues)
+//        Logger.error(TAG, "updateContactDisplayName() : Updated contact URI by contact name: $updatedContactUri")
+
+
+        val whereClauseBuf = StringBuffer()
+        whereClauseBuf.append(ContactsContract.Data.RAW_CONTACT_ID)
+        whereClauseBuf.append("=")
+        whereClauseBuf.append(rawContactId)
+
+//        whereClauseBuf.append(" and ")
+//        whereClauseBuf.append(ContactsContract.Data.MIMETYPE)
+//        whereClauseBuf.append(" = '")
+//        val mimetype = ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE
+//        whereClauseBuf.append(mimetype)
+//        whereClauseBuf.append("'")
+//
+//        whereClauseBuf.append(" and ")
+//        whereClauseBuf.append(ContactsContract.CommonDataKinds.Phone.TYPE)
+//        whereClauseBuf.append(" = ")
+//        whereClauseBuf.append(ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+
+//        val where =
+//                ContactsContract.Data.MIMETYPE + " = ? AND " +
+//                ContactsContract.CommonDataKinds.Phone.TYPE + " = ? "
+//
+//        val params = arrayOf(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
+//                ContactsContract.CommonDataKinds.Phone.TYPE_HOME.toString())
+
+        Logger.error(TAG, "updateContactPhoneNumber() : Where Caluse: $whereClauseBuf")
+
+
+        val updatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI, contentValues,
+                whereClauseBuf.toString(), null)
+        Logger.error(TAG, "updateContactPhoneNumber() : Updated contact URI by contact Phone Number: $updatedContacts")
+
+        return rawContactUri
     }
 
     /**

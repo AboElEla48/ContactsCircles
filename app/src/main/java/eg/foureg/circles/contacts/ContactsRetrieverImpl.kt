@@ -37,14 +37,14 @@ class ContactsRetrieverImpl : ContactsRetriever {
             val name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val phoneNumber = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
 
-            Logger.debug(TAG, "ID: " + id + ", Name: " + name + ", Phone Number:" + phoneNumber)
+            Logger.debug(TAG, "ID: $id, Name: $name, Phone Number:$phoneNumber")
 
             val photoID = contactsCursor.getInt(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_ID))
 
             // extract contact
             val contactData = ContactData()
             contactData.id = id
-            contactData.name = name
+            contactData.name = if (name == null){ "TempName" } else { name }
 
             contactData.phones?.add(phoneNumber)
             contactData.emails = loadEmailAddress(emailID, context.contentResolver)

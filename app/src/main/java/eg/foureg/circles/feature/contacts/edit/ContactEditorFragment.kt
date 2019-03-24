@@ -159,10 +159,10 @@ class ContactEditorFragment : BaseFragment() {
         }
         else {
             // existing contact
-            contactEditorViewModel.updateContact(activity as Context, contactIndex)
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe()
+//            contactEditorViewModel.updateContact(activity as Context, contactIndex)
+//                    .subscribeOn(Schedulers.computation())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe()
         }
         progressBar.visibility = View.GONE
 

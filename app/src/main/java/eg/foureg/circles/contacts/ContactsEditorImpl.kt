@@ -1,5 +1,6 @@
 package eg.foureg.circles.contacts
 
+import android.content.ContentProviderOperation
 import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
@@ -60,24 +61,20 @@ class ContactsEditorImpl : ContactsEditor {
         Logger.error(TAG, "updateContactPhoneNumber() : Update Contact at: $rawContactUri, with Phone Number: $phoneNumber")
         Logger.error(TAG, "updateContactPhoneNumber() : Original contact Uri: $rawContactUri")
 
-        val contentValues = ContentValues()
-
         val rawContactId = ContentUris.parseId(rawContactUri).toInt()
         Logger.error(TAG, "updateContactPhoneNumber() : Raw Contact Id $rawContactId")
 
-        // Put contact Phone Number value.
-        contentValues.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
 
-        val whereClauseBuf = StringBuffer()
-        whereClauseBuf.append(ContactsContract.Data.RAW_CONTACT_ID)
-        whereClauseBuf.append("=")
-        whereClauseBuf.append(rawContactId)
+        // add phone number
+        val operations = ArrayList<ContentProviderOperation>()
+        ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).apply {
+            withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+            withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+            withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
+            withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE)
+            operations.add(build())}
 
-        Logger.error(TAG, "updateContactPhoneNumber() : Where Caluse: $whereClauseBuf")
-
-        val updatedContacts = context.contentResolver.update(ContactsContract.Data.CONTENT_URI, contentValues,
-                whereClauseBuf.toString(), null)
-        Logger.error(TAG, "updateContactPhoneNumber() : Updated contact URI by contact Phone Number: $updatedContacts")
+        context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
 
         return rawContactUri
     }

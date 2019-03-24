@@ -93,15 +93,6 @@ class ContactEditorFragment : BaseFragment() {
         listOfDisposables.add(RxView.clicks(addPhoneNumber)
                 .subscribe {
                     addPhoneView(inflater, container, contactPhonesLayout, null)
-
-//                    val phoneEditView: View = inflater.inflate(R.layout.view_phone_number_editor, container, false)
-//                    val phoneEditText: EditText = phoneEditView.findViewById(R.id.view_phone_number_editor_edit_text)
-//                    val phoneTypeSpinner: Spinner = phoneEditView.findViewById(R.id.view_phone_number_editor_type_spinner)
-//
-//                    phoneEditorsViewsList.add(phoneEditText)
-//                    phoneEditorTypesSpinnerViewsList.add(phoneTypeSpinner)
-//
-//                    contactPhonesLayout.addView(phoneEditView)
                 })
 
         // init edit contact if this isn't a new contact
@@ -162,40 +153,9 @@ class ContactEditorFragment : BaseFragment() {
         // get contact name
         contactEditorViewModel.contactName.value = contactNameEditText.text.toString()
 
-        // get contact phones
-        contactEditorViewModel.phones.value = ArrayList()
-        listOfDisposables.add(Observable.fromIterable(phoneEditorsViewsList)
-                .subscribe{ view ->
-                    contactEditorViewModel.phones.value!!.add(ContactPhoneNumber(view.text.toString(),
-                            ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE))
-                })
+        collectContactPhoneNumbers()
 
-        var index = -1
-        listOfDisposables.add(Observable.fromIterable(phoneEditorTypesSpinnerViewsList)
-                .subscribe { view ->
-                    index ++
-                    when (view.selectedItemPosition) {
-                        0 -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
-                                ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
-                        1 -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
-                                ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME
-                        2 -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
-                                ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_WORK
-                        else -> {
-                            contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
-                                ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
-                        }
-                    }
-                })
-
-
-
-//        // get contact emails
-//        contactEditorViewModel.emails.value?.clear()
-//        listOfDisposables.add(Observable.fromIterable(emailEditorsViewsList)
-//                .subscribe{ editText: EditText ->
-//                    contactEditorViewModel.emails.value?.add(editText.text.toString())
-//                })
+        collectContactEmails()
 
         progressBar.visibility = View.VISIBLE
 
@@ -220,6 +180,45 @@ class ContactEditorFragment : BaseFragment() {
         val msg = Message()
         msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
         MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+    }
+
+
+    private fun collectContactPhoneNumbers() {
+        // get contact phones
+        contactEditorViewModel.phones.value = ArrayList()
+        listOfDisposables.add(Observable.fromIterable(phoneEditorsViewsList)
+                .subscribe{ view ->
+                    contactEditorViewModel.phones.value!!.add(ContactPhoneNumber(view.text.toString(),
+                            ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE))
+                })
+
+        var index = -1
+        listOfDisposables.add(Observable.fromIterable(phoneEditorTypesSpinnerViewsList)
+                .subscribe { view ->
+                    index ++
+                    when (view.selectedItemPosition) {
+                        0 -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
+                                ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
+                        1 -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
+                                ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME
+                        2 -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
+                                ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_WORK
+                        else -> {
+                            contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
+                                    ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
+                        }
+                    }
+                })
+    }
+
+    private fun collectContactEmails() {
+        // get contact emails
+        contactEditorViewModel.emails.value = ArrayList()
+        listOfDisposables.add(Observable.fromIterable(emailEditorsViewsList)
+                .subscribe{ editText: EditText ->
+                    contactEditorViewModel.emails.value?.add(editText.text.toString())
+                })
+
     }
 
     override fun onDestroy() {

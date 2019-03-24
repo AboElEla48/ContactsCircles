@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import android.content.Context
 import android.graphics.Bitmap
 import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.contacts.ContactPhoneNumber
 import eg.foureg.circles.feature.contacts.models.ContactsModel
 import io.reactivex.Observable
 import org.koin.android.ext.android.get
@@ -13,7 +14,7 @@ import org.koin.android.ext.android.get
 
 class ContactViewViewModel : ViewModel() {
     var contactName: MutableLiveData<String> = MutableLiveData()
-    var phones: MutableLiveData<List<String>> = MutableLiveData()
+    var phones: MutableLiveData<List<ContactPhoneNumber>> = MutableLiveData()
     var emails: MutableLiveData<List<String>> = MutableLiveData()
     var image: MutableLiveData<Bitmap> = MutableLiveData()
 

@@ -57,21 +57,30 @@ class ContactsEditorImpl : ContactsEditor {
     /**
      * Update contact by Phone Number
      */
-    private fun updateContactPhoneNumber(context: Context, rawContactUri: Uri, phoneNumber: String) : Uri {
-        Logger.error(TAG, "updateContactPhoneNumber() : Update Contact at: $rawContactUri, with Phone Number: $phoneNumber")
+    private fun updateContactPhoneNumber(context: Context, rawContactUri: Uri, phoneNumber: ContactPhoneNumber) : Uri {
+        Logger.error(TAG, "updateContactPhoneNumber() : Update Contact at: $rawContactUri, with Phone Number: ${phoneNumber.phoneNumber}")
         Logger.error(TAG, "updateContactPhoneNumber() : Original contact Uri: $rawContactUri")
 
         val rawContactId = ContentUris.parseId(rawContactUri).toInt()
         Logger.error(TAG, "updateContactPhoneNumber() : Raw Contact Id $rawContactId")
 
 
+        val type = when(phoneNumber.phoneNumberType) {
+            ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE ->
+                ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE
+            ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_WORK ->
+                ContactsContract.CommonDataKinds.Phone.TYPE_WORK
+            ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME ->
+                ContactsContract.CommonDataKinds.Phone.TYPE_HOME
+        }
+
         // add phone number
         val operations = ArrayList<ContentProviderOperation>()
         ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).apply {
             withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
             withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-            withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber)
-            withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE)
+            withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber.phoneNumber)
+            withValue(ContactsContract.CommonDataKinds.Phone.TYPE, type)
             operations.add(build())}
 
         context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)

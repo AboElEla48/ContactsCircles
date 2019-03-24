@@ -1,6 +1,7 @@
 package eg.foureg.circles.feature.contacts.models
 
 import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.contacts.ContactPhoneNumber
 import io.reactivex.Observable
 import io.reactivex.functions.Consumer
 import org.junit.Assert
@@ -45,8 +46,8 @@ class ContactsModelTest {
 
         contactData.name = name
 
-        contactData.phones?.add(p1)
-        contactData.phones?.add(p2)
+        contactData.phones?.add(ContactPhoneNumber(p1, ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
+        contactData.phones?.add(ContactPhoneNumber(p2, ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
 
         contactData.emails?.add(e1)
         contactData.emails?.add(e2)

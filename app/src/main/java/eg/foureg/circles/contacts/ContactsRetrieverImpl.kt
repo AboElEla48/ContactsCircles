@@ -36,6 +36,7 @@ class ContactsRetrieverImpl : ContactsRetriever {
 
             val name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
             val phoneNumber = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+            val phoneType = contactsCursor.getInt(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
 
             Logger.debug(TAG, "ID: $id, Name: $name, Phone Number:$phoneNumber")
 
@@ -46,7 +47,19 @@ class ContactsRetrieverImpl : ContactsRetriever {
             contactData.id = id
             contactData.name = if (name == null){ "TempName" } else { name }
 
-            contactData.phones?.add(phoneNumber)
+            val type = when(phoneType) {
+                ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE ->
+                    ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
+                ContactsContract.CommonDataKinds.Phone.TYPE_WORK ->
+                    ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_WORK
+                ContactsContract.CommonDataKinds.Phone.TYPE_HOME ->
+                    ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME
+
+                else ->
+                    ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
+            }
+
+            contactData.phones?.add(ContactPhoneNumber(phoneNumber, type))
             contactData.emails = loadEmailAddress(emailID, context.contentResolver)
             contactData.photoID = photoID
 

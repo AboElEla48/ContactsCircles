@@ -16,6 +16,7 @@ import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
+import eg.foureg.circles.contacts.ContactPhoneNumber
 import eg.foureg.circles.feature.main.MainActivity
 import eg.foureg.circles.feature.main.MainActivityMessages
 import io.reactivex.Observable
@@ -61,12 +62,12 @@ class ContactViewerFragment : BaseFragment() {
             contactNameTextView.setText(name)
         })
 
-        contactViewViewModel.phones.observe(this, Observer { phones: List<String>? ->
+        contactViewViewModel.phones.observe(this, Observer { phones: List<ContactPhoneNumber>? ->
             Observable.fromIterable(phones)
-                    .subscribe{ phoneNumber: String ->
+                    .subscribe{ phoneNumber: ContactPhoneNumber ->
                         val phoneView: View = inflater.inflate(R.layout.fragment_contact_view_phone_item, null, false)
                         val phoneTextView: TextView = phoneView.findViewById(R.id.fragment_contact_view_phone_item_phone_text_view)
-                        phoneTextView.text = phoneNumber
+                        phoneTextView.text = phoneNumber.phoneNumber
                         contactPhonesLayout.addView(phoneView)
                     }
         })

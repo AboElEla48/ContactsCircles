@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:autofillHints="@string/txt_contact_editor_phone_number_hint"
+        android:hint="@string/txt_contact_editor_phone_number_hint"
         android:inputType="phone"/>
 
     <Spinner

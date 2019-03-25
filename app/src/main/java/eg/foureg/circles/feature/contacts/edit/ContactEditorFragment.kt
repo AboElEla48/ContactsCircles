@@ -64,6 +64,7 @@ class ContactEditorFragment : BaseFragment() {
 
         val saveBtn: Button = view.findViewById(R.id.fragment_content_editor_save_button)
         val addPhoneNumber: ImageView = view.findViewById(R.id.fragment_content_editor_phones_layout_add_phone_btn)
+        val addEmail: ImageView = view.findViewById(R.id.fragment_content_editor_emails_layout_add_email_btn)
 
         progressBar = view.findViewById(R.id.fragment_contact_editor_loading_progress)
 
@@ -95,16 +96,26 @@ class ContactEditorFragment : BaseFragment() {
                     addPhoneView(inflater, container, contactPhonesLayout, null)
                 })
 
+        // handle add emailto add new layout to emails layout
+        listOfDisposables.add(RxView.clicks(addEmail)
+                .subscribe {
+                    addEmailView(inflater, container, contactEmailsLayout, "")
+                })
+
         // init edit contact if this isn't a new contact
         contactEditorViewModel.initContact(activity as Context, contactIndex)
 
         if(contactIndex == -1) {
             addPhoneView(inflater, container, contactPhonesLayout, null)
+            addEmailView(inflater, container, contactEmailsLayout, "")
         }
 
         return view
     }
 
+    /**
+     * Add phone view with edit text and phone type spinner to define new phone
+     */
     private fun addPhoneView(inflater: LayoutInflater, container: ViewGroup?, contactPhonesLayout: LinearLayout,
                              phone: ContactPhoneNumber?) {
         val phoneEditView: View = inflater.inflate(R.layout.view_phone_number_editor, container, false)
@@ -132,19 +143,27 @@ class ContactEditorFragment : BaseFragment() {
     }
 
     /**
+     * Add view with edit text for email
+     */
+    private fun addEmailView(inflater: LayoutInflater, container: ViewGroup?, contactEmailsLayout: LinearLayout,
+                             email: String) {
+        val emailEditView: View = inflater.inflate(R.layout.view_email_editor, container, false)
+        val emailEditText: EditText = emailEditView.findViewById(R.id.fragment_content_editor_item_email_edit_view)
+
+        emailEditText.setText(email)
+
+        emailEditorsViewsList.add(emailEditText)
+
+        contactEmailsLayout.addView(emailEditView)
+    }
+
+    /**
      * Dynamically add emails edit items in emails layout
      */
     private fun bindEmailsLayout(container: ViewGroup?, contactEmailsLayout: LinearLayout, inflater: LayoutInflater, emailsList: List<String>?) {
         listOfDisposables.add(Observable.fromIterable(emailsList)
                 .subscribe { email: String ->
-                    val emailEditView: View = inflater.inflate(R.layout.fragment_contact_editor_email_item, container, false)
-                    val emailEditText: EditText = emailEditView.findViewById(R.id.fragment_content_editor_item_email_edit_view)
-
-                    emailEditText.setText(email)
-
-                    emailEditorsViewsList.add(emailEditText)
-
-                    contactEmailsLayout.addView(emailEditView)
+                    addEmailView(inflater, container, contactEmailsLayout, email)
                 })
 
     }
@@ -166,6 +185,7 @@ class ContactEditorFragment : BaseFragment() {
             val contactData = ContactData()
             contactData.name = contactEditorViewModel.contactName.value.toString()
             contactData.phones = contactEditorViewModel.phones.value
+            contactData.emails = contactEditorViewModel.emails.value
             contactEditorViewModel.saveContact(activity as Context, contactData)
         }
         else {

@@ -6,9 +6,10 @@
     android:layout_height="wrap_content">
 
     <EditText
-        android:id="@+id/fragment_content_editor_item_phone_edit_view"
+        android:id="@+id/fragment_content_editor_item_email_edit_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -17,7 +18,9 @@
         android:layout_marginTop="10dp"
         android:textColor="@color/color_contact_text"
         android:textSize="15sp"
-        android:inputType="phone"
-        android:hint="@string/txt_contact_editor_phone_number_hint"/>
+        android:inputType="textEmailAddress"
+        android:autofillHints="@string/txt_contact_editor_email_hint"
+        android:hint="@string/txt_contact_editor_email_hint"/>
+
 
 </android.support.constraint.ConstraintLayout>

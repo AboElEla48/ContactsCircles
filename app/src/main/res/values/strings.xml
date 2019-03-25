@@ -18,4 +18,10 @@
     <string name="txt_confirm_delete_no_btn">Cancel</string>
 
     <string name="txt_permission_must_be_granted">Contacts Permissions must be granted</string>
+
+    <string-array name="txt_phone_types_arr">
+        <item>Mobile</item>
+        <item>Home</item>
+        <item>Work</item>
+    </string-array>
 </resources>

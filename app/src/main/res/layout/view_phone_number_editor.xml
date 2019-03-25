@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditText
+        android:id="@+id/view_phone_number_editor_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="@string/txt_contact_editor_phone_number_hint"
+        android:hint="@string/txt_contact_editor_phone_number_hint"
+        android:inputType="phone"/>
+
+    <Spinner
+        android:id="@+id/view_phone_number_editor_type_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/view_phone_number_editor_edit_text"
+        app:layout_constraintRight_toRightOf="parent"
+        android:spinnerMode="dropdown"
+        android:entries="@array/txt_phone_types_arr"/>
+
+</android.support.constraint.ConstraintLayout>

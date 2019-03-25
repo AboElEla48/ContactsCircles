@@ -4,6 +4,7 @@ package eg.foureg.circles.feature.contacts.view
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -15,6 +16,7 @@ import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
+import eg.foureg.circles.contacts.ContactPhoneNumber
 import eg.foureg.circles.feature.main.MainActivity
 import eg.foureg.circles.feature.main.MainActivityMessages
 import io.reactivex.Observable
@@ -60,12 +62,12 @@ class ContactViewerFragment : BaseFragment() {
             contactNameTextView.setText(name)
         })
 
-        contactViewViewModel.phones.observe(this, Observer { phones: List<String>? ->
+        contactViewViewModel.phones.observe(this, Observer { phones: List<ContactPhoneNumber>? ->
             Observable.fromIterable(phones)
-                    .subscribe{ phoneNumber: String ->
+                    .subscribe{ phoneNumber: ContactPhoneNumber ->
                         val phoneView: View = inflater.inflate(R.layout.fragment_contact_view_phone_item, null, false)
                         val phoneTextView: TextView = phoneView.findViewById(R.id.fragment_contact_view_phone_item_phone_text_view)
-                        phoneTextView.text = phoneNumber
+                        phoneTextView.text = phoneNumber.phoneNumber
                         contactPhonesLayout.addView(phoneView)
                     }
         })
@@ -80,7 +82,7 @@ class ContactViewerFragment : BaseFragment() {
                     }
         })
 
-        editButton.setOnClickListener{ btn ->
+        editButton.setOnClickListener{
             val msg = Message()
 
             msg.id = MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS
@@ -88,7 +90,7 @@ class ContactViewerFragment : BaseFragment() {
             MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
         }
 
-        contactViewViewModel.initContact(contactIndex)
+        contactViewViewModel.initContact(activity as Context, contactIndex)
 
         setHasOptionsMenu(true)
 
@@ -128,7 +130,7 @@ class ContactViewerFragment : BaseFragment() {
         builder.setMessage(getString(R.string.txt_confirm_delete_contact_msg))
 
         // Set a positive button and its click listener on alert dialog
-        builder.setPositiveButton(getString(R.string.txt_confirm_delete_ok_btn)){dialog, which ->
+        builder.setPositiveButton(getString(R.string.txt_confirm_delete_ok_btn)){ _, _ ->
             contactViewViewModel.deleteContact(context!!, Observable.create {
                 val msg = Message()
                 msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
@@ -138,7 +140,7 @@ class ContactViewerFragment : BaseFragment() {
 
 
         // Display a negative button on alert dialog
-        builder.setNegativeButton(getString(R.string.txt_confirm_delete_no_btn)){dialog,which ->
+        builder.setNegativeButton(getString(R.string.txt_confirm_delete_no_btn)){ _, _ ->
         }
 
         // Finally, make the alert dialog using builder

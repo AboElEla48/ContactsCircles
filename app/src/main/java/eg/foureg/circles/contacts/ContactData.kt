@@ -11,13 +11,13 @@ import io.reactivex.functions.Consumer
 class ContactData constructor(){
     var id: String = ""
     var name : String = ""
-    var phones : ArrayList<String>? = ArrayList()
+    var phones : ArrayList<ContactPhoneNumber>? = ArrayList()
     var emails : ArrayList<String>? = ArrayList()
     var photoID : Int = 0
     var image : Bitmap? = null
     var notes : String? = ""
 
-    constructor(n : String,  pList : ArrayList<String>?, eList : ArrayList<String>?, nts : String?) : this() {
+    constructor(n : String,  pList : ArrayList<ContactPhoneNumber>?, eList : ArrayList<String>?, nts : String?) : this() {
         name = n
         phones = pList
         emails = eList
@@ -30,8 +30,8 @@ class ContactData constructor(){
      */
     fun mergeContact(newContact : ContactData) {
         Observable.fromIterable(newContact.phones)
-                .filter { newPhone : String -> !(phones!!.contains(newPhone)) }     // phone doesn't exist before
-                .subscribe({ newPhone : String -> phones?.add(newPhone) })
+                .filter { newPhone -> !(phones!!.contains(newPhone)) }     // phone doesn't exist before
+                .subscribe({ newPhone -> phones?.add(newPhone) })
 
         Observable.fromIterable(newContact.emails)
                 .filter { newEmail : String -> !(emails!!.contains(newEmail)) }     // email doesn't exist before

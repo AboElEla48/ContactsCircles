@@ -89,6 +89,37 @@ class ContactsEditorImpl : ContactsEditor {
     }
 
     /**
+     * Update contact by Email
+     */
+    private fun updateContactEmails(context: Context, rawContactUri: Uri, emails: List<String>?) : Uri {
+        Observable.fromIterable(emails)
+                .filter { email ->
+                    email.isNotEmpty()
+                }
+                .subscribe{ email ->
+                    Logger.error(TAG, "updateContactEmails() : Update Contact at: $rawContactUri, with Pemail: $email")
+                    Logger.error(TAG, "updateContactEmails() : Original contact Uri: $rawContactUri")
+
+                    val rawContactId = ContentUris.parseId(rawContactUri).toInt()
+                    Logger.error(TAG, "updateContactEmails() : Raw Contact Id $rawContactId")
+
+                    // add email
+                    val operations = ArrayList<ContentProviderOperation>()
+                    ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).apply {
+                        withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+                        withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                        withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
+                        operations.add(build())}
+
+                    context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+
+                }
+
+
+        return rawContactUri
+    }
+
+    /**
      * Insert new contact
      */
     override fun insertNewContact(context: Context, contact: ContactData) {
@@ -102,6 +133,9 @@ class ContactsEditorImpl : ContactsEditor {
                             .observeOn(Schedulers.io())
                             .map { rawContactUri ->
                                 updateContactPhoneNumber(context, rawContactUri, phoneNumber)
+                            }
+                            .map { rawContactUri ->
+                                updateContactEmails(context, rawContactUri, contact.emails)
                             }
                             .subscribe()
 

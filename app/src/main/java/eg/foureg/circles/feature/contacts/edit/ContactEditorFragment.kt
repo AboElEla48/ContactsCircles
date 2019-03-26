@@ -42,7 +42,7 @@ class ContactEditorFragment : BaseFragment() {
 
     private var listOfDisposables: ArrayList<Disposable> = ArrayList()
 
-    val contactsModel : ContactsModel by inject()
+    val contactsModel: ContactsModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,12 +102,14 @@ class ContactEditorFragment : BaseFragment() {
                     addEmailView(inflater, container, contactEmailsLayout, "")
                 })
 
-        // init edit contact if this isn't a new contact
-        contactEditorViewModel.initContact(activity as Context, contactIndex)
-
         if(contactIndex == -1) {
+            // add empt phone and email fields for editing
             addPhoneView(inflater, container, contactPhonesLayout, null)
             addEmailView(inflater, container, contactEmailsLayout, "")
+        }
+        else {
+            // init edit contact if this isn't a new contact
+            contactEditorViewModel.initContact(activity as Context, contactIndex)
         }
 
         return view
@@ -123,6 +125,18 @@ class ContactEditorFragment : BaseFragment() {
         val phoneTypeSpinner: Spinner = phoneEditView.findViewById(R.id.view_phone_number_editor_type_spinner)
 
         phoneEditText.setText(phone?.phoneNumber)
+
+        when(phone?.phoneNumberType) {
+            ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE ->
+                phoneTypeSpinner.setSelection(SPINNER_TYPE_MOBILE)
+
+            ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME ->
+                phoneTypeSpinner.setSelection(SPINNER_TYPE_HOME)
+
+            ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_WORK ->
+                phoneTypeSpinner.setSelection(SPINNER_TYPE_WORK)
+
+        }
 
         phoneEditorsViewsList.add(phoneEditText)
         phoneEditorTypesSpinnerViewsList.add(phoneTypeSpinner)
@@ -179,22 +193,12 @@ class ContactEditorFragment : BaseFragment() {
         progressBar.visibility = View.VISIBLE
 
         // save contact
-        if(contactIndex == -1) {
+        val contactData = ContactData()
+        contactData.name = contactEditorViewModel.contactName.value.toString()
+        contactData.phones = contactEditorViewModel.phones.value
+        contactData.emails = contactEditorViewModel.emails.value
+        contactEditorViewModel.saveContact(activity as Context, contactData)
 
-            // New contact
-            val contactData = ContactData()
-            contactData.name = contactEditorViewModel.contactName.value.toString()
-            contactData.phones = contactEditorViewModel.phones.value
-            contactData.emails = contactEditorViewModel.emails.value
-            contactEditorViewModel.saveContact(activity as Context, contactData)
-        }
-        else {
-            // existing contact
-//            contactEditorViewModel.updateContact(activity as Context, contactIndex)
-//                    .subscribeOn(Schedulers.computation())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe()
-        }
         progressBar.visibility = View.GONE
 
         val msg = Message()
@@ -207,7 +211,7 @@ class ContactEditorFragment : BaseFragment() {
         // get contact phones
         contactEditorViewModel.phones.value = ArrayList()
         listOfDisposables.add(Observable.fromIterable(phoneEditorsViewsList)
-                .subscribe{ view ->
+                .subscribe { view ->
                     contactEditorViewModel.phones.value!!.add(ContactPhoneNumber(view.text.toString(),
                             ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE))
                 })
@@ -215,13 +219,13 @@ class ContactEditorFragment : BaseFragment() {
         var index = -1
         listOfDisposables.add(Observable.fromIterable(phoneEditorTypesSpinnerViewsList)
                 .subscribe { view ->
-                    index ++
+                    index++
                     when (view.selectedItemPosition) {
-                        0 -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
+                        SPINNER_TYPE_MOBILE -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
                                 ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
-                        1 -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
+                        SPINNER_TYPE_HOME -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
                                 ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME
-                        2 -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
+                        SPINNER_TYPE_WORK -> contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
                                 ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_WORK
                         else -> {
                             contactEditorViewModel.phones.value!!.get(index).phoneNumberType =
@@ -235,7 +239,7 @@ class ContactEditorFragment : BaseFragment() {
         // get contact emails
         contactEditorViewModel.emails.value = ArrayList()
         listOfDisposables.add(Observable.fromIterable(emailEditorsViewsList)
-                .subscribe{ editText: EditText ->
+                .subscribe { editText: EditText ->
                     contactEditorViewModel.emails.value?.add(editText.text.toString())
                 })
 
@@ -266,6 +270,10 @@ class ContactEditorFragment : BaseFragment() {
                 }
 
         const val CONTACT_INDEX_PARAM = "CONTACT_INDEX_PARAM"
+
+        const val SPINNER_TYPE_MOBILE = 0
+        const val SPINNER_TYPE_HOME = 1
+        const val SPINNER_TYPE_WORK = 2
     }
 
 }

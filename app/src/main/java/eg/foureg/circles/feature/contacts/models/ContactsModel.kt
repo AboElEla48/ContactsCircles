@@ -36,6 +36,11 @@ open class ContactsModel protected constructor() {
 
     }
 
+    fun resetContacts(context: Context): Observable<ArrayList<ContactData>> {
+        contactsList = ArrayList()
+        return loadContacts(context)
+    }
+
 
     fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): Observable<ArrayList<ContactData>?> {
         return Observable.fromCallable { contactsRetriever.loadContactsImages(context, contactsList) }
@@ -84,8 +89,7 @@ open class ContactsModel protected constructor() {
         contactsEditor.insertNewContact(context, contactData)
     }
 
-    fun deleteContact(context: Context, contactRawID: String, listener : Observable<Boolean>) {
+    fun deleteContact(context: Context, contactRawID: String) {
         contactsEditor.deleteContact(context, contactRawID)
-        listener.subscribe()
     }
 }

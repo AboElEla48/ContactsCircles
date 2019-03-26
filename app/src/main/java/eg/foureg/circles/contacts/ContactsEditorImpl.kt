@@ -8,6 +8,7 @@ import android.net.Uri
 import android.provider.ContactsContract
 import android.provider.ContactsContract.RawContacts
 import eg.foureg.circles.common.Logger
+import eg.foureg.circles.feature.contacts.models.ContactsModel
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
@@ -152,12 +153,12 @@ class ContactsEditorImpl : ContactsEditor {
      * Update existing contact
      */
     override fun updateContact(context: Context, contact: ContactData) {
-        Observable.fromCallable { contact.id }
-                .observeOn(Schedulers.io())
-                .map { id ->
-                    deleteContact(context, id)
-                }
-                .map { insertNewContact(context, contact) }
+//        Observable.fromCallable { contact.id }
+//                .observeOn(Schedulers.io())
+//                .map { id ->
+//                    deleteContact(context, id)
+//                }
+//                .map { insertNewContact(context, contact) }
     }
 
     /**

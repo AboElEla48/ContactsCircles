@@ -46,7 +46,6 @@ class ContactsRetrieverImpl : ContactsRetriever {
 
             // extract contact
             val contactData = ContactData()
-            contactData.id = id
             contactData.name = if (name == null){ "TempName" } else { name }
 
             val type = when(phoneType) {
@@ -61,7 +60,7 @@ class ContactsRetrieverImpl : ContactsRetriever {
                     ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
             }
 
-            contactData.phones?.add(ContactPhoneNumber(phoneNumber, type))
+            contactData.phones?.add(ContactPhoneNumber(id, phoneNumber, type))
             contactData.emails = loadEmailAddress(emailID, context.contentResolver)
             contactData.photoID = photoID
 

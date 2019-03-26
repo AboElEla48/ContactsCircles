@@ -212,7 +212,7 @@ class ContactEditorFragment : BaseFragment() {
         contactEditorViewModel.phones.value = ArrayList()
         listOfDisposables.add(Observable.fromIterable(phoneEditorsViewsList)
                 .subscribe { view ->
-                    contactEditorViewModel.phones.value!!.add(ContactPhoneNumber(view.text.toString(),
+                    contactEditorViewModel.phones.value!!.add(ContactPhoneNumber("-1", view.text.toString(),
                             ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE))
                 })
 

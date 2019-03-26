@@ -19,7 +19,6 @@ class ContactViewViewModel : ViewModel() {
     var image: MutableLiveData<Bitmap> = MutableLiveData()
 
     var contactIndex: Int = 0
-    var contactRawID: String = ""
 
     lateinit var contactsModel : ContactsModel
 
@@ -36,13 +35,17 @@ class ContactViewViewModel : ViewModel() {
         emails.value = contactVal.emails
         image.value = contactVal.image
 
-        contactRawID = contactVal.id
     }
 
     fun deleteContact(context: Context, listener : Observable<Boolean>) {
 
         contactsModel = (context as Activity).get()
 
-        contactsModel.deleteContact(context, contactRawID, listener)
+        Observable.fromIterable(phones.value)
+                .blockingSubscribe() { phoneContact ->
+                    contactsModel.deleteContact(context, phoneContact.phoneNumberRawIdUri)
+                }
+
+        listener.subscribe()
     }
 }

@@ -15,14 +15,14 @@ class ContactDataTest {
         val newContact = ContactData()
 
         oldContact.name = "name"
-        oldContact.phones?.add(ContactPhoneNumber("010", ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
-        oldContact.phones?.add(ContactPhoneNumber("011", ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
+        oldContact.phones?.add(ContactPhoneNumber("-1", "010", ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
+        oldContact.phones?.add(ContactPhoneNumber("-1", "011", ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
         oldContact.emails?.add("1@gmail.com")
         oldContact.emails?.add("2@gmail.com")
 
         newContact.name = "name"
-        newContact.phones?.add(ContactPhoneNumber("010", ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
-        newContact.phones?.add(ContactPhoneNumber("012", ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
+        newContact.phones?.add(ContactPhoneNumber("-1", "010", ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
+        newContact.phones?.add(ContactPhoneNumber("-1", "012", ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
         newContact.emails?.add("1@gmail.com")
         newContact.emails?.add("3@gmail.com")
 

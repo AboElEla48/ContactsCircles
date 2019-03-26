@@ -17,13 +17,13 @@ class ContactsEditorImpl : ContactsEditor {
      * Generate new contact Raw ID
      */
     private fun getRawContactID(context: Context): Uri {
-        Logger.error(TAG, "getRawContactID() : Insert empty contact")
+        Logger.debug(TAG, "getRawContactID() : Insert empty contact")
 
         val values = ContentValues()
         val rawContactUri = context.contentResolver.insert(
                 RawContacts.CONTENT_URI, values)
 
-        Logger.error(TAG, "Raw Contact uri $rawContactUri")
+        Logger.debug(TAG, "Raw Contact uri $rawContactUri")
         return rawContactUri!!
     }
 
@@ -31,13 +31,13 @@ class ContactsEditorImpl : ContactsEditor {
      * Insert contact by name
      */
     private fun updateContactDisplayName(context: Context, rawContactUri: Uri, displayName: String): Uri {
-        Logger.error(TAG, "updateContactDisplayName() : Update Contact at: $rawContactUri, with Name: $displayName")
-        Logger.error(TAG, "updateContactDisplayName() : Original contact Uri: $rawContactUri")
+        Logger.debug(TAG, "updateContactDisplayName() : Update Contact at: $rawContactUri, with Name: $displayName")
+        Logger.debug(TAG, "updateContactDisplayName() : Original contact Uri: $rawContactUri")
 
         val contentValues = ContentValues()
 
         val rawContactId = ContentUris.parseId(rawContactUri).toInt()
-        Logger.error(TAG, "updateContactDisplayName() : Raw Contact Id $rawContactId")
+        Logger.debug(TAG, "updateContactDisplayName() : Raw Contact Id $rawContactId")
 
         contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
 
@@ -48,7 +48,7 @@ class ContactsEditorImpl : ContactsEditor {
         contentValues.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, displayName)
 
         val updatedContactUri = context.contentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues)
-        Logger.error(TAG, "updateContactDisplayName() : Updated contact URI by contact name: $updatedContactUri")
+        Logger.debug(TAG, "updateContactDisplayName() : Updated contact URI by contact name: $updatedContactUri")
 
         return rawContactUri
     }
@@ -58,11 +58,11 @@ class ContactsEditorImpl : ContactsEditor {
      * Update contact by Phone Number
      */
     private fun updateContactPhoneNumber(context: Context, rawContactUri: Uri, phoneNumber: ContactPhoneNumber): Uri {
-        Logger.error(TAG, "updateContactPhoneNumber() : Update Contact at: $rawContactUri, with Phone Number: ${phoneNumber.phoneNumber}")
-        Logger.error(TAG, "updateContactPhoneNumber() : Original contact Uri: $rawContactUri")
+        Logger.debug(TAG, "updateContactPhoneNumber() : Update Contact at: $rawContactUri, with Phone Number: ${phoneNumber.phoneNumber}")
+        Logger.debug(TAG, "updateContactPhoneNumber() : Original contact Uri: $rawContactUri")
 
         val rawContactId = ContentUris.parseId(rawContactUri).toInt()
-        Logger.error(TAG, "updateContactPhoneNumber() : Raw Contact Id $rawContactId")
+        Logger.debug(TAG, "updateContactPhoneNumber() : Raw Contact Id $rawContactId")
 
 
         val type = when (phoneNumber.phoneNumberType) {
@@ -98,11 +98,11 @@ class ContactsEditorImpl : ContactsEditor {
                     email.isNotEmpty()
                 }
                 .subscribe { email ->
-                    Logger.error(TAG, "updateContactEmails() : Update Contact at: $rawContactUri, with Pemail: $email")
-                    Logger.error(TAG, "updateContactEmails() : Original contact Uri: $rawContactUri")
+                    Logger.debug(TAG, "updateContactEmails() : Update Contact at: $rawContactUri, with Pemail: $email")
+                    Logger.debug(TAG, "updateContactEmails() : Original contact Uri: $rawContactUri")
 
                     val rawContactId = ContentUris.parseId(rawContactUri).toInt()
-                    Logger.error(TAG, "updateContactEmails() : Raw Contact Id $rawContactId")
+                    Logger.debug(TAG, "updateContactEmails() : Raw Contact Id $rawContactId")
 
                     // add email
                     val operations = ArrayList<ContentProviderOperation>()
@@ -164,12 +164,12 @@ class ContactsEditorImpl : ContactsEditor {
      * delete contact
      */
     override fun deleteContact(context: Context, contactID: String) : Uri {
-        Logger.error(TAG, "deleteContact() : Deleted Contact at: $contactID")
+        Logger.debug(TAG, "deleteContact() : Deleted Contact at: $contactID")
 
         val contactUri = Uri.parse(contactID)
-        Logger.error(TAG, "deleteContact() : Contact Uri: $contactUri")
+        Logger.debug(TAG, "deleteContact() : Contact Uri: $contactUri")
         val numOfDeletedContacts = context.contentResolver.delete(contactUri, null, null)
-        Logger.error(TAG, "deleteContact() : Number of deleted contacts: $numOfDeletedContacts")
+        Logger.debug(TAG, "deleteContact() : Number of deleted contacts: $numOfDeletedContacts")
 
         return contactUri
 

@@ -30,7 +30,16 @@ class ContactData constructor(){
      */
     fun mergeContact(newContact : ContactData) {
         Observable.fromIterable(newContact.phones)
-                .filter { newPhone -> !(phones!!.contains(newPhone)) }     // phone doesn't exist before
+                .filter { newPhone ->
+                    var found = false
+                    for(p in phones!!) {
+                        if(p.phoneNumber.equals(newPhone.phoneNumber) && p.phoneNumberType.equals(newPhone.phoneNumberType)) {
+                            found = true
+                            break
+                        }
+                    }
+                    !found
+                }     // phone doesn't exist before
                 .subscribe({ newPhone -> phones?.add(newPhone) })
 
         Observable.fromIterable(newContact.emails)

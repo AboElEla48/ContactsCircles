@@ -30,7 +30,7 @@ class ContactsEditorImpl : ContactsEditor {
     /**
      * Insert contact by name
      */
-    private fun updateContactDisplayName(context: Context, rawContactUri: Uri, displayName: String) : Uri {
+    private fun updateContactDisplayName(context: Context, rawContactUri: Uri, displayName: String): Uri {
         Logger.error(TAG, "updateContactDisplayName() : Update Contact at: $rawContactUri, with Name: $displayName")
         Logger.error(TAG, "updateContactDisplayName() : Original contact Uri: $rawContactUri")
 
@@ -57,7 +57,7 @@ class ContactsEditorImpl : ContactsEditor {
     /**
      * Update contact by Phone Number
      */
-    private fun updateContactPhoneNumber(context: Context, rawContactUri: Uri, phoneNumber: ContactPhoneNumber) : Uri {
+    private fun updateContactPhoneNumber(context: Context, rawContactUri: Uri, phoneNumber: ContactPhoneNumber): Uri {
         Logger.error(TAG, "updateContactPhoneNumber() : Update Contact at: $rawContactUri, with Phone Number: ${phoneNumber.phoneNumber}")
         Logger.error(TAG, "updateContactPhoneNumber() : Original contact Uri: $rawContactUri")
 
@@ -65,7 +65,7 @@ class ContactsEditorImpl : ContactsEditor {
         Logger.error(TAG, "updateContactPhoneNumber() : Raw Contact Id $rawContactId")
 
 
-        val type = when(phoneNumber.phoneNumberType) {
+        val type = when (phoneNumber.phoneNumberType) {
             ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE ->
                 ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE
             ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_WORK ->
@@ -81,7 +81,8 @@ class ContactsEditorImpl : ContactsEditor {
             withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
             withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber.phoneNumber)
             withValue(ContactsContract.CommonDataKinds.Phone.TYPE, type)
-            operations.add(build())}
+            operations.add(build())
+        }
 
         context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
 
@@ -91,12 +92,12 @@ class ContactsEditorImpl : ContactsEditor {
     /**
      * Update contact by Email
      */
-    private fun updateContactEmails(context: Context, rawContactUri: Uri, emails: List<String>?) : Uri {
+    private fun updateContactEmails(context: Context, rawContactUri: Uri, emails: List<String>?): Uri {
         Observable.fromIterable(emails)
                 .filter { email ->
                     email.isNotEmpty()
                 }
-                .subscribe{ email ->
+                .subscribe { email ->
                     Logger.error(TAG, "updateContactEmails() : Update Contact at: $rawContactUri, with Pemail: $email")
                     Logger.error(TAG, "updateContactEmails() : Original contact Uri: $rawContactUri")
 
@@ -109,7 +110,8 @@ class ContactsEditorImpl : ContactsEditor {
                         withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
                         withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
                         withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
-                        operations.add(build())}
+                        operations.add(build())
+                    }
 
                     context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
 
@@ -134,6 +136,7 @@ class ContactsEditorImpl : ContactsEditor {
                             .map { rawContactUri ->
                                 updateContactPhoneNumber(context, rawContactUri, phoneNumber)
                             }
+                            .observeOn(Schedulers.io())
                             .map { rawContactUri ->
                                 updateContactEmails(context, rawContactUri, contact.emails)
                             }
@@ -145,29 +148,33 @@ class ContactsEditorImpl : ContactsEditor {
     }
 
 
-    fun deleteContact(context: Context, phoneNumber: String) {
-        val contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber))
-        val cur = context.contentResolver.query(contactUri, null, null, null, null)
-        try {
-            if (cur!!.moveToFirst()) {
-                do {
+    /**
+     * Update existing contact
+     */
+    override fun updateContact(context: Context, contact: ContactData) {
+        Observable.fromCallable { contact.id }
+                .observeOn(Schedulers.io())
+                .map { id ->
+                    deleteContact(context, id)
+                }
+                .map { insertNewContact(context, contact) }
+    }
 
-                    val lookupKey = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY))
-                    val uri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_LOOKUP_URI, lookupKey)
-                    context.contentResolver.delete(uri, null, null)
+    /**
+     * delete contact
+     */
+    override fun deleteContact(context: Context, contactID: String) : Uri {
+        Logger.error(TAG, "deleteContact() : Deleted Contact at: $contactID")
 
-                } while (cur.moveToNext())
+        val contactUri = Uri.parse(contactID)
+        Logger.error(TAG, "deleteContact() : Contact Uri: $contactUri")
+        val numOfDeletedContacts = context.contentResolver.delete(contactUri, null, null)
+        Logger.error(TAG, "deleteContact() : Number of deleted contacts: $numOfDeletedContacts")
 
-            }
-
-        } catch (e: Exception) {
-            println(e.stackTrace)
-        } finally {
-            cur!!.close()
-
-        }
+        return contactUri
 
     }
+
 
 
     companion object {

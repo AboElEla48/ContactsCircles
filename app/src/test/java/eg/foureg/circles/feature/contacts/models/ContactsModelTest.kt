@@ -11,7 +11,7 @@ import org.junit.Assert.*
 
 class ContactsModelTest {
 
-    class SampleContactModel : ContactsModel() {
+    class SampleContactModel : ContactsModel(ContactRetr(), ContactEdi()) {
         fun removeDuplicatesFromMode(rawContacts: ArrayList<ContactData>): Observable<ArrayList<ContactData>> {
             return removeDuplicate(rawContacts)
         }

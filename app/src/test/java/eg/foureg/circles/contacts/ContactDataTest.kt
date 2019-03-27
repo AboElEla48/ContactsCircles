@@ -1,11 +1,7 @@
 package eg.foureg.circles.contacts
 
-import io.reactivex.Observable
 import org.junit.Assert
 import org.junit.Test
-
-import org.junit.Assert.*
-import java.lang.reflect.Array
 
 class ContactDataTest {
 

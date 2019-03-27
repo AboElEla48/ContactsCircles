@@ -38,8 +38,6 @@ class ContactEditorViewModel : ViewModel() {
     fun saveContact(context: Context, contactData: ContactData) {
         contactsModel = (context as Activity).get()
         contactsModel.addNewContact(context, contactData)
-
-//        contactsModel.resetContacts(context).subscribe()
     }
 
 }

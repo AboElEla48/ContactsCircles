@@ -1,6 +1,7 @@
 package eg.foureg.circles.feature.main
 
 import eg.foureg.circles.R
+import eg.foureg.circles.contacts.ContactData
 import eg.foureg.circles.feature.contacts.edit.ContactEditorFragment
 import eg.foureg.circles.feature.main.MainActivity
 import eg.foureg.circles.feature.contacts.listing.ContactsListFragment
@@ -17,15 +18,15 @@ class MainActivityFragmentsNavigator {
         transaction.replace(R.id.main_activity_content_frame_layout, contactsListFragment).commit()
     }
 
-    fun setContactViewFragment(mainActivity: MainActivity, contactIndex : Int){
+    fun setContactViewFragment(mainActivity: MainActivity, contact : ContactData){
         val transaction = mainActivity.supportFragmentManager.beginTransaction()
-        val contactsListFragment = ContactViewerFragment.newInstance(contactIndex)
+        val contactsListFragment = ContactViewerFragment.newInstance(contact)
         transaction.replace(R.id.main_activity_content_frame_layout, contactsListFragment).commit()
     }
 
-    fun setContactEditorFragment(mainActivity: MainActivity, contactIndex : Int){
+    fun setContactEditorFragment(mainActivity: MainActivity, contact: ContactData?){
         val transaction = mainActivity.supportFragmentManager.beginTransaction()
-        val contactsListFragment = ContactEditorFragment.newInstance(contactIndex)
+        val contactsListFragment = ContactEditorFragment.newInstance(contact)
         transaction.replace(R.id.main_activity_content_frame_layout, contactsListFragment).commit()
     }
 

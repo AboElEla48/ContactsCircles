@@ -8,11 +8,12 @@ import android.widget.Toast
 import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.ui.BaseActivity
+import eg.foureg.circles.contacts.ContactData
 
 
 class MainActivity : BaseActivity() {
-    val mainActivityFragmentsNavigator : MainActivityFragmentsNavigator = MainActivityFragmentsNavigator()
-    var tempEditContactIndex = 0
+    private val mainActivityFragmentsNavigator : MainActivityFragmentsNavigator = MainActivityFragmentsNavigator()
+    private var tempContactData : ContactData? = null
 
     companion object {
         const val PERMISSION_READ_CONTACT_ID = 150
@@ -53,7 +54,7 @@ class MainActivity : BaseActivity() {
 
             PERMISSION_WRITE_CONTACT_ID -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mainActivityFragmentsNavigator.setContactEditorFragment(this, tempEditContactIndex)
+                    mainActivityFragmentsNavigator.setContactEditorFragment(this, tempContactData)
                 }
                 else {
                     Toast.makeText(this, getString(R.string.txt_permission_must_be_granted), Toast.LENGTH_LONG).show()
@@ -71,34 +72,34 @@ class MainActivity : BaseActivity() {
             }
 
             MainActivityMessages.MSG_ID_VIEW_CONTACT_DETAILS -> {
-                val contactIndex = message.data.get(MainActivityMessages.DATA_PARAM_CONTACT_INDEX) as Int
-                mainActivityFragmentsNavigator.setContactViewFragment(this, contactIndex)
+                val contact = message.data.get(MainActivityMessages.DATA_PARAM_CONTACT_DATA) as ContactData
+                mainActivityFragmentsNavigator.setContactViewFragment(this, contact)
             }
 
             MainActivityMessages.MSG_ID_ADD_NEW_CONTACT -> {
-                viewEditor(-1)
+                viewEditor(null)
             }
 
             MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS -> {
-                val contactIndex = message.data.get(MainActivityMessages.DATA_PARAM_CONTACT_INDEX) as Int
-                viewEditor(contactIndex)
+                val contact = message.data.get(MainActivityMessages.DATA_PARAM_CONTACT_DATA) as ContactData
+                viewEditor(contact)
             }
         }
     }
 
-    private fun viewEditor(contactIndex : Int) {
+    private fun viewEditor(contact: ContactData?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
             if (checkSelfPermission(Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-                mainActivityFragmentsNavigator.setContactEditorFragment(this, contactIndex)
+                mainActivityFragmentsNavigator.setContactEditorFragment(this, contact)
             }
             else {
-                tempEditContactIndex = contactIndex
+                tempContactData = contact
                 requestPermissions(arrayOf(Manifest.permission.WRITE_CONTACTS),
                         PERMISSION_WRITE_CONTACT_ID)
             }
         }
         else {
-            mainActivityFragmentsNavigator.setContactEditorFragment(this, contactIndex)
+            mainActivityFragmentsNavigator.setContactEditorFragment(this, contact)
         }
     }
 }

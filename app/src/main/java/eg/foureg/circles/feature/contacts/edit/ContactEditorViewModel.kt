@@ -24,12 +24,10 @@ class ContactEditorViewModel : ViewModel() {
     /**
      * init contact value
      */
-    fun initContact(context: Context, contactIndex : Int?) {
+    fun initContact(context: Context, contactVal: ContactData?) {
         contactsModel = (context as Activity).get()
 
-        if(contactIndex!! > -1) {
-            val contactVal: ContactData = contactsModel.contactsList.get(contactIndex)
-
+        if(contactVal != null) {
             contactName.value = contactVal.name
             phones.value = contactVal.phones
             emails.value = contactVal.emails
@@ -41,7 +39,7 @@ class ContactEditorViewModel : ViewModel() {
         contactsModel = (context as Activity).get()
         contactsModel.addNewContact(context, contactData)
 
-        contactsModel.resetContacts(context).subscribe()
+//        contactsModel.resetContacts(context).subscribe()
     }
 
 }

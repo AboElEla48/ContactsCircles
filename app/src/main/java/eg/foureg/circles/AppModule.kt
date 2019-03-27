@@ -11,5 +11,5 @@ val appModule = module {
     single<ContactsRetriever> { ContactsRetrieverImpl() }
     single<ContactsEditor> { ContactsEditorImpl() }
 
-    factory { ContactsModel.getInstance(get(), get())}
+    factory { ContactsModel(get(), get())}
 }

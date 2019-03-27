@@ -18,17 +18,11 @@ class ContactViewViewModel : ViewModel() {
     var emails: MutableLiveData<List<String>> = MutableLiveData()
     var image: MutableLiveData<Bitmap> = MutableLiveData()
 
-    var contactIndex: Int = 0
 
     lateinit var contactsModel : ContactsModel
 
-    fun initContact(context: Context, contactIndex: Int?) {
+    fun initContact(context: Context, contactVal: ContactData) {
         contactsModel = (context as Activity).get()
-
-        val contactVal: ContactData = contactsModel.contactsList.get(contactIndex
-                ?: 0)
-
-        this.contactIndex = contactIndex!!
 
         contactName.value = contactVal.name
         phones.value = contactVal.phones

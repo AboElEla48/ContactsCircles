@@ -32,13 +32,14 @@ import kotlin.reflect.KClass
  */
 class ContactEditorFragment : BaseFragment() {
 
-    private var contactIndex: Int? = 0
     private var contactEditorViewModel = ContactEditorViewModel()
     private var phoneEditorsViewsList: ArrayList<EditText> = ArrayList()
     private var phoneEditorTypesSpinnerViewsList: ArrayList<Spinner> = ArrayList()
     private var emailEditorsViewsList: ArrayList<EditText> = ArrayList()
 
     private lateinit var progressBar: ProgressBar
+
+    private var contact:ContactData? = null
 
     private var listOfDisposables: ArrayList<Disposable> = ArrayList()
 
@@ -47,7 +48,7 @@ class ContactEditorFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            contactIndex = it.getInt(ContactEditorFragment.CONTACT_INDEX_PARAM)
+            contact = it.getParcelable<ContactData>(ContactEditorFragment.CONTACT_DATA_PARAM)
 
         }
     }
@@ -102,14 +103,14 @@ class ContactEditorFragment : BaseFragment() {
                     addEmailView(inflater, container, contactEmailsLayout, "")
                 })
 
-        if(contactIndex == -1) {
+        if(contact == null) {
             // add empt phone and email fields for editing
             addPhoneView(inflater, container, contactPhonesLayout, null)
             addEmailView(inflater, container, contactEmailsLayout, "")
         }
         else {
             // init edit contact if this isn't a new contact
-            contactEditorViewModel.initContact(activity as Context, contactIndex)
+            contactEditorViewModel.initContact(activity as Context, contact)
         }
 
         return view
@@ -261,15 +262,15 @@ class ContactEditorFragment : BaseFragment() {
          *
          */
         @JvmStatic
-        fun newInstance(contactIndex: Int) =
+        fun newInstance(contact: ContactData?) =
                 ContactEditorFragment().apply {
                     arguments = Bundle().apply {
-                        putInt(ContactEditorFragment.CONTACT_INDEX_PARAM, contactIndex)
+                        putParcelable(ContactEditorFragment.CONTACT_DATA_PARAM, contact)
 
                     }
                 }
 
-        const val CONTACT_INDEX_PARAM = "CONTACT_INDEX_PARAM"
+        const val CONTACT_DATA_PARAM = "CONTACT_DATA_PARAM"
 
         const val SPINNER_TYPE_MOBILE = 0
         const val SPINNER_TYPE_HOME = 1

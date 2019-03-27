@@ -16,6 +16,7 @@ import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
+import eg.foureg.circles.contacts.ContactData
 import eg.foureg.circles.contacts.ContactPhoneNumber
 import eg.foureg.circles.feature.main.MainActivity
 import eg.foureg.circles.feature.main.MainActivityMessages
@@ -29,12 +30,12 @@ import kotlin.reflect.KClass
 class ContactViewerFragment : BaseFragment() {
 
     var contactViewViewModel = ContactViewViewModel()
-    var contactIndex: Int? = 0
+    lateinit var contact:ContactData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            contactIndex = it.getInt(CONTACT_INDEX_PARAM)
+            contact = it.getParcelable(CONTACT_DATA_PARAM)
         }
     }
 
@@ -86,11 +87,11 @@ class ContactViewerFragment : BaseFragment() {
             val msg = Message()
 
             msg.id = MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS
-            msg.data.put(MainActivityMessages.DATA_PARAM_CONTACT_INDEX, contactIndex as Int)
+            msg.data.put(MainActivityMessages.DATA_PARAM_CONTACT_DATA, contact)
             MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
         }
 
-        contactViewViewModel.initContact(activity as Context, contactIndex)
+        contactViewViewModel.initContact(activity as Context, contact)
 
         setHasOptionsMenu(true)
 
@@ -159,13 +160,13 @@ class ContactViewerFragment : BaseFragment() {
          * @return A new instance of fragment ContactViewerFragment.
          */
         @JvmStatic
-        fun newInstance(contactIndex: Int) =
+        fun newInstance(contact : ContactData) =
                 ContactViewerFragment().apply {
                     arguments = Bundle().apply {
-                        putInt(CONTACT_INDEX_PARAM, contactIndex)
+                        putParcelable(CONTACT_DATA_PARAM, contact)
                     }
                 }
 
-        const val CONTACT_INDEX_PARAM = "CONTACT_INDEX_PARAM"
+        const val CONTACT_DATA_PARAM = "CONTACT_DATA_PARAM"
     }
 }

@@ -1,46 +1,27 @@
 package eg.foureg.circles.feature.contacts.models
 
 import android.content.Context
-import eg.foureg.circles.contacts.ContactsEditor
 import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.contacts.ContactsEditor
 import eg.foureg.circles.contacts.ContactsRetriever
-import eg.foureg.circles.contacts.ContactPhoneNumber
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
-open class ContactsModel protected constructor() {
+open class ContactsModel(retriever: ContactsRetriever, editor: ContactsEditor) {
 
     var contactsList: ArrayList<ContactData> = ArrayList()
-    lateinit var contactsRetriever : ContactsRetriever
-    lateinit var contactsEditor: ContactsEditor
+    var contactsRetriever : ContactsRetriever
+    var contactsEditor: ContactsEditor
 
-    companion object {
-        private val model: ContactsModel = ContactsModel()
-
-        fun getInstance(retriever: ContactsRetriever, editor: ContactsEditor): ContactsModel {
-            model.contactsRetriever = retriever
-            model.contactsEditor = editor
-            return model
-        }
-
+    init {
+        contactsRetriever = retriever
+        contactsEditor = editor
     }
-
 
     fun loadContacts(context: Context): Observable<ArrayList<ContactData>> {
-        return if (contactsList.size == 0) {
-            Observable.fromCallable { contactsRetriever.loadContacts(context) }
-
-        } else {
-            Observable.fromCallable { contactsList }
-        }
+        return Observable.fromCallable { contactsRetriever.loadContacts(context) }
 
     }
-
-    fun resetContacts(context: Context): Observable<ArrayList<ContactData>> {
-        contactsList = ArrayList()
-        return loadContacts(context)
-    }
-
 
     fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): Observable<ArrayList<ContactData>?> {
         return Observable.fromCallable { contactsRetriever.loadContactsImages(context, contactsList) }

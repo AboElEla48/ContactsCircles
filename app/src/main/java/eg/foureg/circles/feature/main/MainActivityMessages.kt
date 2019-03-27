@@ -8,6 +8,7 @@ class MainActivityMessages {
         const val MSG_ID_ADD_NEW_CONTACT = 13
         const val MSG_ID_EDIT_CONTACT_DETAILS = 14
 
-        const val DATA_PARAM_CONTACT_INDEX = "DATA_PARAM_CONTACT_INDEX"
+//        const val DATA_PARAM_CONTACT_INDEX = "DATA_PARAM_CONTACT_INDEX"
+        const val DATA_PARAM_CONTACT_DATA = "DATA_PARAM_CONTACT_DATA"
     }
 }

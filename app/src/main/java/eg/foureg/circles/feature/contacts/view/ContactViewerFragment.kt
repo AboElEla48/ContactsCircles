@@ -66,9 +66,14 @@ class ContactViewerFragment : BaseFragment() {
         contactViewViewModel.phones.observe(this, Observer { phones: List<ContactPhoneNumber>? ->
             Observable.fromIterable(phones)
                     .subscribe{ phoneNumber: ContactPhoneNumber ->
-                        val phoneView: View = inflater.inflate(R.layout.fragment_contact_view_phone_item, null, false)
+                        val phoneView: View = inflater.inflate(R.layout.view_contact_view_phone_item, null, false)
                         val phoneTextView: TextView = phoneView.findViewById(R.id.fragment_contact_view_phone_item_phone_text_view)
+                        val phoneTypeTextView: TextView = phoneView.findViewById(R.id.fragment_contact_view_phone_item_phone_type_text_view)
+
                         phoneTextView.text = phoneNumber.phoneNumber
+                        if(phoneNumber.phoneNumber.isNotEmpty()) {
+                            phoneTypeTextView.text = resources.getStringArray(R.array.txt_phone_types_arr).get(phoneNumber.phoneNumberType.ordinal)
+                        }
                         contactPhonesLayout.addView(phoneView)
                     }
         })
@@ -76,7 +81,7 @@ class ContactViewerFragment : BaseFragment() {
         contactViewViewModel.emails.observe(this, Observer { emails: List<String>? ->
             Observable.fromIterable(emails)
                     .subscribe{ email: String ->
-                        val emailView: View = inflater.inflate(R.layout.fragment_contact_view_email_item, null, false)
+                        val emailView: View = inflater.inflate(R.layout.view_contact_view_email_item, null, false)
                         val emailTextView: TextView = emailView.findViewById(R.id.fragment_contact_view_phone_item_email_text_view)
                         emailTextView.text = email
                         contactEmailsLayout.addView(emailView)

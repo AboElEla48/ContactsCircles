@@ -165,7 +165,7 @@ class ContactEditorFragment : BaseFragment() {
     private fun addEmailView(inflater: LayoutInflater, container: ViewGroup?, contactEmailsLayout: LinearLayout,
                              email: String) {
         val emailEditView: View = inflater.inflate(R.layout.view_email_editor, container, false)
-        val emailEditText: EditText = emailEditView.findViewById(R.id.fragment_content_editor_item_email_edit_view)
+        val emailEditText: EditText = emailEditView.findViewById(R.id.view_email_editor_email_edit_view)
 
         emailEditText.setText(email)
 

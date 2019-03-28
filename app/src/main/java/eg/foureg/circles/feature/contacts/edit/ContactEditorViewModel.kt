@@ -35,9 +35,9 @@ class ContactEditorViewModel : ViewModel() {
         }
     }
 
-    fun saveContact(context: Context, contactData: ContactData) {
+    fun saveContact(context: Context, contactData: ContactData) : Observable<Boolean> {
         contactsModel = (context as Activity).get()
-        contactsModel.addNewContact(context, contactData)
+        return contactsModel.addNewContact(context, contactData)
     }
 
     fun updateContact(context: Context, oldPhones:List<ContactPhoneNumber>?, newContact: ContactData) {

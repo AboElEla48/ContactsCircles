@@ -67,8 +67,8 @@ open class ContactsModel(retriever: ContactsRetriever, editor: ContactsEditor) {
         }
     }
 
-    fun addNewContact(context: Context, contactData: ContactData) {
-        contactsEditor.insertNewContact(context, contactData)
+    fun addNewContact(context: Context, contactData: ContactData) : Observable<Boolean> {
+        return contactsEditor.insertNewContact(context, contactData)
     }
 
     fun deleteContact(context: Context, phones:List<ContactPhoneNumber>?) : Observable<Boolean> {

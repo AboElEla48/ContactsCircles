@@ -21,6 +21,7 @@ import eg.foureg.circles.feature.contacts.models.ContactsModel
 import eg.foureg.circles.feature.main.MainActivity
 import eg.foureg.circles.feature.main.MainActivityMessages
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import org.koin.android.ext.android.inject
 import kotlin.reflect.KClass
@@ -217,11 +218,17 @@ class ContactEditorFragment : BaseFragment() {
             contactEditorViewModel.updateContact(activity as Context, editContact?.phones, contactData)
 
         } else {
-            contactEditorViewModel.saveContact(activity as Context, contactData)
+            listOfDisposables.add(contactEditorViewModel.saveContact(activity as Context, contactData)
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe { contactSavedAndExit() })
         }
 
 
 
+
+    }
+
+    private fun contactSavedAndExit() {
         progressBar.visibility = View.GONE
 
         val msg = Message()

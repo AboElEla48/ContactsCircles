@@ -153,7 +153,9 @@ class ContactEditorFragment : BaseFragment() {
                                  phonesList: List<ContactPhoneNumber>?) {
         listOfDisposables.add(Observable.fromIterable(phonesList)
                 .subscribe { phone: ContactPhoneNumber ->
-                    addPhoneView(inflater, container, contactPhonesLayout, phone)
+                    if(phone.phoneNumber.isNotEmpty()) {
+                        addPhoneView(inflater, container, contactPhonesLayout, phone)
+                    }
                 })
     }
 

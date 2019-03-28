@@ -10,10 +10,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="80dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:textColor="@color/color_contact_text"
@@ -21,6 +21,16 @@
         android:inputType="textEmailAddress"
         android:autofillHints="@string/txt_contact_editor_email_hint"
         android:hint="@string/txt_contact_editor_email_hint"/>
+
+    <ImageView
+        android:id="@+id/fragment_content_editor_item_email_delete_image_view"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toEndOf="@id/fragment_content_editor_item_email_edit_view"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/app_name"/>
 
 
 </android.support.constraint.ConstraintLayout>

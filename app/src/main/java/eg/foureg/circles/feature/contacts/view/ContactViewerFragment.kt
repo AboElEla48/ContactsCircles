@@ -73,8 +73,9 @@ class ContactViewerFragment : BaseFragment() {
                         phoneTextView.text = phoneNumber.phoneNumber
                         if(phoneNumber.phoneNumber.isNotEmpty()) {
                             phoneTypeTextView.text = resources.getStringArray(R.array.txt_phone_types_arr).get(phoneNumber.phoneNumberType.ordinal)
+                            contactPhonesLayout.addView(phoneView)
                         }
-                        contactPhonesLayout.addView(phoneView)
+
                     }
         })
 

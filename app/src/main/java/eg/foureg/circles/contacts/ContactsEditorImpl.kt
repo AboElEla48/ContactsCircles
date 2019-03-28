@@ -91,33 +91,25 @@ class ContactsEditorImpl : ContactsEditor {
     }
 
     /**
-     * Update contact by Email
+     * Update contact Email
      */
-    private fun updateContactEmails(context: Context, rawContactUri: Uri, emails: List<String>?): Uri {
-        Observable.fromIterable(emails)
-                .filter { email ->
-                    email.isNotEmpty()
-                }
-                .subscribe { email ->
-                    Logger.debug(TAG, "updateContactEmails() : Update Contact at: $rawContactUri, with Pemail: $email")
-                    Logger.debug(TAG, "updateContactEmails() : Original contact Uri: $rawContactUri")
+    private fun updateContactEmail(context: Context, rawContactUri: Uri, email: String): Uri {
+        Logger.debug(TAG, "updateContactEmails() : Update Contact at: $rawContactUri, with Pemail: $email")
+        Logger.debug(TAG, "updateContactEmails() : Original contact Uri: $rawContactUri")
 
-                    val rawContactId = ContentUris.parseId(rawContactUri).toInt()
-                    Logger.debug(TAG, "updateContactEmails() : Raw Contact Id $rawContactId")
+        val rawContactId = ContentUris.parseId(rawContactUri).toInt()
+        Logger.debug(TAG, "updateContactEmails() : Raw Contact Id $rawContactId")
 
-                    // add email
-                    val operations = ArrayList<ContentProviderOperation>()
-                    ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).apply {
-                        withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
-                        withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                        withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
-                        operations.add(build())
-                    }
+        // add email
+        val operations = ArrayList<ContentProviderOperation>()
+        ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI).apply {
+            withValue(ContactsContract.Data.RAW_CONTACT_ID, rawContactId)
+            withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+            withValue(ContactsContract.CommonDataKinds.Email.DATA, email)
+            operations.add(build())
+        }
 
-                    context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
-
-                }
-
+        context.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
 
         return rawContactUri
     }
@@ -127,6 +119,9 @@ class ContactsEditorImpl : ContactsEditor {
      */
     override fun insertNewContact(context: Context, contact: ContactData) {
         Observable.fromIterable(contact.phones)
+                .filter { phoneNumber ->
+                    phoneNumber.phoneNumber.isNotEmpty()
+                }
                 .blockingSubscribe { phoneNumber ->
                     Observable.fromCallable { getRawContactID(context) }
                             .observeOn(Schedulers.io())
@@ -137,9 +132,30 @@ class ContactsEditorImpl : ContactsEditor {
                             .map { rawContactUri ->
                                 updateContactPhoneNumber(context, rawContactUri, phoneNumber)
                             }
+                            .subscribe()
+
+
+                }
+
+        Observable.fromIterable(contact.emails)
+                .filter { email ->
+                    email.isNotEmpty()
+                }
+                .blockingSubscribe { email ->
+                    Observable.fromCallable { getRawContactID(context) }
                             .observeOn(Schedulers.io())
                             .map { rawContactUri ->
-                                updateContactEmails(context, rawContactUri, contact.emails)
+                                updateContactDisplayName(context, rawContactUri, contact.name)
+                            }
+                            .observeOn(Schedulers.io())
+                            .map { rawContactUri ->
+                                val emptyPhoneNumber: ContactPhoneNumber = ContactPhoneNumber(rawContactUri.toString(), "",
+                                        ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE)
+                                updateContactPhoneNumber(context, rawContactUri, emptyPhoneNumber)
+                            }
+                            .observeOn(Schedulers.io())
+                            .map { rawContactUri ->
+                                updateContactEmail(context, rawContactUri, email)
                             }
                             .subscribe()
 
@@ -148,18 +164,6 @@ class ContactsEditorImpl : ContactsEditor {
 
     }
 
-
-    /**
-     * Update existing contact
-     */
-    override fun updateContact(context: Context, contact: ContactData) {
-//        Observable.fromCallable { contact.id }
-//                .observeOn(Schedulers.io())
-//                .map { id ->
-//                    deleteContact(context, id)
-//                }
-//                .map { insertNewContact(context, contact) }
-    }
 
     /**
      * delete contact

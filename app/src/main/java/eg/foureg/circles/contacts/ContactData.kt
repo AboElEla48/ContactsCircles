@@ -55,10 +55,12 @@ class ContactData constructor() : Parcelable{
         Observable.fromIterable(newContact.phones)
                 .filter { newPhone ->
                     var found = false
-                    for(p in phones!!) {
-                        if(p.phoneNumber.equals(newPhone.phoneNumber) && p.phoneNumberType.equals(newPhone.phoneNumberType)) {
-                            found = true
-                            break
+                    if(newPhone.phoneNumber.isNotEmpty()) {     // don't merge empty contacts as they represent emails
+                        for (p in phones!!) {
+                            if (p.phoneNumber.equals(newPhone.phoneNumber) && p.phoneNumberType.equals(newPhone.phoneNumberType)) {
+                                found = true
+                                break
+                            }
                         }
                     }
                     !found

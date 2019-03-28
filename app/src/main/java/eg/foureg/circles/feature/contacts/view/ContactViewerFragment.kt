@@ -136,11 +136,11 @@ class ContactViewerFragment : BaseFragment() {
 
         // Set a positive button and its click listener on alert dialog
         builder.setPositiveButton(getString(R.string.txt_confirm_delete_ok_btn)){ _, _ ->
-            contactViewViewModel.deleteContact(context!!, Observable.create {
+            contactViewViewModel.deleteContact(context!!).subscribe{
                 val msg = Message()
                 msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
                 MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
-            })
+            }
         }
 
 

@@ -42,9 +42,9 @@ class ContactEditorViewModel : ViewModel() {
 
     fun updateContact(context: Context, oldPhones:List<ContactPhoneNumber>?, newContact: ContactData) {
         contactsModel = (context as Activity).get()
-        contactsModel.deleteContact(context, oldPhones, Observable.create {
+        contactsModel.deleteContact(context, oldPhones).subscribe {
             saveContact(context, newContact)
-        })
+        }
     }
 
 }

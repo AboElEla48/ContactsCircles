@@ -168,15 +168,19 @@ class ContactsEditorImpl : ContactsEditor {
     /**
      * delete contact
      */
-    override fun deleteContact(context: Context, contactID: String) : Uri {
-        Logger.debug(TAG, "deleteContact() : Deleted Contact at: $contactID")
+    override fun deleteContact(context: Context, contactID: String) : Observable<Boolean> {
+        return Observable.create<Boolean> { emitter ->
+            Logger.debug(TAG, "deleteContact() : Deleted Contact at: $contactID")
 
-        val contactUri = Uri.parse(contactID)
-        Logger.debug(TAG, "deleteContact() : Contact Uri: $contactUri")
-        val numOfDeletedContacts = context.contentResolver.delete(contactUri, null, null)
-        Logger.debug(TAG, "deleteContact() : Number of deleted contacts: $numOfDeletedContacts")
+            val contactUri = Uri.parse(contactID)
+            Logger.debug(TAG, "deleteContact() : Contact Uri: $contactUri")
+            val numOfDeletedContacts = context.contentResolver.delete(contactUri, null, null)
+            Logger.debug(TAG, "deleteContact() : Number of deleted contacts: $numOfDeletedContacts")
 
-        return contactUri
+            emitter.onNext(true)
+
+        }
+
 
     }
 

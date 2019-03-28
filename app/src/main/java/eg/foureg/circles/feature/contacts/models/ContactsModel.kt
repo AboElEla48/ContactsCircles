@@ -71,16 +71,15 @@ open class ContactsModel(retriever: ContactsRetriever, editor: ContactsEditor) {
         contactsEditor.insertNewContact(context, contactData)
     }
 
-    fun deleteContact(context: Context, phones:List<ContactPhoneNumber>?, listener : Observable<Boolean>) {
-        Observable.fromIterable(phones)
-                .blockingSubscribe() { phoneContact ->
-                    deleteContactByID(context, phoneContact.phoneNumberRawIdUri)
-                }
+    fun deleteContact(context: Context, phones:List<ContactPhoneNumber>?) : Observable<Boolean> {
+        return Observable.create<Boolean> { emitter ->
+            Observable.fromIterable(phones)
+                    .blockingSubscribe { phoneContact ->
+                        contactsEditor.deleteContact(context, phoneContact.phoneNumberRawIdUri)
+                                .subscribe()
+                    }
 
-        listener.subscribe()
-    }
-
-    private fun deleteContactByID(context: Context, contactRawID: String) {
-        contactsEditor.deleteContact(context, contactRawID)
+            emitter.onNext(true)
+        }
     }
 }

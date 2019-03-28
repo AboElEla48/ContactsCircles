@@ -31,11 +31,11 @@ class ContactViewViewModel : ViewModel() {
 
     }
 
-    fun deleteContact(context: Context, listener : Observable<Boolean>) {
+    fun deleteContact(context: Context) : Observable<Boolean> {
 
         contactsModel = (context as Activity).get()
 
-        contactsModel.deleteContact(context, phones.value,  listener)
+        return contactsModel.deleteContact(context, phones.value)
 
     }
 }

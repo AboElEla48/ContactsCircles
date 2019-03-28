@@ -2,6 +2,7 @@ package eg.foureg.circles.feature.contacts.models
 
 import android.content.Context
 import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.contacts.ContactPhoneNumber
 import eg.foureg.circles.contacts.ContactsEditor
 import eg.foureg.circles.contacts.ContactsRetriever
 import io.reactivex.Observable
@@ -70,7 +71,16 @@ open class ContactsModel(retriever: ContactsRetriever, editor: ContactsEditor) {
         contactsEditor.insertNewContact(context, contactData)
     }
 
-    fun deleteContact(context: Context, contactRawID: String) {
+    fun deleteContact(context: Context, phones:List<ContactPhoneNumber>?, listener : Observable<Boolean>) {
+        Observable.fromIterable(phones)
+                .blockingSubscribe() { phoneContact ->
+                    deleteContactByID(context, phoneContact.phoneNumberRawIdUri)
+                }
+
+        listener.subscribe()
+    }
+
+    private fun deleteContactByID(context: Context, contactRawID: String) {
         contactsEditor.deleteContact(context, contactRawID)
     }
 }

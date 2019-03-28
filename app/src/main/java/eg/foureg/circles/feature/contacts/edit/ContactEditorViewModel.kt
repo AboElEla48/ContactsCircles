@@ -40,4 +40,11 @@ class ContactEditorViewModel : ViewModel() {
         contactsModel.addNewContact(context, contactData)
     }
 
+    fun updateContact(context: Context, oldPhones:List<ContactPhoneNumber>?, newContact: ContactData) {
+        contactsModel = (context as Activity).get()
+        contactsModel.deleteContact(context, oldPhones, Observable.create {
+            saveContact(context, newContact)
+        })
+    }
+
 }

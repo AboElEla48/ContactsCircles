@@ -35,11 +35,7 @@ class ContactViewViewModel : ViewModel() {
 
         contactsModel = (context as Activity).get()
 
-        Observable.fromIterable(phones.value)
-                .blockingSubscribe() { phoneContact ->
-                    contactsModel.deleteContact(context, phoneContact.phoneNumberRawIdUri)
-                }
+        contactsModel.deleteContact(context, phones.value,  listener)
 
-        listener.subscribe()
     }
 }

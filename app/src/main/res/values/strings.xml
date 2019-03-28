@@ -11,6 +11,7 @@
     <string name="txt_save_contact_editing">Save Contact</string>
 
     <string name="txt_delete_contact">Delete</string>
+    <string name="txt_edit_contact">Edit</string>
 
     <string name="txt_confirm_delete_contact_title">Confirmation</string>
     <string name="txt_confirm_delete_contact_msg">Are you sure you want to delete contact?</string>

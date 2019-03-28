@@ -49,8 +49,6 @@ class ContactViewerFragment : BaseFragment() {
         val contactPhonesLayout: LinearLayout = view.findViewById(R.id.fragment_content_view_phones_layout)
         val contactEmailsLayout: LinearLayout = view.findViewById(R.id.fragment_content_view_emails_layout)
 
-        val editButton: FloatingActionButton = view.findViewById(R.id.fragment_content_view_edit_contact_floating_button)
-
         contactViewViewModel = ViewModelProviders.of(this).get(ContactViewViewModel::class.java)
 
         contactViewViewModel.image.observe(this, Observer { img: Bitmap? ->
@@ -89,14 +87,6 @@ class ContactViewerFragment : BaseFragment() {
                     }
         })
 
-        editButton.setOnClickListener{
-            val msg = Message()
-
-            msg.id = MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS
-            msg.data.put(MainActivityMessages.DATA_PARAM_CONTACT_DATA, contact)
-            MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
-        }
-
         contactViewViewModel.initContact(activity as Context, contact)
 
         setHasOptionsMenu(true)
@@ -114,6 +104,14 @@ class ContactViewerFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            R.id.menu_item_contact_viewer_edit -> {
+                val msg = Message()
+
+                msg.id = MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS
+                msg.data.put(MainActivityMessages.DATA_PARAM_CONTACT_DATA, contact)
+                MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+            }
+
             R.id.menu_item_contact_viewer_delete -> {
                 deleteContact()
             }

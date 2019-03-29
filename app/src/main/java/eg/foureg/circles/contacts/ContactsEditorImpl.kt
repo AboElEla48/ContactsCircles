@@ -10,7 +10,10 @@ import android.provider.ContactsContract.RawContacts
 import eg.foureg.circles.common.Logger
 import eg.foureg.circles.feature.contacts.models.ContactsModel
 import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 
 class ContactsEditorImpl : ContactsEditor {
@@ -171,8 +174,13 @@ class ContactsEditorImpl : ContactsEditor {
 
                                 }
 
-                        emitter.onNext(true)
+
                     }
+            Observable.just("")
+                    .delay(2, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { emitter.onNext(true) }
+
         }
 
 

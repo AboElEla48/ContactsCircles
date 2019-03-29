@@ -142,6 +142,35 @@ class ContactsEditorImpl : ContactsEditor {
 
     }
 
+    private fun insertNewContactEmails(context: Context, name: String, emails:List<String> ?): Observable<Boolean> {
+        return Observable.create<Boolean> {emitter ->
+            Observable.fromIterable(emails)
+                    .filter { email ->
+                        email.isNotEmpty()
+                    }
+                    .blockingSubscribe { email ->
+                        Observable.fromCallable { getRawContactID(context) }
+                                .observeOn(Schedulers.io())
+                                .map { rawContactUri ->
+                                    updateContactDisplayName(context, rawContactUri, name)
+                                }
+                                .observeOn(Schedulers.io())
+                                .map { rawContactUri ->
+                                    val emptyPhoneNumber: ContactPhoneNumber = ContactPhoneNumber(rawContactUri.toString(), "",
+                                            ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE)
+                                    updateContactPhoneNumber(context, rawContactUri, emptyPhoneNumber)
+                                }
+                                .observeOn(Schedulers.io())
+                                .map { rawContactUri ->
+                                    updateContactEmail(context, rawContactUri, email)
+                                }
+                                .subscribe()
+
+
+                    }
+        }
+    }
+
     /**
      * Insert new contact
      */
@@ -149,30 +178,8 @@ class ContactsEditorImpl : ContactsEditor {
         return Observable.create<Boolean> { emitter ->
             insertNewContactPhoneNumbers(context, contact.name, contact.phones)
                     .subscribe{
-                        Observable.fromIterable(contact.emails)
-                                .filter { email ->
-                                    email.isNotEmpty()
-                                }
-                                .blockingSubscribe { email ->
-                                    Observable.fromCallable { getRawContactID(context) }
-                                            .observeOn(Schedulers.io())
-                                            .map { rawContactUri ->
-                                                updateContactDisplayName(context, rawContactUri, contact.name)
-                                            }
-                                            .observeOn(Schedulers.io())
-                                            .map { rawContactUri ->
-                                                val emptyPhoneNumber: ContactPhoneNumber = ContactPhoneNumber(rawContactUri.toString(), "",
-                                                        ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE)
-                                                updateContactPhoneNumber(context, rawContactUri, emptyPhoneNumber)
-                                            }
-                                            .observeOn(Schedulers.io())
-                                            .map { rawContactUri ->
-                                                updateContactEmail(context, rawContactUri, email)
-                                            }
-                                            .subscribe()
-
-
-                                }
+                        insertNewContactEmails(context, contact.name, contact.emails)
+                                .subscribe()
 
 
                     }

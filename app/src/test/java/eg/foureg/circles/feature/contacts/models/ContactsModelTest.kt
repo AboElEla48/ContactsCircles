@@ -11,7 +11,7 @@ import org.junit.Assert.*
 
 class ContactsModelTest {
 
-    class SampleContactModel : ContactsModel() {
+    class SampleContactModel : ContactsModel(ContactRetr(), ContactEdi()) {
         fun removeDuplicatesFromMode(rawContacts: ArrayList<ContactData>): Observable<ArrayList<ContactData>> {
             return removeDuplicate(rawContacts)
         }
@@ -41,13 +41,13 @@ class ContactsModelTest {
                 }
     }
 
-    fun createDummyContact(name: String, p1: String, p2: String, e1: String, e2: String, notes: String): ContactData {
+    protected fun createDummyContact(name: String, p1: String, p2: String, e1: String, e2: String, notes: String): ContactData {
         val contactData = ContactData()
 
         contactData.name = name
 
-        contactData.phones?.add(ContactPhoneNumber(p1, ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
-        contactData.phones?.add(ContactPhoneNumber(p2, ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
+        contactData.phones?.add(ContactPhoneNumber("-1", p1, ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
+        contactData.phones?.add(ContactPhoneNumber("-1", p2, ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME))
 
         contactData.emails?.add(e1)
         contactData.emails?.add(e2)

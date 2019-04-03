@@ -18,28 +18,24 @@ class ContactViewViewModel : ViewModel() {
     var emails: MutableLiveData<List<String>> = MutableLiveData()
     var image: MutableLiveData<Bitmap> = MutableLiveData()
 
-    var contactIndex: Int = 0
 
     lateinit var contactsModel : ContactsModel
 
-    fun initContact(context: Context, contactIndex: Int?) {
+    fun initContact(context: Context, contactVal: ContactData) {
         contactsModel = (context as Activity).get()
-
-        val contactVal: ContactData = contactsModel.contactsList.get(contactIndex
-                ?: 0)
-
-        this.contactIndex = contactIndex!!
 
         contactName.value = contactVal.name
         phones.value = contactVal.phones
         emails.value = contactVal.emails
         image.value = contactVal.image
+
     }
 
-    fun deleteContact(context: Context, listener : Observable<Boolean>) {
+    fun deleteContact(context: Context) : Observable<Boolean> {
 
         contactsModel = (context as Activity).get()
 
-        contactsModel.deleteContact(context, contactIndex, phones.value!!, listener)
+        return contactsModel.deleteContact(context, phones.value)
+
     }
 }

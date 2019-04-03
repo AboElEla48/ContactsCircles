@@ -2,13 +2,26 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp">
+
+    <ImageView
+        android:id="@+id/view_phone_number_editor_delete_detail_image_view"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/app_name"/>
 
     <EditText
         android:id="@+id/view_phone_number_editor_edit_text"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/view_phone_number_editor_delete_detail_image_view"
         android:autofillHints="@string/txt_contact_editor_phone_number_hint"
         android:hint="@string/txt_contact_editor_phone_number_hint"
         android:inputType="phone"/>

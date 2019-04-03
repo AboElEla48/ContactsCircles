@@ -10,6 +10,7 @@ class Logger private constructor(){
         fun debug(tag : String, msg : String) {
             if(MASTER_LOGGER) {
                 Log.d(tag, msg)
+
             }
         }
 

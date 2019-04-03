@@ -8,6 +8,7 @@ import eg.foureg.circles.common.Logger
 import io.reactivex.Observable
 import kotlin.collections.ArrayList
 import android.content.ContentResolver
+import android.net.Uri
 
 
 /**
@@ -30,7 +31,8 @@ class ContactsRetrieverImpl : ContactsRetriever {
 
         // iterate contactsCursor
         while (contactsCursor!!.moveToNext()) {
-            val id = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.Data.RAW_CONTACT_ID))
+            val id = Uri.withAppendedPath(ContactsContract.RawContacts.CONTENT_URI,
+                    contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.Data.RAW_CONTACT_ID))).toString()
 
             val emailID = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
 
@@ -44,7 +46,6 @@ class ContactsRetrieverImpl : ContactsRetriever {
 
             // extract contact
             val contactData = ContactData()
-            contactData.id = id
             contactData.name = if (name == null){ "TempName" } else { name }
 
             val type = when(phoneType) {
@@ -59,7 +60,7 @@ class ContactsRetrieverImpl : ContactsRetriever {
                     ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
             }
 
-            contactData.phones?.add(ContactPhoneNumber(phoneNumber, type))
+            contactData.phones?.add(ContactPhoneNumber(id, phoneNumber, type))
             contactData.emails = loadEmailAddress(emailID, context.contentResolver)
             contactData.photoID = photoID
 

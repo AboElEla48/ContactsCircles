@@ -24,12 +24,10 @@ class ContactEditorViewModel : ViewModel() {
     /**
      * init contact value
      */
-    fun initContact(context: Context, contactIndex : Int?) {
+    fun initContact(context: Context, contactVal: ContactData?) {
         contactsModel = (context as Activity).get()
 
-        if(contactIndex!! > -1) {
-            val contactVal: ContactData = contactsModel.contactsList.get(contactIndex)
-
+        if(contactVal != null) {
             contactName.value = contactVal.name
             phones.value = contactVal.phones
             emails.value = contactVal.emails
@@ -37,19 +35,20 @@ class ContactEditorViewModel : ViewModel() {
         }
     }
 
-    fun saveContact(context: Context, contactData: ContactData) {
+    fun saveContact(context: Context, contactData: ContactData) : Observable<Boolean> {
         contactsModel = (context as Activity).get()
-        contactsModel.addNewContact(context, contactData)
+        return contactsModel.addNewContact(context, contactData)
     }
-//
-//    /**
-//     * update contact
-//     */
-//    fun updateContact(context: Context, contactIndex: Int?) : Observable<Boolean> {
-//        contactsModel = (context as Activity).get()
-//
-//        val contactVal : ContactData = contactsModel.contactsList.get(contactIndex?:0)
-//
-//        return ContactsEditorImpl().updateContactName(context, contactVal.id, contactName.value!!)
-//    }
+
+    fun updateContact(context: Context, oldPhones:List<ContactPhoneNumber>?, newContact: ContactData) : Observable<Boolean> {
+        return Observable.create<Boolean> { emitter ->
+            contactsModel = (context as Activity).get()
+            contactsModel.deleteContact(context, oldPhones).subscribe {
+                saveContact(context, newContact)
+                        .subscribe { emitter.onNext(true) }
+            }
+        }
+
+    }
+
 }

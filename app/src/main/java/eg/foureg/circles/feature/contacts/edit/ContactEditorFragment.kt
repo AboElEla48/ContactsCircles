@@ -215,7 +215,9 @@ class ContactEditorFragment : BaseFragment() {
         contactData.emails = contactEditorViewModel.emails.value
 
         if (editContact != null) {
-            contactEditorViewModel.updateContact(activity as Context, editContact?.phones, contactData)
+            listOfDisposables.add(contactEditorViewModel.updateContact(activity as Context, editContact?.phones, contactData)
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe { contactSavedAndExit() })
 
         } else {
             listOfDisposables.add(contactEditorViewModel.saveContact(activity as Context, contactData)

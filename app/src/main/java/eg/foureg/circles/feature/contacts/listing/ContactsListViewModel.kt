@@ -4,7 +4,7 @@ import android.app.Activity
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Context
-import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.feature.contacts.models.ContactsModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

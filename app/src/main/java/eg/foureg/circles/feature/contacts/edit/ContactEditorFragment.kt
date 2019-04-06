@@ -15,11 +15,11 @@ import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
-import eg.foureg.circles.contacts.ContactData
-import eg.foureg.circles.contacts.ContactPhoneNumber
+import eg.foureg.circles.contacts.data.ContactData
+import eg.foureg.circles.contacts.data.ContactPhoneNumber
 import eg.foureg.circles.feature.contacts.models.ContactsModel
-import eg.foureg.circles.feature.main.MainActivity
-import eg.foureg.circles.feature.main.MainActivityMessages
+import eg.foureg.circles.feature.main.content.ContentActivity
+import eg.foureg.circles.feature.main.content.ContentActivityMessages
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -234,8 +234,8 @@ class ContactEditorFragment : BaseFragment() {
         progressBar.visibility = View.GONE
 
         val msg = Message()
-        msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
-        MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+        msg.id = ContentActivityMessages.MSG_ID_CLOSE_CONTENT_ACTIVITY_AND_REFRESH_CONTACTS
+        MessageServer.getInstance().sendMessage(ContentActivity::class as KClass<Any>, msg)
     }
 
 

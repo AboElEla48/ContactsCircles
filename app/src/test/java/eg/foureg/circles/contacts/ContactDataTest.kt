@@ -1,5 +1,7 @@
 package eg.foureg.circles.contacts
 
+import eg.foureg.circles.contacts.data.ContactData
+import eg.foureg.circles.contacts.data.ContactPhoneNumber
 import org.junit.Assert
 import org.junit.Test
 

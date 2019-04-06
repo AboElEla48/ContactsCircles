@@ -8,15 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 
 import eg.foureg.circles.R
+import eg.foureg.circles.circles.data.CircleData
 
 /**
  * A fragment to add/edit circle
  *
  */
 class CircleEditFragment : Fragment() {
+
+    var editCircle : CircleData? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            editCircle = it.getParcelable<CircleData>(CircleEditFragment.CIRCLE_DATA_PARAM)
         }
     }
 
@@ -35,10 +40,13 @@ class CircleEditFragment : Fragment() {
          * @return A new instance of fragment CircleEditFragment.
          */
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(circleData: CircleData?) =
                 CircleEditFragment().apply {
                     arguments = Bundle().apply {
+                        putParcelable(CircleEditFragment.CIRCLE_DATA_PARAM, circleData)
                     }
                 }
+
+        const val CIRCLE_DATA_PARAM = "CIRCLE_DATA_PARAM"
     }
 }

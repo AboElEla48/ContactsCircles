@@ -9,6 +9,8 @@ import io.reactivex.Observable
 import kotlin.collections.ArrayList
 import android.content.ContentResolver
 import android.net.Uri
+import eg.foureg.circles.contacts.data.ContactData
+import eg.foureg.circles.contacts.data.ContactPhoneNumber
 
 
 /**

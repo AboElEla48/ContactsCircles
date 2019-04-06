@@ -8,9 +8,9 @@ import android.net.Uri
 import android.provider.ContactsContract
 import android.provider.ContactsContract.RawContacts
 import eg.foureg.circles.common.Logger
-import eg.foureg.circles.feature.contacts.models.ContactsModel
+import eg.foureg.circles.contacts.data.ContactData
+import eg.foureg.circles.contacts.data.ContactPhoneNumber
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit

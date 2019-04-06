@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -16,10 +15,12 @@ import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
-import eg.foureg.circles.contacts.ContactData
-import eg.foureg.circles.contacts.ContactPhoneNumber
+import eg.foureg.circles.contacts.data.ContactData
+import eg.foureg.circles.contacts.data.ContactPhoneNumber
 import eg.foureg.circles.feature.main.MainActivity
 import eg.foureg.circles.feature.main.MainActivityMessages
+import eg.foureg.circles.feature.main.content.ContentActivity
+import eg.foureg.circles.feature.main.content.ContentActivityMessages
 import io.reactivex.Observable
 import kotlin.reflect.KClass
 
@@ -30,7 +31,7 @@ import kotlin.reflect.KClass
 class ContactViewerFragment : BaseFragment() {
 
     var contactViewViewModel = ContactViewViewModel()
-    lateinit var contact:ContactData
+    lateinit var contact: ContactData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,8 +139,8 @@ class ContactViewerFragment : BaseFragment() {
         builder.setPositiveButton(getString(R.string.txt_confirm_delete_ok_btn)){ _, _ ->
             contactViewViewModel.deleteContact(context!!).subscribe{
                 val msg = Message()
-                msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
-                MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+                msg.id = ContentActivityMessages.MSG_ID_CLOSE_CONTENT_ACTIVITY_AND_REFRESH_CONTACTS
+                MessageServer.getInstance().sendMessage(ContentActivity::class as KClass<Any>, msg)
             }
         }
 

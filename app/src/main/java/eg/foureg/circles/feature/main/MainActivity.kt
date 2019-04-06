@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import eg.foureg.circles.R
+import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.ui.BaseActivity
 import eg.foureg.circles.contacts.data.ContactData
@@ -17,10 +18,13 @@ import eg.foureg.circles.feature.main.content.ContentActivityMessages
 class MainActivity : BaseActivity() {
     private val mainActivityFragmentsNavigator : MainActivityFragmentsNavigator = MainActivityFragmentsNavigator()
     private var tempContactData : ContactData? = null
+    private var tempCircleData : CircleData? = null
 
     companion object {
         const val PERMISSION_READ_CONTACT_ID = 150
         const val PERMISSION_WRITE_CONTACT_ID = 151
+
+        const val PERMISSION_WRITE_CIRCLE_ID = 152
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +49,16 @@ class MainActivity : BaseActivity() {
 
             PERMISSION_WRITE_CONTACT_ID -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    viewEditor(tempContactData)
+                    viewContactEditor(tempContactData)
+                }
+                else {
+                    Toast.makeText(this, getString(R.string.txt_permission_must_be_granted), Toast.LENGTH_LONG).show()
+                }
+            }
+
+            PERMISSION_WRITE_CIRCLE_ID -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    viewCircleEditor(tempCircleData)
                 }
                 else {
                     Toast.makeText(this, getString(R.string.txt_permission_must_be_granted), Toast.LENGTH_LONG).show()
@@ -91,21 +104,46 @@ class MainActivity : BaseActivity() {
             }
 
             MainActivityMessages.MSG_ID_ADD_NEW_CONTACT -> {
-                viewEditor(null)
+                viewContactEditor(null)
             }
 
             MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS -> {
                 val contact = message.data.get(MainActivityMessages.DATA_PARAM_CONTACT_DATA) as ContactData
-                viewEditor(contact)
+                viewContactEditor(contact)
             }
 
             MainActivityMessages.MSG_ID_VIEW_CIRCLE_EDITOR -> {
-                // TODO
+                viewCircleEditor(null)
             }
         }
     }
 
-    private fun viewEditor(contact: ContactData?) {
+    private fun viewCircleEditor(circleData: CircleData?) {
+        val intent = Intent(this, ContentActivity::class.java)
+        if(circleData == null) {
+            intent.putExtra(ContentActivity.CONTENT_MODEL_PARAM, ContentActivityMessages.MSG_ID_ADD_NEW_CIRCLE)
+        }
+        else {
+            intent.putExtra(ContentActivity.CONTENT_MSG_DATA1, circleData)
+            intent.putExtra(ContentActivity.CONTENT_MODEL_PARAM, ContentActivityMessages.MSG_ID_EDIT_CIRCLE)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
+            if (checkSelfPermission(Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                startActivity(intent)
+            }
+            else {
+                tempCircleData = circleData
+                requestPermissions(arrayOf(Manifest.permission.WRITE_CONTACTS),
+                        PERMISSION_WRITE_CIRCLE_ID)
+            }
+        }
+        else {
+            startActivity(intent)
+        }
+    }
+
+    private fun viewContactEditor(contact: ContactData?) {
 
         val intent = Intent(this, ContentActivity::class.java)
         if(contact == null) {

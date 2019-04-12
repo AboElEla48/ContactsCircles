@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.google.gson.Gson
 
 class CircleData constructor() : Parcelable {
+    var circleID : Int = 0
     var name : String = ""
     var contactsIds : ArrayList<String> = ArrayList()
 
@@ -12,11 +13,13 @@ class CircleData constructor() : Parcelable {
     constructor(parcel: Parcel) : this() {
         val circleData = Gson().fromJson<CircleData>(parcel.readString(), CircleData::class.java)
 
+        circleID = circleData.circleID
         name = circleData.name
         contactsIds = circleData.contactsIds
     }
 
-    constructor(cName : String, ids : ArrayList<String>) : this(){
+    constructor(cId : Int, cName : String, ids : ArrayList<String>) : this(){
+        circleID = cId
         name = cName
         contactsIds = ids
     }

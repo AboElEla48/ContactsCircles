@@ -22,6 +22,9 @@ import eg.foureg.circles.feature.main.MainActivityMessages
 import eg.foureg.circles.feature.main.content.ContentActivity
 import eg.foureg.circles.feature.main.content.ContentActivityMessages
 import io.reactivex.Observable
+import kotlinx.android.synthetic.main.fragment_contact_viewer.view.*
+import kotlinx.android.synthetic.main.view_contact_view_email_item.view.*
+import kotlinx.android.synthetic.main.view_contact_view_phone_item.view.*
 import kotlin.reflect.KClass
 
 /**
@@ -45,34 +48,27 @@ class ContactViewerFragment : BaseFragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_contact_viewer, container, false)
 
-        val contactImageView: ImageView = view.findViewById(R.id.fragment_contact_viewer_image_view)
-        val contactNameTextView: TextView = view.findViewById(R.id.fragment_content_view_name_text_view)
-        val contactPhonesLayout: LinearLayout = view.findViewById(R.id.fragment_content_view_phones_layout)
-        val contactEmailsLayout: LinearLayout = view.findViewById(R.id.fragment_content_view_emails_layout)
-
         contactViewViewModel = ViewModelProviders.of(this).get(ContactViewViewModel::class.java)
 
         contactViewViewModel.image.observe(this, Observer { img: Bitmap? ->
             if (img != null) {
-                contactImageView.setImageBitmap(img)
+                view.fragment_contact_viewer_image_view.setImageBitmap(img)
             }
         })
 
         contactViewViewModel.contactName.observe(this, Observer { name: String? ->
-            contactNameTextView.setText(name)
+            view.fragment_content_view_name_text_view.setText(name)
         })
 
         contactViewViewModel.phones.observe(this, Observer { phones: List<ContactPhoneNumber>? ->
             Observable.fromIterable(phones)
                     .subscribe{ phoneNumber: ContactPhoneNumber ->
                         val phoneView: View = inflater.inflate(R.layout.view_contact_view_phone_item, null, false)
-                        val phoneTextView: TextView = phoneView.findViewById(R.id.fragment_contact_view_phone_item_phone_text_view)
-                        val phoneTypeTextView: TextView = phoneView.findViewById(R.id.fragment_contact_view_phone_item_phone_type_text_view)
 
-                        phoneTextView.text = phoneNumber.phoneNumber
+                        phoneView.fragment_contact_view_phone_item_phone_text_view.text = phoneNumber.phoneNumber
                         if(phoneNumber.phoneNumber.isNotEmpty()) {
-                            phoneTypeTextView.text = resources.getStringArray(R.array.txt_phone_types_arr).get(phoneNumber.phoneNumberType.ordinal)
-                            contactPhonesLayout.addView(phoneView)
+                            phoneView.fragment_contact_view_phone_item_phone_type_text_view.text = resources.getStringArray(R.array.txt_phone_types_arr).get(phoneNumber.phoneNumberType.ordinal)
+                            view.fragment_content_view_phones_layout.addView(phoneView)
                         }
 
                     }
@@ -82,9 +78,8 @@ class ContactViewerFragment : BaseFragment() {
             Observable.fromIterable(emails)
                     .subscribe{ email: String ->
                         val emailView: View = inflater.inflate(R.layout.view_contact_view_email_item, null, false)
-                        val emailTextView: TextView = emailView.findViewById(R.id.fragment_contact_view_phone_item_email_text_view)
-                        emailTextView.text = email
-                        contactEmailsLayout.addView(emailView)
+                        emailView.fragment_contact_view_phone_item_email_text_view.text = email
+                        view.fragment_content_view_emails_layout.addView(emailView)
                     }
         })
 

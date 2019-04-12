@@ -7,4 +7,8 @@ class CircleEditorImplSample : CirclesEditorImpl() {
         updateContactReferenceInCircles(circlesList, oldContactId, newContactId)
     }
 
+    fun testdeleteContactReferenceInCircles(circlesList : List<CircleData>, oldContactId : String) {
+        deleteContactReferenceInCircles(circlesList, oldContactId)
+    }
+
 }

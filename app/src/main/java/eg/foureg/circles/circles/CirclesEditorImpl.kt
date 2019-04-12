@@ -19,4 +19,11 @@ open class CirclesEditorImpl : CirclesEditor{
                     circle.contactsIds.add(newContactId)
                 }
     }
+
+    protected fun deleteContactReferenceInCircles(circlesList : List<CircleData>, oldContactId : String) {
+        Observable.fromIterable(circlesList)
+                .subscribe { circle ->
+                    circle.contactsIds.remove(oldContactId)
+                }
+    }
 }

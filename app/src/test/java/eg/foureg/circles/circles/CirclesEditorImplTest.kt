@@ -11,7 +11,7 @@ import kotlin.collections.ArrayList
 class CirclesEditorImplTest {
 
     private val circleEditor = CircleEditorImplSample()
-    private val sampleCircles : ArrayList<CircleData> = ArrayList()
+    private val sampleCircles: ArrayList<CircleData> = ArrayList()
 
     @Before
     fun setupTest() {
@@ -31,6 +31,17 @@ class CirclesEditorImplTest {
                 .subscribe { circle ->
                     Assert.assertTrue(!circle.contactsIds.contains(oldContactId))
                     Assert.assertTrue(circle.contactsIds.contains(newContactId))
+                }
+    }
+
+    @Test
+    fun deleteContactReferenceInCircles_Test() {
+        val oldContactId = "25"
+        circleEditor.testdeleteContactReferenceInCircles(sampleCircles, oldContactId)
+
+        Observable.fromIterable(sampleCircles)
+                .subscribe { circle ->
+                    Assert.assertTrue(!circle.contactsIds.contains(oldContactId))
                 }
     }
 }

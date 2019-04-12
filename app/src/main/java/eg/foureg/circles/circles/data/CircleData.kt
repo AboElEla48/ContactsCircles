@@ -11,7 +11,7 @@ class CircleData constructor() : Parcelable {
 
 
     constructor(parcel: Parcel) : this() {
-        val circleData = Gson().fromJson<CircleData>(parcel.readString(), CircleData::class.java)
+        val circleData = fromJson(parcel.readString())
 
         circleID = circleData.circleID
         name = circleData.name
@@ -32,6 +32,10 @@ class CircleData constructor() : Parcelable {
         return 0
     }
 
+    override fun toString(): String {
+        return Gson().toJson(this)
+    }
+
     companion object CREATOR : Parcelable.Creator<CircleData> {
         override fun createFromParcel(parcel: Parcel): CircleData {
             return CircleData(parcel)
@@ -39,6 +43,10 @@ class CircleData constructor() : Parcelable {
 
         override fun newArray(size: Int): Array<CircleData?> {
             return arrayOfNulls(size)
+        }
+
+        fun fromJson(string: String?) : CircleData {
+            return Gson().fromJson<CircleData>(string, CircleData::class.java)
         }
     }
 }

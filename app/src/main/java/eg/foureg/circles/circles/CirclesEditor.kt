@@ -1,5 +1,5 @@
 package eg.foureg.circles.circles
 
-interface CirclesRetriever {
+interface CirclesEditor {
 
 }

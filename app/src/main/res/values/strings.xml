@@ -21,6 +21,7 @@
     <string name="txt_permission_must_be_granted">Contacts Permissions must be granted</string>
 
     <string name="txt_circle_name_hint">Enter Circle Name</string>
+    <string name="txt_save_circle_editing">Save Circle</string>
 
     <string-array name="txt_phone_types_arr">
         <item>Mobile</item>

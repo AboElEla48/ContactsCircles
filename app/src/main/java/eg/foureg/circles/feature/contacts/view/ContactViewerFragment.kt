@@ -8,9 +8,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
@@ -25,7 +22,6 @@ import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_contact_viewer.view.*
 import kotlinx.android.synthetic.main.view_contact_view_email_item.view.*
 import kotlinx.android.synthetic.main.view_contact_view_phone_item.view.*
-import kotlin.reflect.KClass
 
 /**
  * Contact Viewer fragment
@@ -33,13 +29,13 @@ import kotlin.reflect.KClass
  */
 class ContactViewerFragment : BaseFragment() {
 
-    var contactViewViewModel = ContactViewViewModel()
+    private var contactViewViewModel = ContactViewViewModel()
     lateinit var contact: ContactData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            contact = it.getParcelable(CONTACT_DATA_PARAM)
+        arguments?.let { bundle ->
+            contact = bundle.getParcelable(CONTACT_DATA_PARAM)!!
         }
     }
 

@@ -143,7 +143,7 @@ class ContactsEditorImpl : ContactsEditor {
     }
 
     private fun insertNewContactEmails(context: Context, name: String, emails:List<String> ?): Observable<Boolean> {
-        return Observable.create<Boolean> {emitter ->
+        return Observable.create<Boolean> {
             Observable.fromIterable(emails)
                     .filter { email ->
                         email.isNotEmpty()

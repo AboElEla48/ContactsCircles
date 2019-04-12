@@ -31,7 +31,7 @@ class ContactsListAdapter(val context: Context, val contacts: List<ContactData>?
             val msg = Message()
             msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACT_DETAILS
             msg.data.put(MainActivityMessages.DATA_PARAM_CONTACT_DATA, contacts!!.get(itemIndex))
-            MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+            MessageServer.getInstance().sendMessage(MainActivity::class.java, msg)
         }
 
         return viewHolder

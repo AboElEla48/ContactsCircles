@@ -43,7 +43,7 @@ class MessageServerTest {
 
     @Test
     fun sendMessage() {
-        val clazz : KClass<Any> = Actor2::class as KClass<Any>
+        val clazz : Class<*> = Actor2::class.java
         val messageData = "This is message data"
 
         MessageServer.getInstance().sendMessage(clazz, 11, messageData)

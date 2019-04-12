@@ -54,7 +54,7 @@ class ContactsListFragment : BaseFragment() {
             val msg = Message()
 
             msg.id = MainActivityMessages.MSG_ID_ADD_NEW_CONTACT
-            MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+            MessageServer.getInstance().sendMessage(MainActivity::class.java, msg)
         }
 
         recyclerView.setHasFixedSize(true)

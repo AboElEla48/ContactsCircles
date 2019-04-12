@@ -221,7 +221,7 @@ class ContactEditorFragment : BaseFragment() {
 
         val msg = Message()
         msg.id = ContentActivityMessages.MSG_ID_CLOSE_CONTENT_ACTIVITY_AND_REFRESH_CONTACTS
-        MessageServer.getInstance().sendMessage(ContentActivity::class as KClass<Any>, msg)
+        MessageServer.getInstance().sendMessage(ContentActivity::class.java, msg)
     }
 
 

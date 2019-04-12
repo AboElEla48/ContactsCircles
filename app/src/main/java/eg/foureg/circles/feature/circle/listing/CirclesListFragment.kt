@@ -49,7 +49,7 @@ class CirclesListFragment : Fragment() {
             val msg = Message()
 
             msg.id = MainActivityMessages.MSG_ID_VIEW_CIRCLE_EDITOR
-            MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+            MessageServer.getInstance().sendMessage(MainActivity::class.java, msg)
         })
     }
 

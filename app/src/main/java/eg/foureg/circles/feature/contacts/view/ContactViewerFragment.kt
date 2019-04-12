@@ -105,7 +105,7 @@ class ContactViewerFragment : BaseFragment() {
 
                 msg.id = MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS
                 msg.data.put(MainActivityMessages.DATA_PARAM_CONTACT_DATA, contact)
-                MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+                MessageServer.getInstance().sendMessage(MainActivity::class.java, msg)
             }
 
             R.id.menu_item_contact_viewer_delete -> {
@@ -135,7 +135,7 @@ class ContactViewerFragment : BaseFragment() {
             contactViewViewModel.deleteContact(context!!).subscribe{
                 val msg = Message()
                 msg.id = ContentActivityMessages.MSG_ID_CLOSE_CONTENT_ACTIVITY_AND_REFRESH_CONTACTS
-                MessageServer.getInstance().sendMessage(ContentActivity::class as KClass<Any>, msg)
+                MessageServer.getInstance().sendMessage(ContentActivity::class.java, msg)
             }
         }
 

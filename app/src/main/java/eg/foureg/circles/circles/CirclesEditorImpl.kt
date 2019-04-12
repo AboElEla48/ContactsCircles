@@ -214,7 +214,7 @@ open class CirclesEditorImpl : CirclesEditor {
             for (circle in list) {
                 if (circle.circleID > max) {
                     max = circle.circleID
-                }
+                } 
 
             }
 

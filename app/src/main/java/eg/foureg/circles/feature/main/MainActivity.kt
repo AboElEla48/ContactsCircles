@@ -11,14 +11,20 @@ import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.ui.BaseActivity
 import eg.foureg.circles.contacts.data.ContactData
+import eg.foureg.circles.feature.circle.models.CirclesModel
+import eg.foureg.circles.feature.contacts.models.ContactsModel
 import eg.foureg.circles.feature.main.content.ContentActivity
 import eg.foureg.circles.feature.main.content.ContentActivityMessages
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : BaseActivity() {
     private val mainActivityFragmentsNavigator : MainActivityFragmentsNavigator = MainActivityFragmentsNavigator()
     private var tempContactData : ContactData? = null
     private var tempCircleData : CircleData? = null
+
+    val contactsModel : ContactsModel by inject()
+    val circlesModel : CirclesModel by inject()
 
     companion object {
         const val PERMISSION_READ_CONTACT_ID = 150

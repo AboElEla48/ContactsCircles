@@ -14,11 +14,10 @@ import com.jakewharton.rxbinding2.view.RxView
 
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
-import eg.foureg.circles.feature.circle.models.CirclesModel
+import eg.foureg.circles.common.ToastHolder
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_circle_edit.*
 import kotlinx.android.synthetic.main.fragment_circle_edit.view.*
-import org.koin.android.ext.android.inject
 
 /**
  * A fragment to add/edit circle
@@ -30,12 +29,10 @@ class CircleEditFragment : Fragment() {
     val listOfDisposable: ArrayList<Disposable> = ArrayList()
     var editCircle: CircleData? = null
 
-    val circlesModel: CirclesModel by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            editCircle = it.getParcelable<CircleData>(CircleEditFragment.CIRCLE_DATA_PARAM)
+            editCircle = it.getParcelable<CircleData>(CIRCLE_DATA_PARAM)
         }
     }
 
@@ -54,8 +51,8 @@ class CircleEditFragment : Fragment() {
             fragment_circle_edit_circle_name_editor.setText(name)
         })
 
-        viewModel.circleContacts.observe(this, Observer { contacts: ArrayList<String>? ->
-            // TODO: set circle contacts
+        viewModel.progressVisibility.observe(this, Observer {visibility : Int? ->
+            fragment_circle_edit_loading_progress.visibility = visibility!!
         })
 
         listOfDisposable.add(RxView.clicks(fragment_circle_edit_save_btn)
@@ -75,6 +72,16 @@ class CircleEditFragment : Fragment() {
 
     private fun saveCircle(circleNameEditor : EditText) {
         viewModel.circleName.value = circleNameEditor.text.toString()
+
+        // TODO: save circle contacts
+
+        // save circle
+        viewModel.addNewCircle(activity as Context)
+                .subscribe {
+                    viewModel.progressVisibility.value = View.GONE
+
+                    ToastHolder.showToast(activity as Context, getString(R.string.txt_circle_saved_message))
+                }
     }
 
 
@@ -89,7 +96,7 @@ class CircleEditFragment : Fragment() {
         fun newInstance(circleData: CircleData?) =
                 CircleEditFragment().apply {
                     arguments = Bundle().apply {
-                        putParcelable(CircleEditFragment.CIRCLE_DATA_PARAM, circleData)
+                        putParcelable(CIRCLE_DATA_PARAM, circleData)
                     }
                 }
 

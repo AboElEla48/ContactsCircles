@@ -46,12 +46,10 @@ class ContactEditorFragment : BaseFragment() {
 
     private var listOfDisposables: ArrayList<Disposable> = ArrayList()
 
-    val contactsModel: ContactsModel by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            editContact = it.getParcelable<ContactData>(ContactEditorFragment.CONTACT_DATA_PARAM)
+            editContact = it.getParcelable<ContactData>(CONTACT_DATA_PARAM)
 
         }
     }
@@ -282,7 +280,7 @@ class ContactEditorFragment : BaseFragment() {
         fun newInstance(contact: ContactData?) =
                 ContactEditorFragment().apply {
                     arguments = Bundle().apply {
-                        putParcelable(ContactEditorFragment.CONTACT_DATA_PARAM, contact)
+                        putParcelable(CONTACT_DATA_PARAM, contact)
 
                     }
                 }

@@ -24,6 +24,12 @@ class CircleData constructor() : Parcelable {
         contactsIds = ids
     }
 
+    constructor(cName : String, ids : ArrayList<String>) : this(){
+        circleID = 0
+        name = cName
+        contactsIds = ids
+    }
+
     override fun writeToParcel(dest: Parcel?, flags: Int) {
         dest?.writeString(Gson().toJson(this))
     }

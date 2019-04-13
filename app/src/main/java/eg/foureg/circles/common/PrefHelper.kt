@@ -20,8 +20,12 @@ class PrefHelper {
         }
 
         fun loadStringArray(context: Context, key: String): List<String> {
-            return Gson().fromJson<List<String>>(PreferenceManager.getDefaultSharedPreferences(context).getString(key, ""),
-                    ArrayList::class.java)
+            val str = PreferenceManager.getDefaultSharedPreferences(context).getString(key, "")
+            if(str?.length!! > 0) {
+                return Gson().fromJson<List<String>>(str, ArrayList::class.java)
+            }
+
+            return ArrayList()
         }
     }
 }

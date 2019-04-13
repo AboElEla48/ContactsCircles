@@ -12,13 +12,16 @@ import eg.foureg.circles.contacts.ContactsRetriever
 import eg.foureg.circles.feature.circle.models.CirclesModel
 import org.koin.dsl.module.module
 
-val appModule = module {
+val appContactsModule = module {
     single<ContactsRetriever> { ContactsRetrieverImpl() }
     single<ContactsEditor> { ContactsEditorImpl() }
 
+    factory { ContactsModel(get(), get())}
+}
+
+val appCirclesModule = module {
     single<CirclesEditor> { CirclesEditorImpl() }
     single<CirclesRetriever> { CirclesRetrieverImpl() }
 
-    factory { ContactsModel(get(), get())}
     factory { CirclesModel(get(), get()) }
 }

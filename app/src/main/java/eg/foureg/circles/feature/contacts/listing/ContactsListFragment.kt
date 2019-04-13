@@ -34,7 +34,7 @@ class ContactsListFragment : BaseFragment() {
     private var viewModel: ContactsListViewModel = ContactsListViewModel()
     private lateinit var disposable: Disposable
 
-    val contactsModel : ContactsModel by inject()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,4 +1,6 @@
 language: android
+sudo: true
+
 android:
   components:
   # Uncomment the lines below if you want to
@@ -30,6 +32,7 @@ android:
   - adb shell input keyevent 82 &
 
   before_install:
+    
   - chmod +x gradlew
 
   script: ./gradlew connectedAndroidTest

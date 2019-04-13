@@ -11,10 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import com.jakewharton.rxbinding2.view.RxView
-
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.common.ToastHolder
+import eg.foureg.circles.common.message.data.Message
+import eg.foureg.circles.common.message.server.MessageServer
+import eg.foureg.circles.feature.main.content.ContentActivity
+import eg.foureg.circles.feature.main.content.ContentActivityMessages
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_circle_edit.*
 import kotlinx.android.synthetic.main.fragment_circle_edit.view.*
@@ -51,7 +54,7 @@ class CircleEditFragment : Fragment() {
             fragment_circle_edit_circle_name_editor.setText(name)
         })
 
-        viewModel.progressVisibility.observe(this, Observer {visibility : Int? ->
+        viewModel.progressVisibility.observe(this, Observer { visibility: Int? ->
             fragment_circle_edit_loading_progress.visibility = visibility!!
         })
 
@@ -70,18 +73,27 @@ class CircleEditFragment : Fragment() {
         }
     }
 
-    private fun saveCircle(circleNameEditor : EditText) {
+    private fun saveCircle(circleNameEditor: EditText) {
         viewModel.circleName.value = circleNameEditor.text.toString()
 
         // TODO: save circle contacts
 
         // save circle
-        viewModel.addNewCircle(activity as Context)
+        listOfDisposable.add(viewModel.addNewCircle(activity as Context)
                 .subscribe {
                     viewModel.progressVisibility.value = View.GONE
 
                     ToastHolder.showToast(activity as Context, getString(R.string.txt_circle_saved_message))
-                }
+
+                    exitCirclesEdit()
+                })
+    }
+
+    private fun exitCirclesEdit() {
+
+        val msg = Message()
+        msg.id = ContentActivityMessages.MSG_ID_CLOSE_CONTENT_ACTIVITY_AND_REFRESH_CONTACTS
+        MessageServer.getInstance().sendMessage(ContentActivity::class.java, msg)
     }
 
 

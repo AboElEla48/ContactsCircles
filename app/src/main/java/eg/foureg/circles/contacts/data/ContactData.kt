@@ -1,11 +1,9 @@
-package eg.foureg.circles.contacts
+package eg.foureg.circles.contacts.data
 
 import android.graphics.Bitmap
 import android.os.Parcel
 import android.os.Parcelable
 import io.reactivex.Observable
-import io.reactivex.annotations.Nullable
-import io.reactivex.functions.Consumer
 
 /**
  * Define the data model for contact
@@ -28,7 +26,7 @@ class ContactData constructor() : Parcelable{
         notes = parcel.readString()
     }
 
-    constructor(n : String,  pList : ArrayList<ContactPhoneNumber>?, eList : ArrayList<String>?, nts : String?) : this() {
+    constructor(n : String, pList : ArrayList<ContactPhoneNumber>?, eList : ArrayList<String>?, nts : String?) : this() {
         name = n
         phones = pList
         emails = eList

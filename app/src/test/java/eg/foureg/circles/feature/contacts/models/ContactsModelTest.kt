@@ -1,13 +1,10 @@
 package eg.foureg.circles.feature.contacts.models
 
-import eg.foureg.circles.contacts.ContactData
-import eg.foureg.circles.contacts.ContactPhoneNumber
+import eg.foureg.circles.contacts.data.ContactData
+import eg.foureg.circles.contacts.data.ContactPhoneNumber
 import io.reactivex.Observable
-import io.reactivex.functions.Consumer
 import org.junit.Assert
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class ContactsModelTest {
 

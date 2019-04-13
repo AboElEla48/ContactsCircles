@@ -6,6 +6,6 @@ import org.koin.android.ext.android.startKoin
 class CirclesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        startKoin(this, listOf(appModule))
+        startKoin(this, listOf(appContactsModule, appCirclesModule))
     }
 }

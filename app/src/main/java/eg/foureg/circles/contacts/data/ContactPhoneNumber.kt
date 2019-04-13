@@ -1,4 +1,4 @@
-package eg.foureg.circles.contacts
+package eg.foureg.circles.contacts.data
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -22,7 +22,7 @@ class ContactPhoneNumber constructor() : Parcelable{
 
     }
 
-    constructor(pUri: String, pNum: String, pType:PHONE_NUM_TYPE) :this() {
+    constructor(pUri: String, pNum: String, pType: PHONE_NUM_TYPE) :this() {
         phoneNumberRawIdUri = pUri
         phoneNumber = pNum
         phoneNumberType = pType

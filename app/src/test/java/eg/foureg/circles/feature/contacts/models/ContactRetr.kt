@@ -3,7 +3,7 @@ package eg.foureg.circles.feature.contacts.models
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.contacts.ContactsRetriever
 
 class ContactRetr() : ContactsRetriever, Parcelable {

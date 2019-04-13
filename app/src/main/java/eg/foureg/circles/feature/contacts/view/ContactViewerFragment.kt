@@ -7,21 +7,21 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.view.*
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
-import eg.foureg.circles.contacts.ContactData
-import eg.foureg.circles.contacts.ContactPhoneNumber
+import eg.foureg.circles.contacts.data.ContactData
+import eg.foureg.circles.contacts.data.ContactPhoneNumber
 import eg.foureg.circles.feature.main.MainActivity
 import eg.foureg.circles.feature.main.MainActivityMessages
+import eg.foureg.circles.feature.main.content.ContentActivity
+import eg.foureg.circles.feature.main.content.ContentActivityMessages
 import io.reactivex.Observable
-import kotlin.reflect.KClass
+import kotlinx.android.synthetic.main.fragment_contact_viewer.view.*
+import kotlinx.android.synthetic.main.view_contact_view_email_item.view.*
+import kotlinx.android.synthetic.main.view_contact_view_phone_item.view.*
 
 /**
  * Contact Viewer fragment
@@ -29,13 +29,13 @@ import kotlin.reflect.KClass
  */
 class ContactViewerFragment : BaseFragment() {
 
-    var contactViewViewModel = ContactViewViewModel()
-    lateinit var contact:ContactData
+    private var contactViewViewModel = ContactViewViewModel()
+    lateinit var contact: ContactData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            contact = it.getParcelable(CONTACT_DATA_PARAM)
+        arguments?.let { bundle ->
+            contact = bundle.getParcelable(CONTACT_DATA_PARAM)!!
         }
     }
 
@@ -44,34 +44,27 @@ class ContactViewerFragment : BaseFragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_contact_viewer, container, false)
 
-        val contactImageView: ImageView = view.findViewById(R.id.fragment_contact_viewer_image_view)
-        val contactNameTextView: TextView = view.findViewById(R.id.fragment_content_view_name_text_view)
-        val contactPhonesLayout: LinearLayout = view.findViewById(R.id.fragment_content_view_phones_layout)
-        val contactEmailsLayout: LinearLayout = view.findViewById(R.id.fragment_content_view_emails_layout)
-
         contactViewViewModel = ViewModelProviders.of(this).get(ContactViewViewModel::class.java)
 
         contactViewViewModel.image.observe(this, Observer { img: Bitmap? ->
             if (img != null) {
-                contactImageView.setImageBitmap(img)
+                view.fragment_contact_viewer_image_view.setImageBitmap(img)
             }
         })
 
         contactViewViewModel.contactName.observe(this, Observer { name: String? ->
-            contactNameTextView.setText(name)
+            view.fragment_content_view_name_text_view.setText(name)
         })
 
         contactViewViewModel.phones.observe(this, Observer { phones: List<ContactPhoneNumber>? ->
             Observable.fromIterable(phones)
                     .subscribe{ phoneNumber: ContactPhoneNumber ->
                         val phoneView: View = inflater.inflate(R.layout.view_contact_view_phone_item, null, false)
-                        val phoneTextView: TextView = phoneView.findViewById(R.id.fragment_contact_view_phone_item_phone_text_view)
-                        val phoneTypeTextView: TextView = phoneView.findViewById(R.id.fragment_contact_view_phone_item_phone_type_text_view)
 
-                        phoneTextView.text = phoneNumber.phoneNumber
+                        phoneView.fragment_contact_view_phone_item_phone_text_view.text = phoneNumber.phoneNumber
                         if(phoneNumber.phoneNumber.isNotEmpty()) {
-                            phoneTypeTextView.text = resources.getStringArray(R.array.txt_phone_types_arr).get(phoneNumber.phoneNumberType.ordinal)
-                            contactPhonesLayout.addView(phoneView)
+                            phoneView.fragment_contact_view_phone_item_phone_type_text_view.text = resources.getStringArray(R.array.txt_phone_types_arr).get(phoneNumber.phoneNumberType.ordinal)
+                            view.fragment_content_view_phones_layout.addView(phoneView)
                         }
 
                     }
@@ -81,9 +74,8 @@ class ContactViewerFragment : BaseFragment() {
             Observable.fromIterable(emails)
                     .subscribe{ email: String ->
                         val emailView: View = inflater.inflate(R.layout.view_contact_view_email_item, null, false)
-                        val emailTextView: TextView = emailView.findViewById(R.id.fragment_contact_view_phone_item_email_text_view)
-                        emailTextView.text = email
-                        contactEmailsLayout.addView(emailView)
+                        emailView.fragment_contact_view_phone_item_email_text_view.text = email
+                        view.fragment_content_view_emails_layout.addView(emailView)
                     }
         })
 
@@ -109,7 +101,7 @@ class ContactViewerFragment : BaseFragment() {
 
                 msg.id = MainActivityMessages.MSG_ID_EDIT_CONTACT_DETAILS
                 msg.data.put(MainActivityMessages.DATA_PARAM_CONTACT_DATA, contact)
-                MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+                MessageServer.getInstance().sendMessage(MainActivity::class.java, msg)
             }
 
             R.id.menu_item_contact_viewer_delete -> {
@@ -138,8 +130,8 @@ class ContactViewerFragment : BaseFragment() {
         builder.setPositiveButton(getString(R.string.txt_confirm_delete_ok_btn)){ _, _ ->
             contactViewViewModel.deleteContact(context!!).subscribe{
                 val msg = Message()
-                msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
-                MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+                msg.id = ContentActivityMessages.MSG_ID_CLOSE_CONTENT_ACTIVITY_AND_REFRESH_CONTACTS
+                MessageServer.getInstance().sendMessage(ContentActivity::class.java, msg)
             }
         }
 

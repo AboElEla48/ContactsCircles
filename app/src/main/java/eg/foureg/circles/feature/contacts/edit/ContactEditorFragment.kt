@@ -15,14 +15,18 @@ import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
-import eg.foureg.circles.contacts.ContactData
-import eg.foureg.circles.contacts.ContactPhoneNumber
+import eg.foureg.circles.contacts.data.ContactData
+import eg.foureg.circles.contacts.data.ContactPhoneNumber
 import eg.foureg.circles.feature.contacts.models.ContactsModel
-import eg.foureg.circles.feature.main.MainActivity
-import eg.foureg.circles.feature.main.MainActivityMessages
+import eg.foureg.circles.feature.main.content.ContentActivity
+import eg.foureg.circles.feature.main.content.ContentActivityMessages
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.fragment_contact_editor.*
+import kotlinx.android.synthetic.main.fragment_contact_editor.view.*
+import kotlinx.android.synthetic.main.view_email_editor.view.*
+import kotlinx.android.synthetic.main.view_phone_number_editor.view.*
 import org.koin.android.ext.android.inject
 import kotlin.reflect.KClass
 
@@ -38,18 +42,14 @@ class ContactEditorFragment : BaseFragment() {
     private var phoneEditorTypesSpinnerViewsList: ArrayList<Spinner> = ArrayList()
     private var emailEditorsViewsList: ArrayList<EditText> = ArrayList()
 
-    private lateinit var progressBar: ProgressBar
-
     private var editContact: ContactData? = null
 
     private var listOfDisposables: ArrayList<Disposable> = ArrayList()
 
-    val contactsModel: ContactsModel by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            editContact = it.getParcelable<ContactData>(ContactEditorFragment.CONTACT_DATA_PARAM)
+            editContact = it.getParcelable<ContactData>(CONTACT_DATA_PARAM)
 
         }
     }
@@ -59,55 +59,44 @@ class ContactEditorFragment : BaseFragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_contact_editor, container, false)
 
-        val contactImageView: ImageView = view.findViewById(R.id.fragment_contact_editor_image_view)
-        val contactNameEditText: EditText = view.findViewById(R.id.fragment_content_editor_name_edit_view)
-        val contactPhonesLayout: LinearLayout = view.findViewById(R.id.fragment_content_editor_phones_layout)
-        val contactEmailsLayout: LinearLayout = view.findViewById(R.id.fragment_content_editor_emails_layout)
-
-        val saveBtn: Button = view.findViewById(R.id.fragment_content_editor_save_button)
-        val addPhoneNumber: ImageView = view.findViewById(R.id.fragment_content_editor_phones_layout_add_phone_btn)
-        val addEmail: ImageView = view.findViewById(R.id.fragment_content_editor_emails_layout_add_email_btn)
-
-        progressBar = view.findViewById(R.id.fragment_contact_editor_loading_progress)
-
         contactEditorViewModel = ViewModelProviders.of(this).get(ContactEditorViewModel::class.java)
         contactEditorViewModel.image.observe(this, Observer { img: Bitmap? ->
             if (img != null) {
-                contactImageView.setImageBitmap(img)
+                view.fragment_contact_editor_image_view.setImageBitmap(img)
             }
         })
         contactEditorViewModel.contactName.observe(this, Observer { name: String? ->
-            contactNameEditText.setText(name)
+            view.fragment_content_editor_name_edit_view.setText(name)
         })
         contactEditorViewModel.phones.observe(this, Observer { phonesList: List<ContactPhoneNumber>? ->
-            bindPhonesLayout(container, contactPhonesLayout, inflater, phonesList)
+            bindPhonesLayout(container, view.fragment_content_editor_phones_layout, inflater, phonesList)
         })
         contactEditorViewModel.emails.observe(this, Observer { emailsList: List<String>? ->
-            bindEmailsLayout(container, contactEmailsLayout, inflater, emailsList)
+            bindEmailsLayout(container, view.fragment_content_editor_emails_layout, inflater, emailsList)
         })
 
         // handle save editContact button
-        listOfDisposables.add(RxView.clicks(saveBtn)
+        listOfDisposables.add(RxView.clicks(view.fragment_content_editor_save_button)
                 .subscribe {
-                    saveContact(contactNameEditText)
+                    saveContact(view.fragment_content_editor_name_edit_view)
                 })
 
         // handle add phone number to add new layout to phone layout
-        listOfDisposables.add(RxView.clicks(addPhoneNumber)
+        listOfDisposables.add(RxView.clicks(view.fragment_content_editor_phones_layout_add_phone_btn)
                 .subscribe {
-                    addPhoneView(inflater, container, contactPhonesLayout, null)
+                    addPhoneView(inflater, container, view.fragment_content_editor_phones_layout, null)
                 })
 
         // handle add emailto add new layout to emails layout
-        listOfDisposables.add(RxView.clicks(addEmail)
+        listOfDisposables.add(RxView.clicks(view.fragment_content_editor_emails_layout_add_email_btn)
                 .subscribe {
-                    addEmailView(inflater, container, contactEmailsLayout, "")
+                    addEmailView(inflater, container, view.fragment_content_editor_emails_layout, "")
                 })
 
         if (editContact == null) {
             // add empt phone and email fields for editing
-            addPhoneView(inflater, container, contactPhonesLayout, null)
-            addEmailView(inflater, container, contactEmailsLayout, "")
+            addPhoneView(inflater, container, view.fragment_content_editor_phones_layout, null)
+            addEmailView(inflater, container, view.fragment_content_editor_emails_layout, "")
         } else {
             // init edit editContact if this isn't a new editContact
             contactEditorViewModel.initContact(activity as Context, editContact)
@@ -122,31 +111,28 @@ class ContactEditorFragment : BaseFragment() {
     private fun addPhoneView(inflater: LayoutInflater, container: ViewGroup?, contactPhonesLayout: LinearLayout,
                              phone: ContactPhoneNumber?) {
         val phoneEditView: View = inflater.inflate(R.layout.view_phone_number_editor, container, false)
-        val phoneEditText: EditText = phoneEditView.findViewById(R.id.view_phone_number_editor_edit_text)
-        val phoneTypeSpinner: Spinner = phoneEditView.findViewById(R.id.view_phone_number_editor_type_spinner)
-        val phoneDetailDeleteBtn: ImageView = phoneEditView.findViewById(R.id.view_phone_number_editor_delete_detail_image_view)
 
-        phoneEditText.setText(phone?.phoneNumber)
+        phoneEditView.view_phone_number_editor_edit_text.setText(phone?.phoneNumber)
 
         when (phone?.phoneNumberType) {
             ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE ->
-                phoneTypeSpinner.setSelection(SPINNER_TYPE_MOBILE)
+                phoneEditView.view_phone_number_editor_type_spinner.setSelection(SPINNER_TYPE_MOBILE)
 
             ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME ->
-                phoneTypeSpinner.setSelection(SPINNER_TYPE_HOME)
+                phoneEditView.view_phone_number_editor_type_spinner.setSelection(SPINNER_TYPE_HOME)
 
             ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_WORK ->
-                phoneTypeSpinner.setSelection(SPINNER_TYPE_WORK)
+                phoneEditView.view_phone_number_editor_type_spinner.setSelection(SPINNER_TYPE_WORK)
 
         }
 
-        phoneEditorsViewsList.add(phoneEditText)
-        phoneEditorTypesSpinnerViewsList.add(phoneTypeSpinner)
+        phoneEditorsViewsList.add(phoneEditView.view_phone_number_editor_edit_text)
+        phoneEditorTypesSpinnerViewsList.add(phoneEditView.view_phone_number_editor_type_spinner)
 
-        phoneDetailDeleteBtn.setOnClickListener {
+        phoneEditView.view_phone_number_editor_delete_detail_image_view.setOnClickListener {
             contactPhonesLayout.removeView(phoneEditView)
-            phoneEditorsViewsList.remove(phoneEditText)
-            phoneEditorTypesSpinnerViewsList.remove(phoneTypeSpinner)
+            phoneEditorsViewsList.remove(phoneEditView.view_phone_number_editor_edit_text)
+            phoneEditorTypesSpinnerViewsList.remove(phoneEditView.view_phone_number_editor_type_spinner)
         }
 
         contactPhonesLayout.addView(phoneEditView)
@@ -172,16 +158,14 @@ class ContactEditorFragment : BaseFragment() {
     private fun addEmailView(inflater: LayoutInflater, container: ViewGroup?, contactEmailsLayout: LinearLayout,
                              email: String) {
         val emailEditView: View = inflater.inflate(R.layout.view_email_editor, container, false)
-        val emailEditText: EditText = emailEditView.findViewById(R.id.view_email_editor_email_edit_view)
-        val emailDetailDeleteBtn: ImageView = emailEditView.findViewById(R.id.view_email_editor_delete_detail_image_view)
 
-        emailEditText.setText(email)
+        emailEditView.view_email_editor_email_edit_view.setText(email)
 
-        emailEditorsViewsList.add(emailEditText)
+        emailEditorsViewsList.add(emailEditView.view_email_editor_email_edit_view)
 
-        emailDetailDeleteBtn.setOnClickListener {
+        emailEditView.view_email_editor_delete_detail_image_view.setOnClickListener {
             contactEmailsLayout.removeView(emailEditView)
-            emailEditorsViewsList.remove(emailEditText)
+            emailEditorsViewsList.remove(emailEditView.view_email_editor_email_edit_view)
         }
 
         contactEmailsLayout.addView(emailEditView)
@@ -206,7 +190,7 @@ class ContactEditorFragment : BaseFragment() {
 
         collectContactEmails()
 
-        progressBar.visibility = View.VISIBLE
+        fragment_contact_editor_loading_progress.visibility = View.VISIBLE
 
         // save contact
         val contactData = ContactData()
@@ -231,11 +215,11 @@ class ContactEditorFragment : BaseFragment() {
     }
 
     private fun contactSavedAndExit() {
-        progressBar.visibility = View.GONE
+        fragment_contact_editor_loading_progress.visibility = View.GONE
 
         val msg = Message()
-        msg.id = MainActivityMessages.MSG_ID_VIEW_CONTACTS_List
-        MessageServer.getInstance().sendMessage(MainActivity::class as KClass<Any>, msg)
+        msg.id = ContentActivityMessages.MSG_ID_CLOSE_CONTENT_ACTIVITY_AND_REFRESH_CONTACTS
+        MessageServer.getInstance().sendMessage(ContentActivity::class.java, msg)
     }
 
 
@@ -296,7 +280,7 @@ class ContactEditorFragment : BaseFragment() {
         fun newInstance(contact: ContactData?) =
                 ContactEditorFragment().apply {
                     arguments = Bundle().apply {
-                        putParcelable(ContactEditorFragment.CONTACT_DATA_PARAM, contact)
+                        putParcelable(CONTACT_DATA_PARAM, contact)
 
                     }
                 }

@@ -1,33 +1,35 @@
 package eg.foureg.circles.feature.main
 
 import eg.foureg.circles.R
-import eg.foureg.circles.contacts.ContactData
-import eg.foureg.circles.feature.contacts.edit.ContactEditorFragment
-import eg.foureg.circles.feature.main.MainActivity
+import eg.foureg.circles.feature.circle.listing.CirclesListFragment
 import eg.foureg.circles.feature.contacts.listing.ContactsListFragment
-import eg.foureg.circles.feature.contacts.view.ContactViewerFragment
 
 /**
  * This is the navigator class that sets the fragments in Main activity
  */
 class MainActivityFragmentsNavigator {
 
+    val contactsListFragmentTag = "contactsListFragmentTag"
+
+    fun setHeaderCirclesListFragment(mainActivity: MainActivity) {
+        val transaction = mainActivity.supportFragmentManager.beginTransaction()
+        val circlesViwerFragment = CirclesListFragment.newInstance()
+        transaction.replace(R.id.main_activity_header_frame_layout, circlesViwerFragment).commit()
+    }
+
     fun setContactsListFragment(mainActivity : MainActivity) {
         val transaction = mainActivity.supportFragmentManager.beginTransaction()
         val contactsListFragment = ContactsListFragment.newInstance()
-        transaction.replace(R.id.main_activity_content_frame_layout, contactsListFragment).commit()
+        transaction.replace(R.id.main_activity_content_frame_layout, contactsListFragment, contactsListFragmentTag).commit()
     }
 
-    fun setContactViewFragment(mainActivity: MainActivity, contact : ContactData){
-        val transaction = mainActivity.supportFragmentManager.beginTransaction()
-        val contactsListFragment = ContactViewerFragment.newInstance(contact)
-        transaction.replace(R.id.main_activity_content_frame_layout, contactsListFragment).commit()
+    fun removeContactListFragment(mainActivity: MainActivity) {
+        val frg = mainActivity.supportFragmentManager.findFragmentByTag(contactsListFragmentTag)
+        if(frg != null) {
+            val transaction = mainActivity.supportFragmentManager.beginTransaction()
+            transaction.remove(frg).commit()
+        }
     }
 
-    fun setContactEditorFragment(mainActivity: MainActivity, contact: ContactData?){
-        val transaction = mainActivity.supportFragmentManager.beginTransaction()
-        val contactsListFragment = ContactEditorFragment.newInstance(contact)
-        transaction.replace(R.id.main_activity_content_frame_layout, contactsListFragment).commit()
-    }
 
 }

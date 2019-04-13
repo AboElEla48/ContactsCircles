@@ -1,7 +1,7 @@
 package eg.foureg.circles.contacts
 
 import android.content.Context
-import eg.foureg.circles.contacts.ContactData
+import eg.foureg.circles.contacts.data.ContactData
 
 interface ContactsRetriever {
     fun loadContacts(context: Context): ArrayList<ContactData>

@@ -1,10 +1,9 @@
 package eg.foureg.circles.circles
 
-import eg.foureg.circles.common.actor.Actor
-import eg.foureg.circles.common.message.data.Message
+import android.content.Context
+import eg.foureg.circles.circles.data.CircleData
+import io.reactivex.Observable
 
-class CirclesRetriever : Actor {
-    override fun handleMessage(message: Message) {
-
-    }
+interface CirclesRetriever {
+    fun loadCircles(context: Context) : Observable<List<CircleData>>
 }

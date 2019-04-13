@@ -1,7 +1,7 @@
 package eg.foureg.circles.contacts
 
 import android.content.Context
-import android.net.Uri
+import eg.foureg.circles.contacts.data.ContactData
 import io.reactivex.Observable
 
 interface ContactsEditor {

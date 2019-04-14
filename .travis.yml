@@ -1,83 +1,127 @@
 language: android
-jdk: oraclejdk8
-sudo: false
-dist: precise
 
-cache:
-  bundler: true
-  apt: true
-  directories:
-  - “$HOME/.composer/cache”
-  - “$HOME/.nvm”
-  - “vendor”
-  
+jdk:
+- oraclejdk8
 
-notifications:  #Optional
-    slack: vis-os:f8aqajEdlMCxpD6GFO47KyGc
-    #email:
-    #    - ahmed.sayed-aboelela@vodafone.com
-env:
-  matrix:
-    - ANDROID_TARGET=android-22 ANDROID_ABI=armeabi-v7a
-  global:   #Optional
-    - ADB_INSTALL_TIMEOUT=2    #Time out to 2 mins
-
-android:
-    update_sdk: true  #Check for the updates each time you run the build.
-    components:
-        - platform-tools
-        - tools
-        - build-tools-26.0.1    #Build tool version
-        - android-26
-        - android-22            #target api version
-
-        # required for launcher
-        - build-tools-25.0.0
-        - android-23
-
-        # required for sdm
-        - build-tools-23.0.3
-        - android-24
-
-        # Additional components
-        - extra-google-google_play_services
-        - extra-google-m2repository
-        - extra-android-m2repository
-
-        #system images for emulator
-        - sys-img-armeabi-v7a-android-23
-
-licenses:
-    - 'android-sdk-preview-license-52d11cd2'
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
-
-before_script:
-#    - cd $TRAVIS_BUILD_DIR/Code/Retail
-    - chmod +x gradlew      #Grant permissions
-    - android list targets
-    - echo no | android create avd --force --name test --target $ANDROID_TARGET --abi $ANDROID_ABI    #Create AVD for given api
-    - emulator -avd test -no-skin -no-audio -no-window &    #Start emulator
+install:
+- yes | sdkmanager "tools" &>/dev/null
+- yes | sdkmanager "platform-tools" &>/dev/null
+- yes | sdkmanager "platforms;android-28" &>/dev/null
+- yes | sdkmanager --update &>/dev/null
+- yes | sdkmanager --licenses &>/dev/null
 
 script:
-    - echo "Travis branch is $TRAVIS_BRANCH"    #Print out which branch it is.
-    - echo "Travis branch is in pull request $TRAVIS_PULL+REQUEST"    #Print out pull request number.
-    - android-wait-for-emulator             #Run wait for the emulator script.
-    - adb devices                           #Display list of devices
-    - adb shell input keyevent 82 &
-    #- cd $TRAVIS_BUILD_DIR/Code/Retail
-    - ./gradlew --stacktrace            #Build the project itself
-    - ./gradlew test -PdisablePreDex --stacktrace
-    #- sh ./build.sh
+- ./gradlew clean testDebug lintDebug -s --scan
 
-before_install:
-  - pip install --user codecov    #Install codecov
+  - echo "Travis branch is $TRAVIS_BRANCH"    #Print out which branch it is.
+  - echo "Travis branch is in pull request $TRAVIS_PULL+REQUEST"    #Print out pull request number.
+  - android-wait-for-emulator             #Run wait for the emulator script.
+  - adb devices                           #Display list of devices
+  - adb shell input keyevent 82 &
+  #- cd $TRAVIS_BUILD_DIR/Code/Retail
+  - ./gradlew --stacktrace            #Build the project itself
+  - ./gradlew test -PdisablePreDex --stacktrace
+  #- sh ./build.sh
 
-#install:
-  #- export PATH=$PATH:$TRAVIS_BUILD_DIR/Code/Retail/gradlew
+branches:
+  except:
+  - gh-pages
 
-after_success:
-    - codecov                       #Run codecov
+sudo: false
 
-after_failure: "cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml"
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+  - $HOME/.android/build-cache
+
+
+
+#
+#language: android
+#jdk: oraclejdk8
+#sudo: false
+#dist: precise
+#
+#cache:
+#  bundler: true
+#  apt: true
+#  directories:
+#  - “$HOME/.composer/cache”
+#  - “$HOME/.nvm”
+#  - “vendor”
+#
+#
+#notifications:  #Optional
+##    slack: vis-os:f8aqajEdlMCxpD6GFO47KyGc
+#    #email:
+#    #    - ahmed.sayed-aboelela@vodafone.com
+#env:
+#  matrix:
+#    - ANDROID_TARGET=android-22 ANDROID_ABI=armeabi-v7a
+#  global:   #Optional
+#    - ADB_INSTALL_TIMEOUT=2    #Time out to 2 mins
+#
+#android:
+#    update_sdk: true  #Check for the updates each time you run the build.
+#    components:
+#        - platform-tools
+#        - tools
+#        - build-tools-26.0.1    #Build tool version
+#        - android-26
+#        - android-22            #target api version
+#
+#        # required for launcher
+#        - build-tools-25.0.0
+#        - android-23
+#
+#        # required for sdm
+#        - build-tools-23.0.3
+#        - android-24
+#
+#        # Additional components
+#        - extra-google-google_play_services
+#        - extra-google-m2repository
+#        - extra-android-m2repository
+#
+#        #system images for emulator
+#        - sys-img-armeabi-v7a-android-23
+#
+#licenses:
+#    - 'android-sdk-preview-license-52d11cd2'
+#    - 'android-sdk-preview-license-.+'
+#    - 'android-sdk-license-.+'
+#    - 'google-gdk-license-.+'
+#
+#before_script:
+##    - cd $TRAVIS_BUILD_DIR/Code/Retail
+#    - chmod +x gradlew      #Grant permissions
+#    - android list targets
+#    - echo no | android create avd --force --name test --target $ANDROID_TARGET --abi $ANDROID_ABI    #Create AVD for given api
+#    - emulator -avd test -no-skin -no-audio -no-window &    #Start emulator
+#
+#script:
+#    - echo "Travis branch is $TRAVIS_BRANCH"    #Print out which branch it is.
+#    - echo "Travis branch is in pull request $TRAVIS_PULL+REQUEST"    #Print out pull request number.
+#    - android-wait-for-emulator             #Run wait for the emulator script.
+#    - adb devices                           #Display list of devices
+#    - adb shell input keyevent 82 &
+#    #- cd $TRAVIS_BUILD_DIR/Code/Retail
+#    - ./gradlew --stacktrace            #Build the project itself
+#    - ./gradlew test -PdisablePreDex --stacktrace
+#    #- sh ./build.sh
+#
+#before_install:
+#  - pip install --user codecov    #Install codecov
+#
+##install:
+#  #- export PATH=$PATH:$TRAVIS_BUILD_DIR/Code/Retail/gradlew
+#
+#after_success:
+#    - codecov                       #Run codecov
+#
+#after_failure: "cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml"

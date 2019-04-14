@@ -27,17 +27,17 @@ android:
     components:
         - platform-tools
         - tools
-        - build-tools-26.0.1    #Build tool version
-        - android-26
-        - android-22            #target api version
+       # - build-tools-26.0.1    #Build tool version
+       # - android-26
+      #  - android-22            #target api version
 
         # required for launcher
-        - build-tools-25.0.0
+      #  - build-tools-25.0.0
         - android-23
 
         # required for sdm
         - build-tools-23.0.3
-        - android-24
+       # - android-24
 
         # Additional components
         - extra-google-google_play_services

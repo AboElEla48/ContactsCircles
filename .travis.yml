@@ -27,12 +27,12 @@ android:
     components:
         - platform-tools
         - tools
-       # - build-tools-26.0.1    #Build tool version
-       # - android-26
+        - build-tools-26.0.1    #Build tool version
+        - android-26
       #  - android-22            #target api version
 
         # required for launcher
-      #  - build-tools-25.0.0
+        - build-tools-25.0.0
         - android-23
 
         # required for sdm
@@ -45,7 +45,7 @@ android:
         - extra-android-m2repository
 
         #system images for emulator
-        - sys-img-armeabi-v7a-android-22
+        - sys-img-armeabi-v7a-android-23
 
 licenses:
     - 'android-sdk-preview-license-52d11cd2'

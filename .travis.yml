@@ -10,6 +10,16 @@ install:
 - yes | sdkmanager --update &>/dev/null
 - yes | sdkmanager --licenses &>/dev/null
 
+android:
+  components:
+  - android-28
+  - build-tools-27.0.3
+
+  env:
+    global:
+    # install timeout in minutes (2 minutes by default)
+    - ADB_INSTALL_TIMEOUT=8
+
 script:
 #- ./gradlew clean testDebug lintDebug -s --scan
 
@@ -18,6 +28,9 @@ script:
 #  - android-wait-for-emulator             #Run wait for the emulator script.
 #  - adb devices                           #Display list of devices
 #  - adb shell input keyevent 82 &
+
+
+  ./gradlew clean assembleDebug assembleRelease testDebug
   - ./gradlew --stacktrace            #Build the project itself
   - ./gradlew test -PdisablePreDex --stacktrace
 
@@ -26,6 +39,9 @@ branches:
   - gh-pages
 
 sudo: false
+
+before_install:
+- chmod +x gradlew
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

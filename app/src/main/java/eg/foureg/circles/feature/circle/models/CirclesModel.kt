@@ -6,14 +6,14 @@ import eg.foureg.circles.circles.CirclesRetriever
 import eg.foureg.circles.circles.data.CircleData
 import io.reactivex.Observable
 
-class CirclesModel(cRetriver : CirclesRetriever, cEditor : CirclesEditor) {
+class CirclesModel(cRetriever : CirclesRetriever, cEditor : CirclesEditor) {
 
     var circlesRetriever : CirclesRetriever
     var circlesEditor : CirclesEditor
 
     init {
         circlesEditor = cEditor
-        circlesRetriever = cRetriver
+        circlesRetriever = cRetriever
     }
 
     fun loadCircles(context: Context) : Observable<List<CircleData>> {

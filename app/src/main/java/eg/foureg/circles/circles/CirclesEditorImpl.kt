@@ -224,7 +224,7 @@ open class CirclesEditorImpl : CirclesEditor {
         return 1
     }
 
-    protected fun updateContactReferenceInCircles(circlesList: List<CircleData>, oldContactId: String, newContactId: String) : Boolean {
+    protected fun updateContactReferenceInCircles(circlesList: List<CircleData>, oldContactId: String, newContactId: String): Boolean {
         var updated = false
 
         // Update contact reference in circles
@@ -241,7 +241,7 @@ open class CirclesEditorImpl : CirclesEditor {
         return updated
     }
 
-    protected fun deleteContactReferenceInCircles(circlesList: List<CircleData>, oldContactId: String) : Boolean {
+    protected fun deleteContactReferenceInCircles(circlesList: List<CircleData>, oldContactId: String): Boolean {
 
         var updated = false
 

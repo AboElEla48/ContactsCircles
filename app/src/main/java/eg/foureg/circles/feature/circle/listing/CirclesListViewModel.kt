@@ -7,6 +7,8 @@ import android.content.Context
 import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.feature.circle.models.CirclesModel
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.koin.android.ext.android.get
 
 class CirclesListViewModel : ViewModel() {
@@ -17,10 +19,14 @@ class CirclesListViewModel : ViewModel() {
     fun loadCircles(context : Context) : Observable<Boolean> {
         circlesModel = (context as Activity).get()
 
-        return Observable.create<Boolean> {
+        return Observable.create<Boolean> { emiter ->
             circlesModel.loadCircles(context)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { list ->
                         circlesList.value = list
+
+                        emiter.onNext(true)
                     }
         }
     }

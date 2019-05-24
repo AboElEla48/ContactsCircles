@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModel
 import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.contacts.data.ContactData
 
-class CirclesContactsViewerViewModel : ViewModel() {
+class CircleContactsViewerViewModel : ViewModel() {
 
     private lateinit var circleData: CircleData
 

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import eg.foureg.circles.R
 import eg.foureg.circles.contacts.data.ContactData
 
-class CirclesContactsGridAdapter constructor (val context: Context, val circles: List<ContactData>?) : BaseAdapter() {
+class CircleContactsGridAdapter constructor (val context: Context, val circles: List<ContactData>?) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = LayoutInflater.from(context).inflate(R.layout.fragment_circles_contacts_view_contact_grid_item, null)
 

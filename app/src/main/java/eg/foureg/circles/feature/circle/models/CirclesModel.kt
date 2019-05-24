@@ -4,6 +4,7 @@ import android.content.Context
 import eg.foureg.circles.circles.CirclesEditor
 import eg.foureg.circles.circles.CirclesRetriever
 import eg.foureg.circles.circles.data.CircleData
+import eg.foureg.circles.contacts.data.ContactData
 import io.reactivex.Observable
 
 class CirclesModel(cRetriever : CirclesRetriever, cEditor : CirclesEditor) {
@@ -18,6 +19,10 @@ class CirclesModel(cRetriever : CirclesRetriever, cEditor : CirclesEditor) {
 
     fun loadCircles(context: Context) : Observable<List<CircleData>> {
         return circlesRetriever.loadCircles(context)
+    }
+
+    fun loadCircleContacts(context: Context, circleData: CircleData) : Observable<List<ContactData>> {
+        return  circlesRetriever.loadCircleContacts(context, circleData)
     }
 
     fun addNewCircle(context: Context, circleData: CircleData): Observable<Int>{

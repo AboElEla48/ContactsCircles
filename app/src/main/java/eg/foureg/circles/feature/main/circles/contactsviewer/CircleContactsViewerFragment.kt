@@ -3,6 +3,7 @@ package eg.foureg.circles.feature.main.circles.contactsviewer
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -45,11 +46,16 @@ class CircleContactsViewerFragment : Fragment() {
             view.fragment_circles_contacts_viewer_circle_name_text_view.text = str
         })
 
+        circleContactsViewModel.contactsList.observe(this, Observer { contacts ->
+            view.fragment_circle_contacts_viewer_grid_view.adapter = CircleContactsGridAdapter(activity as Context,
+                    contacts)
+        })
+
         circleContactsViewModel.loadingProgressBarVisibility.observe(this, Observer { visibility ->
             view.fragment_circle_contacts_viewer_loading_progress_bar.visibility = visibility!!
         })
 
-        circleContactsViewModel.initCircle(circleData)
+        circleContactsViewModel.initCircle(activity as Context, circleData)
 
     }
 

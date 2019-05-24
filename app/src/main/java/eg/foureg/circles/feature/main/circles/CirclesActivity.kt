@@ -4,8 +4,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
+import eg.foureg.circles.feature.circle.models.CirclesModel
+import org.koin.android.ext.android.inject
 
 class CirclesActivity : AppCompatActivity() {
+
+    val circlesModel : CirclesModel by inject()
 
     val fragmentsNavigator : CirclesActivityFragmentsNavigator = CirclesActivityFragmentsNavigator()
     lateinit var circleData: CircleData

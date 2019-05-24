@@ -9,8 +9,11 @@ class MainActivityMessages {
 
         const val MSG_ID_VIEW_CIRCLE_EDITOR = 15
 
+        const val MSG_ID_VIEW_CIRCLE_CONTACTS_LIST = 16
+
 
         const val DATA_PARAM_CONTACT_DATA = "DATA_PARAM_CONTACT_DATA"
+        const val DATA_PARAM_CIRCLE_DATA = "DATA_PARAM_CIRCLE_DATA"
 
     }
 }

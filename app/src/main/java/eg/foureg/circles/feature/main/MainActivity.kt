@@ -13,6 +13,7 @@ import eg.foureg.circles.common.ui.BaseActivity
 import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.feature.circle.models.CirclesModel
 import eg.foureg.circles.feature.contacts.models.ContactsModel
+import eg.foureg.circles.feature.main.circles.CirclesActivity
 import eg.foureg.circles.feature.main.content.ContentActivity
 import eg.foureg.circles.feature.main.content.ContentActivityMessages
 import org.koin.android.ext.android.inject
@@ -101,12 +102,7 @@ class MainActivity : BaseActivity() {
         when(message.id) {
 
             MainActivityMessages.MSG_ID_VIEW_CONTACT_DETAILS -> {
-                val contact = message.data.get(MainActivityMessages.DATA_PARAM_CONTACT_DATA) as ContactData
-                val intent = Intent(this, ContentActivity::class.java)
-                intent.putExtra(ContentActivity.CONTENT_MODEL_PARAM, ContentActivityMessages.MSG_ID_VIEW_CONTACT_DETAILS)
-                intent.putExtra(ContentActivity.CONTENT_MSG_DATA1, contact)
-                startActivity(intent)
-
+                viewContactDetails(message.data.get(MainActivityMessages.DATA_PARAM_CONTACT_DATA) as ContactData)
             }
 
             MainActivityMessages.MSG_ID_ADD_NEW_CONTACT -> {
@@ -121,7 +117,18 @@ class MainActivity : BaseActivity() {
             MainActivityMessages.MSG_ID_VIEW_CIRCLE_EDITOR -> {
                 viewCircleEditor(null)
             }
+
+            MainActivityMessages.MSG_ID_VIEW_CIRCLE_CONTACTS_LIST -> {
+                viewCircleContactsList(message.data.get(MainActivityMessages.DATA_PARAM_CIRCLE_DATA) as CircleData)
+            }
         }
+    }
+
+    private fun viewContactDetails(contact: ContactData) {
+        val intent = Intent(this, ContentActivity::class.java)
+        intent.putExtra(ContentActivity.CONTENT_MODEL_PARAM, ContentActivityMessages.MSG_ID_VIEW_CONTACT_DETAILS)
+        intent.putExtra(ContentActivity.CONTENT_MSG_DATA1, contact)
+        startActivity(intent)
     }
 
     private fun viewCircleEditor(circleData: CircleData?) {
@@ -175,5 +182,10 @@ class MainActivity : BaseActivity() {
         else {
             startActivity(intent)
         }
+    }
+
+    private fun viewCircleContactsList(circle : CircleData) {
+        val intent = Intent(this, CirclesActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -26,6 +26,8 @@
 
     <string name="txt_circle_saved_message">Circle saved successfully</string>
 
+    <string name="txt_circle_contacts_viewer_circle_name_lable">Circle Name</string>
+
     <string-array name="txt_phone_types_arr">
         <item>Mobile</item>
         <item>Home</item>

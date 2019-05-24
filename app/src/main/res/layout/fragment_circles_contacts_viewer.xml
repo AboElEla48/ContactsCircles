@@ -18,6 +18,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/fragment_circles_contacts_viewer_contacts_list_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_circle_contacts_viewer_contacts_list"
+        android:textSize="20sp"
+        android:textColor="@color/color_contact_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_circles_contacts_viewer_circle_name_text_view"
+        android:layout_marginTop="20dp"/>
+
+    <GridView
+        android:id="@+id/fragment_circles_contacts_viewer_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/fragment_circles_contacts_viewer_contacts_list_text_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:numColumns="auto_fit"
         android:layout_marginTop="20dp"/>
 
 </android.support.constraint.ConstraintLayout>

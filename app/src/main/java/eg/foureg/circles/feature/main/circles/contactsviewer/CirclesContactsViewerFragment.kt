@@ -1,6 +1,9 @@
 package eg.foureg.circles.feature.main.circles.contactsviewer
 
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -19,11 +22,14 @@ import kotlinx.android.synthetic.main.fragment_circles_contacts_viewer.view.*
 class CirclesContactsViewerFragment : Fragment() {
     lateinit var circleData: CircleData
 
+    var circleContactsViewModel = CirclesContactsViewerViewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {bundle ->
             circleData = bundle.getParcelable(PARAM_CIRCLE_DATA)!!
 
+            circleContactsViewModel = ViewModelProviders.of(this).get(CirclesContactsViewerViewModel::class.java)
         }
     }
 
@@ -36,7 +42,12 @@ class CirclesContactsViewerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.fragment_circles_contacts_viewer_circle_name_text_view.text = circleData.name
+        circleContactsViewModel.circleName.observe(this, Observer {str ->
+            view.fragment_circles_contacts_viewer_circle_name_text_view.text = str
+        })
+
+        circleContactsViewModel.initCircle(circleData)
+
     }
 
 

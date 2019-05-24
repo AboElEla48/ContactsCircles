@@ -14,6 +14,7 @@ import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.feature.circle.models.CirclesModel
 import eg.foureg.circles.feature.contacts.models.ContactsModel
 import eg.foureg.circles.feature.main.circles.CirclesActivity
+import eg.foureg.circles.feature.main.circles.CirclesActivityMessages
 import eg.foureg.circles.feature.main.content.ContentActivity
 import eg.foureg.circles.feature.main.content.ContentActivityMessages
 import org.koin.android.ext.android.inject
@@ -186,6 +187,7 @@ class MainActivity : BaseActivity() {
 
     private fun viewCircleContactsList(circle : CircleData) {
         val intent = Intent(this, CirclesActivity::class.java)
+        intent.putExtra(CirclesActivityMessages.DATA_PARAM_CIRCLE_DATA, circle)
         startActivity(intent)
     }
 }

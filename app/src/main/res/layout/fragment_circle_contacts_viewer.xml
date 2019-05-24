@@ -54,5 +54,16 @@
     </RelativeLayout>
 
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fragment_circle_contacts_viewer_add_contact_floating_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/edit"
+        android:scaleType="fitCenter"
+        app:fabSize="normal"
+        android:layout_margin="16dp" />
+
 
 </android.support.constraint.ConstraintLayout>

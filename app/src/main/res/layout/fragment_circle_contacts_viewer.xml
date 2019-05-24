@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.main.circles.contactsviewer.CircleContactsViewerFragment">
+    tools:context=".feature.activitycircles.contactsviewer.CircleContactsViewerFragment">
 
     <TextView
         android:id="@+id/fragment_circles_contacts_viewer_circle_name_text_view"

@@ -9,10 +9,9 @@ import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.contacts.data.ContactData
-import eg.foureg.circles.feature.main.MainActivity
-import eg.foureg.circles.feature.main.MainActivityMessages
+import eg.foureg.circles.feature.activitymain.MainActivity
+import eg.foureg.circles.feature.activitymain.MainActivityMessages
 import kotlinx.android.synthetic.main.fragment_contacts_list_item.view.*
-import kotlin.reflect.KClass
 
 /**
  * Define Adapter for contacts list

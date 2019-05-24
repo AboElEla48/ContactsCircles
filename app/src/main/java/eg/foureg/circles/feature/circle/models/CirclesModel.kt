@@ -33,8 +33,8 @@ class CirclesModel(cRetriever : CirclesRetriever, cEditor : CirclesEditor) {
         return circlesEditor.deleteCircle(context, circleId)
     }
 
-    fun addContactToCircle(context: Context, contactId : String, circleId : Int): Observable<Boolean> {
-        return circlesEditor.addContactToCircle(context, contactId, circleId)
+    fun addContactToCircle(context: Context, contactUri : String, circleId : Int): Observable<Boolean> {
+        return circlesEditor.addContactToCircle(context, contactUri, circleId)
     }
 
 

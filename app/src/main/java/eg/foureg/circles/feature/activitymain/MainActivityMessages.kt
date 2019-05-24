@@ -1,4 +1,4 @@
-package eg.foureg.circles.feature.main
+package eg.foureg.circles.feature.activitymain
 
 class MainActivityMessages {
     companion object {

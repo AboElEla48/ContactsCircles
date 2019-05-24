@@ -1,8 +1,8 @@
-package eg.foureg.circles.feature.main.circles
+package eg.foureg.circles.feature.activitycircles
 
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
-import eg.foureg.circles.feature.main.circles.contactsviewer.CircleContactsViewerFragment
+import eg.foureg.circles.feature.activitycircles.contactsviewer.CircleContactsViewerFragment
 
 class CirclesActivityFragmentsNavigator {
 

@@ -19,8 +19,8 @@ import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
 import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.contacts.data.ContactPhoneNumber
-import eg.foureg.circles.feature.main.content.ContentActivity
-import eg.foureg.circles.feature.main.content.ContentActivityMessages
+import eg.foureg.circles.feature.activitymain.content.ContentActivity
+import eg.foureg.circles.feature.activitymain.content.ContentActivityMessages
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

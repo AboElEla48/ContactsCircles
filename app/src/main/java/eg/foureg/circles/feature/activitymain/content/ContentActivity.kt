@@ -1,15 +1,11 @@
-package eg.foureg.circles.feature.main.content
+package eg.foureg.circles.feature.activitymain.content
 
 
 import android.os.Bundle
 import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
-import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseActivity
 import eg.foureg.circles.contacts.data.ContactData
-import eg.foureg.circles.feature.main.MainActivity
-import eg.foureg.circles.feature.main.MainActivityMessages
-import kotlin.reflect.KClass
 
 class ContentActivity : BaseActivity() {
 

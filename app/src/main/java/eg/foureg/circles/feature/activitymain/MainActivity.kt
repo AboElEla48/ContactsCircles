@@ -1,4 +1,4 @@
-package eg.foureg.circles.feature.main
+package eg.foureg.circles.feature.activitymain
 
 import android.Manifest
 import android.content.Intent
@@ -13,10 +13,10 @@ import eg.foureg.circles.common.ui.BaseActivity
 import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.feature.circle.models.CirclesModel
 import eg.foureg.circles.feature.contacts.models.ContactsModel
-import eg.foureg.circles.feature.main.circles.CirclesActivity
-import eg.foureg.circles.feature.main.circles.CirclesActivityMessages
-import eg.foureg.circles.feature.main.content.ContentActivity
-import eg.foureg.circles.feature.main.content.ContentActivityMessages
+import eg.foureg.circles.feature.activitycircles.CirclesActivity
+import eg.foureg.circles.feature.activitycircles.CirclesActivityMessages
+import eg.foureg.circles.feature.activitymain.content.ContentActivity
+import eg.foureg.circles.feature.activitymain.content.ContentActivityMessages
 import org.koin.android.ext.android.inject
 
 

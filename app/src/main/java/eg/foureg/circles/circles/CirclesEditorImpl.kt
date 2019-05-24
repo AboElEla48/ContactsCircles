@@ -74,7 +74,7 @@ open class CirclesEditorImpl : CirclesEditor {
         }
     }
 
-    override fun addContactToCircle(context: Context, newContactId: String, circleId: Int): Observable<Boolean> {
+    override fun addContactToCircle(context: Context, newContactUri: String, circleId: Int): Observable<Boolean> {
         return Observable.create<Boolean> { emitter ->
             val circlesRetrieverImpl = CirclesRetrieverImpl()
 
@@ -86,11 +86,11 @@ open class CirclesEditorImpl : CirclesEditor {
                         if (circleToEdit != null) {
 
                             // Assure this id doesn't exist before
-                            val found = isContactIdExistInCircle(circleToEdit, newContactId)
+                            val found = isContactIdExistInCircle(circleToEdit, newContactUri)
 
                             // add new contact if not added before
                             if (!found) {
-                                circleToEdit.contactsIds.add(newContactId)
+                                circleToEdit.contactsIds.add(newContactUri)
 
                                 saveCirclesList(context, list)
                                         .subscribe {

@@ -1,4 +1,4 @@
-package eg.foureg.circles.feature.main.circles
+package eg.foureg.circles.feature.activitycircles
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

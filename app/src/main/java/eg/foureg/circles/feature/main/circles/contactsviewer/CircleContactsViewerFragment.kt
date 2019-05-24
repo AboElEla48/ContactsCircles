@@ -45,6 +45,10 @@ class CircleContactsViewerFragment : Fragment() {
             view.fragment_circles_contacts_viewer_circle_name_text_view.text = str
         })
 
+        circleContactsViewModel.loadingProgressBarVisibility.observe(this, Observer { visibility ->
+            view.fragment_circle_contacts_viewer_loading_progress_bar.visibility = visibility!!
+        })
+
         circleContactsViewModel.initCircle(circleData)
 
     }

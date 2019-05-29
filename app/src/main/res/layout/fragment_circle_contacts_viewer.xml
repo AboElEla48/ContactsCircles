@@ -7,19 +7,74 @@
     android:layout_height="match_parent"
     tools:context=".feature.activitycircles.contactsviewer.CircleContactsViewerFragment">
 
-    <TextView
-        android:id="@+id/fragment_circles_contacts_viewer_circle_name_text_view"
+    <LinearLayout
+        android:id="@+id/fragment_circles_contacts_viewer_circle_name_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_circle_contacts_viewer_circle_name_lable"
-        android:textSize="25sp"
-        android:textAlignment="center"
-        android:textColor="@color/color_contact_text"
+        android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/fragment_circles_contacts_viewer_circle_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_circle_contacts_viewer_circle_name_lable"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            android:textColor="@color/color_contact_text"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"/>
+
+        <!-- edit circle name -->
+        <ImageView
+            android:id="@+id/fragment_circle_contacts_viewer_circle_name_edit_image"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_weight="1"
+            android:src="@drawable/edit"
+            android:contentDescription="@string/app_name"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/fragment_circle_contacts_viewer_circle_name_editor_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@id/fragment_circles_contacts_viewer_circle_name_layout"
+        app:layout_constraintBottom_toBottomOf="@id/fragment_circles_contacts_viewer_circle_name_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:weightSum="3"
+        android:visibility="gone">
+
+        <!-- Edit circle Name -->
+        <EditText
+            android:id="@+id/fragment_circle_contacts_viewer_circle_name_editor_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:hint="@string/app_name"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp" />
+
+        <!-- Save circle name -->
+        <ImageView
+            android:id="@+id/fragment_circle_contacts_viewer_circle_name_save_image"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_weight="1"
+            android:src="@drawable/edit"
+            android:contentDescription="@string/app_name"/>
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/fragment_circle_contacts_viewer_contacts_list_text_view"
@@ -29,7 +84,7 @@
         android:textSize="20sp"
         android:textColor="@color/color_contact_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_circles_contacts_viewer_circle_name_text_view"
+        app:layout_constraintTop_toBottomOf="@id/fragment_circles_contacts_viewer_circle_name_layout"
         android:layout_marginTop="20dp"/>
 
     <RelativeLayout

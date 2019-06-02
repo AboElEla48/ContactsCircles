@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jakewharton.rxbinding2.view.RxView
 
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
@@ -44,7 +45,9 @@ class CircleContactsViewerFragment : Fragment() {
 
         circleContactsViewModel.circleName.observe(this, Observer {str ->
             view.fragment_circles_contacts_viewer_circle_name_text_view.text = str
+            view.fragment_circle_contacts_viewer_circle_name_editor_edit_text.text = str.
         })
+
 
         circleContactsViewModel.contactsList.observe(this, Observer { contacts ->
             view.fragment_circle_contacts_viewer_grid_view.adapter = CircleContactsGridAdapter(activity as Context,
@@ -54,6 +57,18 @@ class CircleContactsViewerFragment : Fragment() {
         circleContactsViewModel.loadingProgressBarVisibility.observe(this, Observer { visibility ->
             view.fragment_circle_contacts_viewer_loading_progress_bar.visibility = visibility!!
         })
+
+        RxView.clicks(view.fragment_circle_contacts_viewer_circle_name_edit_image)
+                .subscribe {
+                    view.fragment_circles_contacts_viewer_circle_name_layout.visibility = View.GONE
+                    view.fragment_circle_contacts_viewer_circle_name_editor_layout.visibility = View.VISIBLE
+                }
+
+        RxView.clicks(view.fragment_circle_contacts_viewer_circle_name_save_image)
+                .subscribe {
+                    view.fragment_circles_contacts_viewer_circle_name_layout.visibility = View.VISIBLE
+                    view.fragment_circle_contacts_viewer_circle_name_editor_layout.visibility = View.GONE
+                }
 
         circleContactsViewModel.initCircle(activity as Context, circleData)
 

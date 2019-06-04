@@ -7,16 +7,22 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
+import com.jakewharton.rxbinding2.view.RxView
 
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
-import eg.foureg.circles.feature.contacts.models.ContactsModel
+import eg.foureg.circles.common.Logger
+import eg.foureg.circles.common.message.server.MessageServer
+import eg.foureg.circles.contacts.data.ContactData
+import eg.foureg.circles.feature.activitycircles.CirclesActivity
+import eg.foureg.circles.feature.activitycircles.CirclesActivityMessages
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_circle_add_contacts.view.*
 
@@ -29,6 +35,8 @@ class CircleAddContactsFragment : Fragment() {
 
     lateinit var circleData: CircleData
     lateinit var circleAddContactsViewModel : CircleAddContactsViewModel
+
+    val listOfDisposables : ArrayList<Disposable> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +56,6 @@ class CircleAddContactsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.fragment_circle_add_contacts_list_view.choiceMode = ListView.CHOICE_MODE_MULTIPLE
-
         // display contacts into list
         circleAddContactsViewModel.contacts.observe(this, Observer {contacts ->
             val contactsNames: ArrayList<String> = ArrayList()
@@ -63,9 +69,58 @@ class CircleAddContactsFragment : Fragment() {
             view.fragment_circle_add_contacts_list_view.adapter = CircleAddContactsListAdapter(activity as Context, contactsNames)
 
             view.fragment_circle_add_contacts_loading_progress.visibility = View.GONE
+            view.fragment_circle_add_contacts_list_view.visibility = View.VISIBLE
+            view.fragment_circle_add_contacts_navigation_layout.visibility = View.VISIBLE
         })
 
+        // Handle save button
+        listOfDisposables.add(RxView.clicks(view.fragment_circle_add_contacts_save_btn)
+                .subscribe {
+
+                    val selectedContactsUri : ArrayList<String> = ArrayList()
+
+                    for(index : Int in 0..view.fragment_circle_add_contacts_list_view.count) {
+                        if (view.fragment_circle_add_contacts_list_view.isItemChecked(index)) {
+                            val circleData = circleAddContactsViewModel.contacts.value?.get(index)!!
+                            for(phoneNumber in circleData.phones!!){
+                                selectedContactsUri.add(phoneNumber.phoneNumberRawIdUri)
+                            }
+
+                        }
+                    }
+
+                    // save contacts into circle
+                    view.fragment_circle_add_contacts_loading_progress.visibility = View.VISIBLE
+                    view.fragment_circle_add_contacts_navigation_layout.visibility = View.GONE
+                    circleAddContactsViewModel.updateCircleContacts(activity as Activity, circleData.circleID,
+                            selectedContactsUri)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                // send message to close activity
+                                MessageServer.getInstance().sendMessage(CirclesActivity::class.java,
+                                        CirclesActivityMessages.MSG_ID_ADD_CONTACTS_FINISH, "")
+                            }
+
+
+                })
+
+        // Handle cancel button
+        listOfDisposables.add(RxView.clicks(view.fragment_circle_add_contacts_cancel_btn)
+                .subscribe {
+                    MessageServer.getInstance().sendMessage(CirclesActivity::class.java,
+                            CirclesActivityMessages.MSG_ID_ADD_CONTACTS_FINISH, "")
+                })
+
         circleAddContactsViewModel.initContacts(activity as Activity)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        for (itemDisposable in listOfDisposables) {
+            itemDisposable.dispose()
+        }
     }
 
 

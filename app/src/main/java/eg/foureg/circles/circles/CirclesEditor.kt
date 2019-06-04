@@ -8,6 +8,7 @@ interface CirclesEditor {
     fun addNewCircle(context: Context, newCircleData: CircleData) : Observable<Int>
     fun deleteCircle(context: Context, circleId : Int) : Observable<Boolean>
     fun updateCircleName(context: Context, circleId: Int, newCircleName: String): Observable<Boolean>
+    fun updateCircleContacts(context: Context, circleId: Int, contacts: ArrayList<String>): Observable<Boolean>
 
 
     fun addContactToCircle(context: Context, newContactUri: String, circleId: Int): Observable<Boolean>

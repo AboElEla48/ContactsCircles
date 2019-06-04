@@ -74,6 +74,30 @@ open class CirclesEditorImpl : CirclesEditor {
         }
     }
 
+    override fun updateCircleContacts(context: Context, circleId: Int, contacts: ArrayList<String>): Observable<Boolean> {
+        return Observable.create<Boolean> { emitter ->
+            val circlesRetrieverImpl = CirclesRetrieverImpl()
+
+            circlesRetrieverImpl.loadCircles(context)
+                    .subscribe { circlesList ->
+                        val list = ArrayList(circlesList)
+
+                        val circleToEdit = findCircle(circleId, list)
+                        if (circleToEdit != null) {
+                            circleToEdit.contactsIds = contacts
+
+                            saveCirclesList(context, list)
+                                    .subscribe {
+                                        emitter.onNext(true)
+                                    }
+                        } else {
+                            emitter.onNext(false)
+                        }
+
+                    }
+        }
+    }
+
     override fun addContactToCircle(context: Context, newContactUri: String, circleId: Int): Observable<Boolean> {
         return Observable.create<Boolean> { emitter ->
             val circlesRetrieverImpl = CirclesRetrieverImpl()

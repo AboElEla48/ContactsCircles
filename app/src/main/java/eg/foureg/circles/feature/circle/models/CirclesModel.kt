@@ -33,6 +33,10 @@ class CirclesModel(cRetriever : CirclesRetriever, cEditor : CirclesEditor) {
         return circlesEditor.updateCircleName(context, circleID, newCircleName)
     }
 
+    fun updateCircleContacts(context: Context, circleId: Int, circleContacts : ArrayList<String>): Observable<Boolean> {
+        return circlesEditor.updateCircleContacts(context, circleId, circleContacts)
+    }
+
     fun deleteCircle(context: Context, circleId : Int) : Observable<Boolean> {
         return circlesEditor.deleteCircle(context, circleId)
     }

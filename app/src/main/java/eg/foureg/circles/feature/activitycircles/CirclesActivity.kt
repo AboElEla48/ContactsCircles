@@ -31,6 +31,10 @@ class CirclesActivity : BaseActivity() {
             CirclesActivityMessages.MSG_ID_ADD_CONCTACTS_TO_CIRCLE -> {
                 fragmentsNavigator.setCircleAddContactsFragment(this, circleData)
             }
+
+            CirclesActivityMessages.MSG_ID_ADD_CONTACTS_FINISH -> {
+                finish()
+            }
         }
     }
 }

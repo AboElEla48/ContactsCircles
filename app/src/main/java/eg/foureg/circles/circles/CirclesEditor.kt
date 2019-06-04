@@ -9,6 +9,7 @@ interface CirclesEditor {
     fun deleteCircle(context: Context, circleId : Int) : Observable<Boolean>
     fun updateCircleName(context: Context, circleId: Int, newCircleName: String): Observable<Boolean>
 
+
     fun addContactToCircle(context: Context, newContactUri: String, circleId: Int): Observable<Boolean>
     fun removeContactFromCircle(context: Context, contactId: String, circleId: Int): Observable<Boolean>
 

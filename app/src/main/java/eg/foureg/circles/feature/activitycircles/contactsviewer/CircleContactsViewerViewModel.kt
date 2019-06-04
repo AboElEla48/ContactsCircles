@@ -8,6 +8,7 @@ import android.view.View
 import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.feature.circle.models.CirclesModel
+import io.reactivex.Observable
 import org.koin.android.ext.android.get
 
 class CircleContactsViewerViewModel : ViewModel() {
@@ -33,6 +34,11 @@ class CircleContactsViewerViewModel : ViewModel() {
             loadingProgressBarVisibility.value = View.GONE
         }
 
+    }
 
+    fun updateCircleName(context : Context, newCircleName: String): Observable<Boolean> {
+        circleName.value = newCircleName
+
+        return circlesModel.updateCircleName(context, circleData.circleID, newCircleName)
     }
 }

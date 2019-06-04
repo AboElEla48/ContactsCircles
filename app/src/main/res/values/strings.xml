@@ -30,6 +30,8 @@
 
     <string name="txt_circle_contacts_viewer_contacts_list">Circle Contacts</string>
 
+    <string name="txt_circle_name_updated_toast_message">Circle Name Updated!</string>
+
     <string-array name="txt_phone_types_arr">
         <item>Mobile</item>
         <item>Home</item>

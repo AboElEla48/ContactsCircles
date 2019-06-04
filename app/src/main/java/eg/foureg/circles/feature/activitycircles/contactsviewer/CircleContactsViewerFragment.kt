@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.jakewharton.rxbinding2.view.RxView
 
 import eg.foureg.circles.R
@@ -45,7 +46,7 @@ class CircleContactsViewerFragment : Fragment() {
 
         circleContactsViewModel.circleName.observe(this, Observer {str ->
             view.fragment_circles_contacts_viewer_circle_name_text_view.text = str
-            view.fragment_circle_contacts_viewer_circle_name_editor_edit_text.text = str.
+            view.fragment_circle_contacts_viewer_circle_name_editor_edit_text.setText(str)
         })
 
 
@@ -68,6 +69,13 @@ class CircleContactsViewerFragment : Fragment() {
                 .subscribe {
                     view.fragment_circles_contacts_viewer_circle_name_layout.visibility = View.VISIBLE
                     view.fragment_circle_contacts_viewer_circle_name_editor_layout.visibility = View.GONE
+
+                    circleContactsViewModel.updateCircleName(activity as Context, view.fragment_circle_contacts_viewer_circle_name_editor_edit_text.text.toString())
+                            .subscribe{saved ->
+                                if(saved) {
+                                    Toast.makeText(activity, R.string.txt_circle_name_updated_toast_message, Toast.LENGTH_LONG).show()
+                                }
+                            }
                 }
 
         circleContactsViewModel.initCircle(activity as Context, circleData)

@@ -29,6 +29,10 @@ class CirclesModel(cRetriever : CirclesRetriever, cEditor : CirclesEditor) {
         return circlesEditor.addNewCircle(context, circleData)
     }
 
+    fun updateCircleName(context: Context, circleID: Int, newCircleName: String): Observable<Boolean>{
+        return circlesEditor.updateCircleName(context, circleID, newCircleName)
+    }
+
     fun deleteCircle(context: Context, circleId : Int) : Observable<Boolean> {
         return circlesEditor.deleteCircle(context, circleId)
     }

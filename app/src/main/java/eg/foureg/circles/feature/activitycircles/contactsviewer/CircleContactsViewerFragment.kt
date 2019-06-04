@@ -14,6 +14,11 @@ import com.jakewharton.rxbinding2.view.RxView
 
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
+import eg.foureg.circles.common.message.data.Message
+import eg.foureg.circles.common.message.server.MessageServer
+import eg.foureg.circles.feature.activitycircles.CirclesActivity
+import eg.foureg.circles.feature.activitycircles.CirclesActivityMessages
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_circle_contacts_viewer.view.*
 
 
@@ -25,6 +30,7 @@ class CircleContactsViewerFragment : Fragment() {
     lateinit var circleData: CircleData
 
     var circleContactsViewModel = CircleContactsViewerViewModel()
+    private val listOfDisposable: ArrayList<Disposable> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,13 +65,15 @@ class CircleContactsViewerFragment : Fragment() {
             view.fragment_circle_contacts_viewer_loading_progress_bar.visibility = visibility!!
         })
 
-        RxView.clicks(view.fragment_circle_contacts_viewer_circle_name_edit_image)
+        // Handle click on edit circle name button
+        listOfDisposable.add(RxView.clicks(view.fragment_circle_contacts_viewer_circle_name_edit_image)
                 .subscribe {
                     view.fragment_circles_contacts_viewer_circle_name_layout.visibility = View.GONE
                     view.fragment_circle_contacts_viewer_circle_name_editor_layout.visibility = View.VISIBLE
-                }
+                })
 
-        RxView.clicks(view.fragment_circle_contacts_viewer_circle_name_save_image)
+        // Handle click on save circle name button
+        listOfDisposable.add(RxView.clicks(view.fragment_circle_contacts_viewer_circle_name_save_image)
                 .subscribe {
                     view.fragment_circles_contacts_viewer_circle_name_layout.visibility = View.VISIBLE
                     view.fragment_circle_contacts_viewer_circle_name_editor_layout.visibility = View.GONE
@@ -76,10 +84,29 @@ class CircleContactsViewerFragment : Fragment() {
                                     Toast.makeText(activity, R.string.txt_circle_name_updated_toast_message, Toast.LENGTH_LONG).show()
                                 }
                             }
-                }
+                })
 
+        // Handle click on add contacts to circle
+        listOfDisposable.add(RxView.clicks(view.fragment_circle_contacts_viewer_add_contact_floating_button)
+                .subscribe {
+                    val msg = Message()
+                    msg.id = CirclesActivityMessages.MSG_ID_ADD_CONCTACTS_TO_CIRCLE
+                    msg.data.put(CirclesActivityMessages.DATA_PARAM_CIRCLE_DATA, circleData)
+
+                    MessageServer.getInstance().sendMessage(CirclesActivity::class.java, msg)
+
+                })
+
+        // initiate circle
         circleContactsViewModel.initCircle(activity as Context, circleData)
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        for (disposal in listOfDisposable) {
+            disposal.dispose()
+        }
     }
 
 

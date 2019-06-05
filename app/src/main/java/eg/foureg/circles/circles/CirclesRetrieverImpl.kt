@@ -3,6 +3,7 @@ package eg.foureg.circles.circles
 import android.content.Context
 import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.common.PrefHelper
+import eg.foureg.circles.contacts.ContactsRetrieverImpl
 import eg.foureg.circles.contacts.data.ContactData
 import io.reactivex.Observable
 
@@ -27,9 +28,22 @@ class CirclesRetrieverImpl : CirclesRetriever {
     /**
      * load contacts of given circle
      */
-    override fun loadCircleContacts(context: Context, circleData: CircleData): Observable<List<ContactData>> {
+    override fun loadCircleContacts(context: Context, circleId: Int): Observable<List<ContactData>> {
         return Observable.create<List<ContactData>>{emitter ->
+            val circlesStr = PrefHelper.loadStringArray(context, CirclesRetrieverImpl.PREF_CIRCLES_KEY)
 
+            Observable.fromIterable(circlesStr)
+                    .map { str ->
+                        val loadedCircle : CircleData = CircleData.fromJson(str)
+                        loadedCircle
+                    }
+                    .filter { circle ->
+                        circle.circleID == circleId
+                    }
+                    .subscribe { targetCircle ->
+                        val contactsRetrieverImpl = ContactsRetrieverImpl()
+                        contactsRetrieverImpl.loadContactFromUri(context, targetCircle.contactsIds.get(0))
+                    }
         }
     }
 

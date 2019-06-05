@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +14,7 @@ import com.jakewharton.rxbinding2.view.RxView
 
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
-import eg.foureg.circles.common.Logger
 import eg.foureg.circles.common.message.server.MessageServer
-import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.feature.activitycircles.CirclesActivity
 import eg.foureg.circles.feature.activitycircles.CirclesActivityMessages
 import io.reactivex.Observable
@@ -99,7 +96,7 @@ class CircleAddContactsFragment : Fragment() {
                             .subscribe {
                                 // send message to close activity
                                 MessageServer.getInstance().sendMessage(CirclesActivity::class.java,
-                                        CirclesActivityMessages.MSG_ID_ADD_CONTACTS_FINISH, "")
+                                        CirclesActivityMessages.MSG_ID_SHOW_CIRCLE_CONTACTS, "")
                             }
 
 
@@ -109,7 +106,7 @@ class CircleAddContactsFragment : Fragment() {
         listOfDisposables.add(RxView.clicks(view.fragment_circle_add_contacts_cancel_btn)
                 .subscribe {
                     MessageServer.getInstance().sendMessage(CirclesActivity::class.java,
-                            CirclesActivityMessages.MSG_ID_ADD_CONTACTS_FINISH, "")
+                            CirclesActivityMessages.MSG_ID_SHOW_CIRCLE_CONTACTS, "")
                 })
 
         circleAddContactsViewModel.initContacts(activity as Activity)

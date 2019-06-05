@@ -1,6 +1,5 @@
 package eg.foureg.circles.feature.activitycircles
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
@@ -32,8 +31,8 @@ class CirclesActivity : BaseActivity() {
                 fragmentsNavigator.setCircleAddContactsFragment(this, circleData)
             }
 
-            CirclesActivityMessages.MSG_ID_ADD_CONTACTS_FINISH -> {
-                finish()
+            CirclesActivityMessages.MSG_ID_SHOW_CIRCLE_CONTACTS -> {
+                fragmentsNavigator.setCircleContactsViewerFragment(this, circleData)
             }
         }
     }

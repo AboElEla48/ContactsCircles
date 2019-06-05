@@ -22,7 +22,7 @@ class CirclesModel(cRetriever : CirclesRetriever, cEditor : CirclesEditor) {
     }
 
     fun loadCircleContacts(context: Context, circleData: CircleData) : Observable<List<ContactData>> {
-        return  circlesRetriever.loadCircleContacts(context, circleData)
+        return  circlesRetriever.loadCircleContacts(context, circleData.circleID)
     }
 
     fun addNewCircle(context: Context, circleData: CircleData): Observable<Int>{

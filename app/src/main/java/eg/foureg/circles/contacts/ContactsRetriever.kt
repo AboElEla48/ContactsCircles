@@ -7,4 +7,6 @@ interface ContactsRetriever {
     fun loadContacts(context: Context): ArrayList<ContactData>
     fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): ArrayList<ContactData>?
 
+    fun loadContactFromUri(context: Context, uri : String)
+
 }

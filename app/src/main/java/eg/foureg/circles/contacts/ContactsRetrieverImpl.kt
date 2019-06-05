@@ -135,6 +135,19 @@ class ContactsRetrieverImpl : ContactsRetriever {
         return emails
     }
 
+    override fun loadContactFromUri(context: Context, uri : String) {
+        val contactCursor = context.contentResolver.query(Uri.parse(uri),
+                null,
+                null,
+                null,
+                null)
+
+        val name = contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+        val phoneNumber = contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+
+        Logger.debug(TAG, "loadContactFromUri($uri)-> Name: $name, phoneNumber: $phoneNumber" )
+    }
+
     companion object {
         private const val TAG = "ContactsRetrieverImpl"
     }

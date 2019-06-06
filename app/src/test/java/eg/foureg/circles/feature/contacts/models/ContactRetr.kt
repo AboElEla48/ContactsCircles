@@ -5,8 +5,13 @@ import android.os.Parcel
 import android.os.Parcelable
 import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.contacts.ContactsRetriever
+import io.reactivex.Observable
 
 class ContactRetr() : ContactsRetriever, Parcelable {
+    override fun loadContactByPhoneNumber(context: Context, phoneNumber: String): Observable<ContactData> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun loadContacts(context: Context): ArrayList<ContactData> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

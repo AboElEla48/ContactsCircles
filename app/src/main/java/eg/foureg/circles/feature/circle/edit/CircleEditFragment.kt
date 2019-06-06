@@ -16,8 +16,8 @@ import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.common.ToastHolder
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
-import eg.foureg.circles.feature.main.content.ContentActivity
-import eg.foureg.circles.feature.main.content.ContentActivityMessages
+import eg.foureg.circles.feature.activitymain.content.ContentActivity
+import eg.foureg.circles.feature.activitymain.content.ContentActivityMessages
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_circle_edit.*
 import kotlinx.android.synthetic.main.fragment_circle_edit.view.*

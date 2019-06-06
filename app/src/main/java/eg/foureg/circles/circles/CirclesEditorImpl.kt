@@ -74,7 +74,31 @@ open class CirclesEditorImpl : CirclesEditor {
         }
     }
 
-    override fun addContactToCircle(context: Context, newContactId: String, circleId: Int): Observable<Boolean> {
+    override fun updateCircleContacts(context: Context, circleId: Int, contacts: ArrayList<String>): Observable<Boolean> {
+        return Observable.create<Boolean> { emitter ->
+            val circlesRetrieverImpl = CirclesRetrieverImpl()
+
+            circlesRetrieverImpl.loadCircles(context)
+                    .subscribe { circlesList ->
+                        val list = ArrayList(circlesList)
+
+                        val circleToEdit = findCircle(circleId, list)
+                        if (circleToEdit != null) {
+                            circleToEdit.phones = contacts
+
+                            saveCirclesList(context, list)
+                                    .subscribe {
+                                        emitter.onNext(true)
+                                    }
+                        } else {
+                            emitter.onNext(false)
+                        }
+
+                    }
+        }
+    }
+
+    override fun addContactToCircle(context: Context, newContactUri: String, circleId: Int): Observable<Boolean> {
         return Observable.create<Boolean> { emitter ->
             val circlesRetrieverImpl = CirclesRetrieverImpl()
 
@@ -86,11 +110,11 @@ open class CirclesEditorImpl : CirclesEditor {
                         if (circleToEdit != null) {
 
                             // Assure this id doesn't exist before
-                            val found = isContactIdExistInCircle(circleToEdit, newContactId)
+                            val found = isContactIdExistInCircle(circleToEdit, newContactUri)
 
                             // add new contact if not added before
                             if (!found) {
-                                circleToEdit.contactsIds.add(newContactId)
+                                circleToEdit.phones.add(newContactUri)
 
                                 saveCirclesList(context, list)
                                         .subscribe {
@@ -118,7 +142,7 @@ open class CirclesEditorImpl : CirclesEditor {
 
                         val circleToEdit = findCircle(circleId, list)
                         if (circleToEdit != null) {
-                            circleToEdit.contactsIds.remove(contactId)
+                            circleToEdit.phones.remove(contactId)
 
                             saveCirclesList(context, list)
                                     .subscribe {
@@ -231,8 +255,8 @@ open class CirclesEditorImpl : CirclesEditor {
         for (circle in circlesList) {
 
             if (isContactIdExistInCircle(circle, oldContactId)) {
-                circle.contactsIds.remove(oldContactId)
-                circle.contactsIds.add(newContactId)
+                circle.phones.remove(oldContactId)
+                circle.phones.add(newContactId)
 
                 updated = true
             }
@@ -249,7 +273,7 @@ open class CirclesEditorImpl : CirclesEditor {
             if (isContactIdExistInCircle(circle, oldContactId)) {
 
                 // remove contact from all circles that associate to it
-                circle.contactsIds.remove(oldContactId)
+                circle.phones.remove(oldContactId)
 
                 updated = true
 
@@ -261,7 +285,7 @@ open class CirclesEditorImpl : CirclesEditor {
 
     protected fun isContactIdExistInCircle(circle: CircleData, contactId: String): Boolean {
 
-        for (id in circle.contactsIds) {
+        for (id in circle.phones) {
             if (id == contactId) {
                 return true
             }

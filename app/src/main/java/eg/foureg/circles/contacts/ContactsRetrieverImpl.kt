@@ -11,6 +11,8 @@ import android.content.ContentResolver
 import android.net.Uri
 import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.contacts.data.ContactPhoneNumber
+import android.R.attr.phoneNumber
+import android.provider.Contacts.Phones.CONTENT_FILTER_URL
 
 
 /**
@@ -48,9 +50,13 @@ class ContactsRetrieverImpl : ContactsRetriever {
 
             // extract contact
             val contactData = ContactData()
-            contactData.name = if (name == null){ "TempName" } else { name }
+            contactData.name = if (name == null) {
+                "TempName"
+            } else {
+                name
+            }
 
-            val type = when(phoneType) {
+            val type = when (phoneType) {
                 ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE ->
                     ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
                 ContactsContract.CommonDataKinds.Phone.TYPE_WORK ->
@@ -76,12 +82,37 @@ class ContactsRetrieverImpl : ContactsRetriever {
         return contactsList
     }
 
+    override fun loadContactByPhoneNumber(context: Context, phoneNumber: String): Observable<ContactData> {
+        return Observable.create<ContactData> { emitter ->
+            Observable.fromCallable { loadContacts(context) }
+                    .subscribe { contacts ->
+                        Observable.fromIterable(contacts)
+                                .filter { contact: ContactData ->
+                                    var containsPhone = false
+                                    for (i in 0 until contact.phones?.size!!) {
+                                        if(contact.phones?.get(i)?.phoneNumber == phoneNumber) {
+                                            containsPhone = true
+                                            break
+                                        }
+                                    }
+                                    containsPhone
+                                }
+                                .blockingSubscribe { contact ->
+                                    emitter.onNext(contact)
+                                }
+
+                    }
+        }
+
+
+    }
+
     /**
      * load contacts images in different stream
      */
     override fun loadContactsImages(context: Context, contactsList: ArrayList<ContactData>?): ArrayList<ContactData>? {
         Observable.fromIterable(contactsList)
-                .blockingSubscribe{ contact: ContactData? ->
+                .blockingSubscribe { contact: ContactData? ->
                     if (contact != null && contact.photoID != 0) {
                         contact.image = fetchContactImage(context, contact.photoID)
                     }
@@ -122,7 +153,7 @@ class ContactsRetrieverImpl : ContactsRetriever {
 
         val emails: ArrayList<String> = ArrayList()
 
-        if(emailsCursor != null) {
+        if (emailsCursor != null) {
             while (emailsCursor.moveToNext()) {
                 val email = emailsCursor.getString(emailsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))
                 emails.add(email)
@@ -134,6 +165,7 @@ class ContactsRetrieverImpl : ContactsRetriever {
         }
         return emails
     }
+
 
     companion object {
         private const val TAG = "ContactsRetrieverImpl"

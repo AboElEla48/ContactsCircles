@@ -13,10 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name="eg.foureg.circles.feature.main.content.ContentActivity"></activity>
-
-        <activity android:name=".feature.main.MainActivity">
+        <activity android:name=".feature.activitycircles.CirclesActivity" />
+        <activity android:name=".feature.activitymain.content.ContentActivity" />
+        <activity android:name=".feature.activitymain.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

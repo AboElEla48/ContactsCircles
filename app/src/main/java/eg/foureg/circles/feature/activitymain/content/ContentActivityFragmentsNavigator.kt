@@ -1,4 +1,4 @@
-package eg.foureg.circles.feature.main.content
+package eg.foureg.circles.feature.activitymain.content
 
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData

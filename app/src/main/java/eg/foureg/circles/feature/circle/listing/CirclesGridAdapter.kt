@@ -5,8 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import com.jakewharton.rxbinding2.view.RxView
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
+import eg.foureg.circles.common.message.data.Message
+import eg.foureg.circles.common.message.server.MessageServer
+import eg.foureg.circles.feature.activitymain.MainActivity
+import eg.foureg.circles.feature.activitymain.MainActivityMessages
 import kotlinx.android.synthetic.main.fragment_circles_grid_item.view.*
 
 class CirclesGridAdapter constructor (val context: Context, val circles: List<CircleData>?) : BaseAdapter() {
@@ -16,6 +21,17 @@ class CirclesGridAdapter constructor (val context: Context, val circles: List<Ci
         val circle = circles!!.get(position)
 
         view.fragment_circles_grid_item_text_view.text = circle.name
+
+        view.tag = circle
+
+        RxView.clicks(view).subscribe {v ->
+            val viewCircle : CircleData = view.tag as CircleData
+            val msg = Message()
+            msg.id = MainActivityMessages.MSG_ID_VIEW_CIRCLE_CONTACTS_LIST
+            msg.data.put(MainActivityMessages.DATA_PARAM_CIRCLE_DATA, circle)
+
+            MessageServer.getInstance().sendMessage(MainActivity::class.java, msg)
+        }
 
         return view
     }

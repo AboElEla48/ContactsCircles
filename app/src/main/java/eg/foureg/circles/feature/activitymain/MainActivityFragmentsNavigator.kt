@@ -1,4 +1,4 @@
-package eg.foureg.circles.feature.main
+package eg.foureg.circles.feature.activitymain
 
 import eg.foureg.circles.R
 import eg.foureg.circles.feature.circle.listing.CirclesListFragment

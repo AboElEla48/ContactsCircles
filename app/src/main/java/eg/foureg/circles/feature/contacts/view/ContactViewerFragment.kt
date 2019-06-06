@@ -14,10 +14,10 @@ import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.common.ui.BaseFragment
 import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.contacts.data.ContactPhoneNumber
-import eg.foureg.circles.feature.main.MainActivity
-import eg.foureg.circles.feature.main.MainActivityMessages
-import eg.foureg.circles.feature.main.content.ContentActivity
-import eg.foureg.circles.feature.main.content.ContentActivityMessages
+import eg.foureg.circles.feature.activitymain.MainActivity
+import eg.foureg.circles.feature.activitymain.MainActivityMessages
+import eg.foureg.circles.feature.activitymain.content.ContentActivity
+import eg.foureg.circles.feature.activitymain.content.ContentActivityMessages
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_contact_viewer.view.*
 import kotlinx.android.synthetic.main.view_contact_view_email_item.view.*

@@ -7,7 +7,7 @@ import com.google.gson.Gson
 class CircleData constructor() : Parcelable {
     var circleID : Int = 0
     var name : String = ""
-    var contactsIds : ArrayList<String> = ArrayList()
+    var phones : ArrayList<String> = ArrayList()
 
 
     constructor(parcel: Parcel) : this() {
@@ -15,19 +15,19 @@ class CircleData constructor() : Parcelable {
 
         circleID = circleData.circleID
         name = circleData.name
-        contactsIds = circleData.contactsIds
+        phones = circleData.phones
     }
 
-    constructor(cId : Int, cName : String, ids : ArrayList<String>) : this(){
+    constructor(cId : Int, cName : String, ps : ArrayList<String>) : this(){
         circleID = cId
         name = cName
-        contactsIds = ids
+        phones = ps
     }
 
-    constructor(cName : String, ids : ArrayList<String>) : this(){
+    constructor(cName : String, ps : ArrayList<String>) : this(){
         circleID = 0
         name = cName
-        contactsIds = ids
+        phones = ps
     }
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {

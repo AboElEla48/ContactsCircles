@@ -2,6 +2,7 @@ package eg.foureg.circles.feature.activitycircles
 
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
+import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.feature.activitycircles.contactsadder.CircleAddContactsFragment
 import eg.foureg.circles.feature.activitycircles.contactsviewer.CircleContactsViewerFragment
 
@@ -13,9 +14,9 @@ class CirclesActivityFragmentsNavigator {
         transaction.replace(R.id.circles_activity_content_frame, circlesViwerFragment).commit()
     }
 
-    fun setCircleAddContactsFragment(activity: CirclesActivity, circleData: CircleData) {
+    fun setCircleAddContactsFragment(activity: CirclesActivity, circleData: CircleData, circleContactsList: ArrayList<ContactData>) {
         val transaction = activity.supportFragmentManager.beginTransaction()
-        val circlesViwerFragment = CircleAddContactsFragment.newInstance(circleData)
+        val circlesViwerFragment = CircleAddContactsFragment.newInstance(circleData, circleContactsList)
         transaction.replace(R.id.circles_activity_content_frame, circlesViwerFragment).commit()
     }
 }

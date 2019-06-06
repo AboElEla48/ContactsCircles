@@ -6,5 +6,6 @@ class CirclesActivityMessages {
         const val MSG_ID_SHOW_CIRCLE_CONTACTS = 121
 
         const val DATA_PARAM_CIRCLE_DATA = "DATA_PARAM_CIRCLE_DATA"
+        const val DATA_PARAM_CIRCLE_CONTACTS_NAMES_DATA = "DATA_PARAM_CIRCLE_CONTACTS_NAMES_DATA"
     }
 }

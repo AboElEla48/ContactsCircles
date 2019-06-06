@@ -5,6 +5,7 @@ import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.ui.BaseActivity
+import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.feature.circle.models.CirclesModel
 import org.koin.android.ext.android.inject
 
@@ -28,7 +29,8 @@ class CirclesActivity : BaseActivity() {
         super.handleMessage(message)
         when(message.id) {
             CirclesActivityMessages.MSG_ID_ADD_CONCTACTS_TO_CIRCLE -> {
-                fragmentsNavigator.setCircleAddContactsFragment(this, circleData)
+                val contactsList: ArrayList<ContactData> = message.data.get(CirclesActivityMessages.DATA_PARAM_CIRCLE_CONTACTS_NAMES_DATA) as ArrayList<ContactData>
+                fragmentsNavigator.setCircleAddContactsFragment(this, circleData, contactsList)
             }
 
             CirclesActivityMessages.MSG_ID_SHOW_CIRCLE_CONTACTS -> {

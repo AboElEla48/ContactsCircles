@@ -15,6 +15,7 @@ import com.jakewharton.rxbinding2.view.RxView
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.common.message.server.MessageServer
+import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.feature.activitycircles.CirclesActivity
 import eg.foureg.circles.feature.activitycircles.CirclesActivityMessages
 import io.reactivex.Observable
@@ -32,6 +33,8 @@ class CircleAddContactsFragment : Fragment() {
 
     lateinit var circleData: CircleData
     lateinit var circleAddContactsViewModel : CircleAddContactsViewModel
+    lateinit var circleContactsList: ArrayList<ContactData>
+    lateinit var allContactsNamesList: ArrayList<String>
 
     val listOfDisposables : ArrayList<Disposable> = ArrayList()
 
@@ -39,6 +42,7 @@ class CircleAddContactsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {bundle->
             circleData = bundle.getParcelable(PARAM_CIRCLE_DATA)!!
+            circleContactsList = bundle.getParcelableArrayList<ContactData>(PARAM_CIRCLE_CONTACTS_DATA)!!
 
             circleAddContactsViewModel = ViewModelProviders.of(this).get(CircleAddContactsViewModel::class.java)
         }
@@ -55,15 +59,17 @@ class CircleAddContactsFragment : Fragment() {
 
         // display contacts into list
         circleAddContactsViewModel.contacts.observe(this, Observer {contacts ->
-            val contactsNames: ArrayList<String> = ArrayList()
+            allContactsNamesList = ArrayList()
 
             Observable.fromIterable(contacts)
                     .blockingSubscribe {contactData ->
-                        contactsNames.add(contactData.name)
+                        allContactsNamesList.add(contactData.name)
                     }
 
             // Change adapter
-            view.fragment_circle_add_contacts_list_view.adapter = CircleAddContactsListAdapter(activity as Context, contactsNames)
+            view.fragment_circle_add_contacts_list_view.adapter = CircleAddContactsListAdapter(activity as Context, allContactsNamesList)
+
+            initContactsSelection(view)
 
             view.fragment_circle_add_contacts_loading_progress.visibility = View.GONE
             view.fragment_circle_add_contacts_list_view.visibility = View.VISIBLE
@@ -113,6 +119,23 @@ class CircleAddContactsFragment : Fragment() {
                 })
 
         circleAddContactsViewModel.initContacts(activity as Activity)
+
+    }
+
+    private fun initContactsSelection(view: View) {
+
+        val circleContactsNames : ArrayList<String> = ArrayList()
+        Observable.fromIterable(circleContactsList)
+                .blockingSubscribe {contactData ->
+                    circleContactsNames.add(contactData.name)
+                }
+
+        for(index : Int in 0 until allContactsNamesList.size) {
+
+            if(circleContactsNames.contains(allContactsNamesList.get(index))) {
+                view.fragment_circle_add_contacts_list_view.setItemChecked(index, true)
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -132,13 +155,15 @@ class CircleAddContactsFragment : Fragment() {
          * @return A new instance of fragment CircleAddContactsFragment.
          */
         @JvmStatic
-        fun newInstance(circleData: CircleData) =
+        fun newInstance(circleData: CircleData, contactsList: ArrayList<ContactData>) =
                 CircleAddContactsFragment().apply {
                     arguments = Bundle().apply {
                         putParcelable(PARAM_CIRCLE_DATA, circleData)
+                        putParcelableArrayList(PARAM_CIRCLE_CONTACTS_DATA, contactsList)
                     }
                 }
 
         const val PARAM_CIRCLE_DATA : String = "PARAM_CIRCLE_DATA"
+        const val PARAM_CIRCLE_CONTACTS_DATA : String = "PARAM_CIRCLE_CONTACTS_DATA"
     }
 }

@@ -92,6 +92,7 @@ class CircleContactsViewerFragment : Fragment() {
                     val msg = Message()
                     msg.id = CirclesActivityMessages.MSG_ID_ADD_CONCTACTS_TO_CIRCLE
                     msg.data.put(CirclesActivityMessages.DATA_PARAM_CIRCLE_DATA, circleData)
+                    msg.data.put(CirclesActivityMessages.DATA_PARAM_CIRCLE_CONTACTS_NAMES_DATA, circleContactsViewModel.contactsList.value!!)
 
                     MessageServer.getInstance().sendMessage(CirclesActivity::class.java, msg)
 

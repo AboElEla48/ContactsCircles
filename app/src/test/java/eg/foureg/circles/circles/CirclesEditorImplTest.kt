@@ -1,7 +1,6 @@
 package eg.foureg.circles.circles
 
 import eg.foureg.circles.circles.data.CircleData
-import io.reactivex.Observable
 import org.junit.Assert
 import org.junit.Test
 import org.junit.Before
@@ -29,12 +28,12 @@ class CirclesEditorImplTest {
         val newContactId = "90"
         circleEditor.test_updateContactReferenceInCircles(sampleCircles, oldContactId, newContactId)
         for(circle in sampleCircles) {
-            Assert.assertTrue(!circle.contactsIds.contains(oldContactId))
+            Assert.assertTrue(!circle.phones.contains(oldContactId))
         }
 
-        Assert.assertTrue(sampleCircles.get(1).contactsIds.contains(newContactId))
-        Assert.assertTrue(sampleCircles.get(2).contactsIds.contains(newContactId))
-        Assert.assertTrue(sampleCircles.get(3).contactsIds.contains(newContactId))
+        Assert.assertTrue(sampleCircles.get(1).phones.contains(newContactId))
+        Assert.assertTrue(sampleCircles.get(2).phones.contains(newContactId))
+        Assert.assertTrue(sampleCircles.get(3).phones.contains(newContactId))
 
     }
 
@@ -44,7 +43,7 @@ class CirclesEditorImplTest {
         circleEditor.test_deleteContactReferenceInCircles(sampleCircles, oldContactId)
 
         for(circle in sampleCircles) {
-            Assert.assertTrue(!circle.contactsIds.contains(oldContactId))
+            Assert.assertTrue(!circle.phones.contains(oldContactId))
         }
     }
 

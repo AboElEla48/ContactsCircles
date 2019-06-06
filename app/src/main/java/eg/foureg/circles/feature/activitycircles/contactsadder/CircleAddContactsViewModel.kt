@@ -25,14 +25,15 @@ class CircleAddContactsViewModel : ViewModel() {
 
         contactsModel.loadContacts(activity as Context)
                 .subscribeOn(Schedulers.io())
-                .flatMap { rawContacts: ArrayList<ContactData> -> contactsModel.removeDuplicate(rawContacts) }
+                .flatMap { rawContacts: ArrayList<ContactData> ->
+                    contactsModel.removeDuplicate(rawContacts) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe{cList ->
                     contacts.value = cList
                 }
     }
 
-    fun updateCircleContacts(activity: Activity, circleId: Int, contactsUri: ArrayList<String>): Observable<Boolean> {
-       return  circlesModel.updateCircleContacts(activity as Context, circleId, contactsUri)
+    fun updateCircleContacts(activity: Activity, circleId: Int, contactsPhones: ArrayList<String>): Observable<Boolean> {
+       return  circlesModel.updateCircleContacts(activity as Context, circleId, contactsPhones)
     }
 }

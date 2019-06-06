@@ -84,7 +84,7 @@ open class CirclesEditorImpl : CirclesEditor {
 
                         val circleToEdit = findCircle(circleId, list)
                         if (circleToEdit != null) {
-                            circleToEdit.contactsIds = contacts
+                            circleToEdit.phones = contacts
 
                             saveCirclesList(context, list)
                                     .subscribe {
@@ -114,7 +114,7 @@ open class CirclesEditorImpl : CirclesEditor {
 
                             // add new contact if not added before
                             if (!found) {
-                                circleToEdit.contactsIds.add(newContactUri)
+                                circleToEdit.phones.add(newContactUri)
 
                                 saveCirclesList(context, list)
                                         .subscribe {
@@ -142,7 +142,7 @@ open class CirclesEditorImpl : CirclesEditor {
 
                         val circleToEdit = findCircle(circleId, list)
                         if (circleToEdit != null) {
-                            circleToEdit.contactsIds.remove(contactId)
+                            circleToEdit.phones.remove(contactId)
 
                             saveCirclesList(context, list)
                                     .subscribe {
@@ -255,8 +255,8 @@ open class CirclesEditorImpl : CirclesEditor {
         for (circle in circlesList) {
 
             if (isContactIdExistInCircle(circle, oldContactId)) {
-                circle.contactsIds.remove(oldContactId)
-                circle.contactsIds.add(newContactId)
+                circle.phones.remove(oldContactId)
+                circle.phones.add(newContactId)
 
                 updated = true
             }
@@ -273,7 +273,7 @@ open class CirclesEditorImpl : CirclesEditor {
             if (isContactIdExistInCircle(circle, oldContactId)) {
 
                 // remove contact from all circles that associate to it
-                circle.contactsIds.remove(oldContactId)
+                circle.phones.remove(oldContactId)
 
                 updated = true
 
@@ -285,7 +285,7 @@ open class CirclesEditorImpl : CirclesEditor {
 
     protected fun isContactIdExistInCircle(circle: CircleData, contactId: String): Boolean {
 
-        for (id in circle.contactsIds) {
+        for (id in circle.phones) {
             if (id == contactId) {
                 return true
             }

@@ -30,8 +30,9 @@ class CircleContactsViewerViewModel : ViewModel() {
         circleName.value = circleData.name
 
         // set circle contacts
-        circlesModel.loadCircleContacts(context, circleData).subscribe {
+        circlesModel.loadCircleContacts(context, circleData).subscribe { contacts ->
             loadingProgressBarVisibility.value = View.GONE
+            contactsList.value = contacts
         }
 
     }

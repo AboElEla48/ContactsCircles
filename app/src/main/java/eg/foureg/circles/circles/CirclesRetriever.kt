@@ -7,5 +7,5 @@ import io.reactivex.Observable
 
 interface CirclesRetriever {
     fun loadCircles(context: Context) : Observable<List<CircleData>>
-    fun loadCircleContacts(context: Context, circleId: Int): Observable<List<ContactData>>
+    fun loadCircleContacts(context: Context, circleId: Int): Observable<ArrayList<ContactData>>
 }

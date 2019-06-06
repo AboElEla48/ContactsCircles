@@ -74,13 +74,15 @@ class CircleAddContactsFragment : Fragment() {
         listOfDisposables.add(RxView.clicks(view.fragment_circle_add_contacts_save_btn)
                 .subscribe {
 
-                    val selectedContactsUri : ArrayList<String> = ArrayList()
+                    val selectedContactsPhones : ArrayList<String> = ArrayList()
 
-                    for(index : Int in 0..view.fragment_circle_add_contacts_list_view.count) {
+                    for(index : Int in 0 until view.fragment_circle_add_contacts_list_view.count) {
                         if (view.fragment_circle_add_contacts_list_view.isItemChecked(index)) {
                             val circleData = circleAddContactsViewModel.contacts.value?.get(index)!!
                             for(phoneNumber in circleData.phones!!){
-                                selectedContactsUri.add(phoneNumber.phoneNumberRawIdUri)
+                                if(phoneNumber.phoneNumber.isNotEmpty()) {
+                                    selectedContactsPhones.add(phoneNumber.phoneNumber)
+                                }
                             }
 
                         }
@@ -89,8 +91,9 @@ class CircleAddContactsFragment : Fragment() {
                     // save contacts into circle
                     view.fragment_circle_add_contacts_loading_progress.visibility = View.VISIBLE
                     view.fragment_circle_add_contacts_navigation_layout.visibility = View.GONE
-                    circleAddContactsViewModel.updateCircleContacts(activity as Activity, circleData.circleID,
-                            selectedContactsUri)
+                    circleAddContactsViewModel.updateCircleContacts(activity as Activity,
+                            circleData.circleID,
+                            selectedContactsPhones)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe {

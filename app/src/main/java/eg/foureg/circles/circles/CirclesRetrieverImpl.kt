@@ -29,12 +29,12 @@ class CirclesRetrieverImpl : CirclesRetriever {
      * load contacts of given circle
      */
     override fun loadCircleContacts(context: Context, circleId: Int): Observable<ArrayList<ContactData>> {
-        return Observable.create<ArrayList<ContactData>>{emitter ->
+        return Observable.create<ArrayList<ContactData>> { emitter ->
             val circlesStr = PrefHelper.loadStringArray(context, CirclesRetrieverImpl.PREF_CIRCLES_KEY)
 
             Observable.fromIterable(circlesStr)
                     .map { str ->
-                        val loadedCircle : CircleData = CircleData.fromJson(str)
+                        val loadedCircle: CircleData = CircleData.fromJson(str)
                         loadedCircle
                     }
                     .filter { circle ->
@@ -45,12 +45,14 @@ class CirclesRetrieverImpl : CirclesRetriever {
                         val contactsRetrieverImpl = ContactsRetrieverImpl()
                         val listOfContacts = ArrayList<ContactData>()
 
-                        if(targetCircle.phones.size > 0) {
-                            contactsRetrieverImpl.loadContactByPhoneNumber(context, targetCircle.phones.get(0))
-                                    .subscribe { contact ->
-                                        listOfContacts.add(contact)
-                                    }
-                        }
+                        Observable.fromIterable(targetCircle.phones)
+                                .map { pNum ->
+                                    contactsRetrieverImpl.loadContactByPhoneNumber(context, pNum)
+                                            .subscribe { contact ->
+                                                listOfContacts.add(contact)
+                                            }
+                                }
+                                .blockingSubscribe()
 
                         emitter.onNext(listOfContacts)
                     }

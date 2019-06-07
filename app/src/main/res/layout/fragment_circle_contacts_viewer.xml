@@ -120,10 +120,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@android:drawable/btn_plus"
-        android:background="@android:color/transparent"
-        app:fabSize="normal"
-        android:layout_margin="16dp" />
+        android:src="@drawable/plus"
+        app:backgroundTint="@color/color_floating_btn"
+        app:fabSize="auto"
+        android:layout_margin="16dp"/>
 
 
 </android.support.constraint.ConstraintLayout>

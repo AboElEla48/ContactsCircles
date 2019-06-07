@@ -44,9 +44,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/edit"
-        android:scaleType="fitCenter"
-        app:fabSize="normal"
+        android:src="@drawable/plus"
+        app:backgroundTint="@color/color_floating_btn"
+        app:fabSize="auto"
         android:layout_margin="16dp" />
 
 </android.support.constraint.ConstraintLayout>

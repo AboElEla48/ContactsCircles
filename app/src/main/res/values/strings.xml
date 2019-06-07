@@ -4,6 +4,7 @@
 
     <string name="txt_empty_circles_list">Click Add button to add new circle!</string>
     <string name="txt_empty_contacts_list">Click Add button to add new contact!</string>
+    <string name="txt_empty_circle_contacts_grid">Click Add button to add contacts to circle!</string>
 
     <string name="txt_contacts_list_loading_message">Loading contacts …</string>
     <string name="txt_circles_list_loading_message">Loading circles …</string>

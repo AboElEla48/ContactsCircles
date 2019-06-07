@@ -7,38 +7,38 @@
 
     <ImageView
         android:id="@+id/fragment_contact_view_phone_item_call_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/call"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="5dp"
         android:contentDescription="@string/app_name"/>
 
     <TextView
         android:id="@+id/fragment_contact_view_phone_item_phone_text_view"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/fragment_contact_view_phone_item_call_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="80dp"
-        android:textColor="@color/color_contact_text"
-        android:gravity="center_vertical"
-        android:textSize="12sp"/>
+        style="@style/StyleItemWhiteText"
+        android:layout_marginStart="30dp"/>
 
     <TextView
         android:id="@+id/fragment_contact_view_phone_item_phone_type_text_view"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/fragment_contact_view_phone_item_phone_text_view"
+        app:layout_constraintStart_toStartOf="@id/fragment_contact_view_phone_item_phone_text_view"
+        style="@style/StyleSubItemWhiteText" />
+
+    <ImageView
+        android:id="@+id/fragment_contact_view_phone_item_email_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/fragment_contact_view_phone_item_phone_text_view"
-        android:textColor="@color/color_contact_text"
-        android:gravity="center_vertical"/>
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/email"/>
 
 </android.support.constraint.ConstraintLayout>

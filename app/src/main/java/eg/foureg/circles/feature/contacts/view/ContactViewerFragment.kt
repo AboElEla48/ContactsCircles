@@ -8,6 +8,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
+import com.jakewharton.rxbinding2.view.RxView
 import eg.foureg.circles.R
 import eg.foureg.circles.common.message.data.Message
 import eg.foureg.circles.common.message.server.MessageServer
@@ -19,9 +20,15 @@ import eg.foureg.circles.feature.activitymain.MainActivityMessages
 import eg.foureg.circles.feature.activitymain.content.ContentActivity
 import eg.foureg.circles.feature.activitymain.content.ContentActivityMessages
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_contact_viewer.view.*
 import kotlinx.android.synthetic.main.view_contact_view_email_item.view.*
 import kotlinx.android.synthetic.main.view_contact_view_phone_item.view.*
+import android.content.Intent
+import android.net.Uri
+
+
+
 
 /**
  * Contact Viewer fragment
@@ -31,6 +38,7 @@ class ContactViewerFragment : BaseFragment() {
 
     private var contactViewViewModel = ContactViewViewModel()
     lateinit var contact: ContactData
+    val listOfDisposables: ArrayList<Disposable> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +73,22 @@ class ContactViewerFragment : BaseFragment() {
                         if(phoneNumber.phoneNumber.isNotEmpty()) {
                             phoneView.fragment_contact_view_phone_item_phone_type_text_view.text = resources.getStringArray(R.array.txt_phone_types_arr).get(phoneNumber.phoneNumberType.ordinal)
                             view.fragment_content_view_phones_layout.addView(phoneView)
+
+                            // handle click on phone number to call contact
+                            listOfDisposables.add(RxView.clicks(phoneView.fragment_contact_view_phone_item_call_image)
+                                    .subscribe {
+                                        callPhoneNumber(phoneNumber.phoneNumber)
+                                    })
+
+                            listOfDisposables.add(RxView.clicks(phoneView.fragment_contact_view_phone_item_phone_text_view)
+                                    .subscribe {
+                                        callPhoneNumber(phoneNumber.phoneNumber)
+                                    })
+
+                            listOfDisposables.add(RxView.clicks(phoneView.fragment_contact_view_phone_item_phone_type_text_view)
+                                    .subscribe {
+                                        callPhoneNumber(phoneNumber.phoneNumber)
+                                    })
                         }
 
                     }
@@ -76,6 +100,11 @@ class ContactViewerFragment : BaseFragment() {
                         val emailView: View = inflater.inflate(R.layout.view_contact_view_email_item, null, false)
                         emailView.fragment_contact_view_phone_item_email_text_view.text = email
                         view.fragment_content_view_emails_layout.addView(emailView)
+
+                        listOfDisposables.add(RxView.clicks(emailView.fragment_contact_view_phone_item_email_text_view)
+                                .subscribe {
+                                    sendEmail(email)
+                                })
                     }
         })
 
@@ -110,6 +139,21 @@ class ContactViewerFragment : BaseFragment() {
         }
         return super.onOptionsItemSelected(item)
 
+    }
+
+    private fun callPhoneNumber(phone: String) {
+        val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+        startActivity(intent)
+    }
+
+    private fun sendEmail(email: String) {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/html"
+//        intent.putExtra(Intent.EXTRA_EMAIL, "emailaddress@emailaddress.com")
+//        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject")
+//        intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.")
+
+        startActivity(Intent.createChooser(intent, "Send Email"))
     }
 
     /**

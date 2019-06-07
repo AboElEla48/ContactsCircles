@@ -68,7 +68,7 @@ class CircleContactsViewerFragment : Fragment() {
         // Handle click on edit circle name button
         listOfDisposable.add(RxView.clicks(view.fragment_circle_contacts_viewer_circle_name_edit_image)
                 .subscribe {
-                    view.fragment_circles_contacts_viewer_circle_name_layout.visibility = View.GONE
+                    view.fragment_circles_contacts_viewer_circle_name_layout.visibility = View.INVISIBLE
                     view.fragment_circle_contacts_viewer_circle_name_editor_layout.visibility = View.VISIBLE
                 })
 

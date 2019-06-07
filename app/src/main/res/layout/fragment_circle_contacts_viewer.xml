@@ -120,8 +120,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/edit"
-        android:scaleType="fitCenter"
+        android:src="@android:drawable/btn_plus"
+        android:background="@android:color/transparent"
         app:fabSize="normal"
         android:layout_margin="16dp" />
 

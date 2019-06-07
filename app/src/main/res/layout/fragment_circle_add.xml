@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".feature.circle.edit.CircleEditFragment"
+    tools:context=".feature.circle.add.CircleAddFragment"
     android:background="@drawable/background">
 
     <EditText
-        android:id="@+id/fragment_circle_edit_circle_name_editor"
+        android:id="@+id/fragment_circle_add_circle_name_editor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,18 +22,18 @@
         style="@style/StyleItemWhiteText"/>
 
     <ImageView
-        android:id="@+id/fragment_circle_edit_image_view"
+        android:id="@+id/fragment_circle_add_image_view"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:src="@drawable/group_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/fragment_circle_edit_circle_name_editor"
+        app:layout_constraintBottom_toTopOf="@id/fragment_circle_add_circle_name_editor"
         android:layout_marginBottom="28dp"
         android:contentDescription="@string/app_name"/>
 
     <Button
-        android:id="@+id/fragment_circle_edit_save_btn"
+        android:id="@+id/fragment_circle_add_save_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
@@ -43,7 +43,7 @@
         android:text="@string/txt_save_circle_editing"/>
 
     <ProgressBar
-        android:id="@+id/fragment_circle_edit_loading_progress"
+        android:id="@+id/fragment_circle_add_loading_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

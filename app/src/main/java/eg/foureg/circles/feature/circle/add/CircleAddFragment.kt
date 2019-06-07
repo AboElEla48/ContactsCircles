@@ -1,4 +1,4 @@
-package eg.foureg.circles.feature.circle.edit
+package eg.foureg.circles.feature.circle.add
 
 
 import android.arch.lifecycle.Observer
@@ -19,16 +19,16 @@ import eg.foureg.circles.common.message.server.MessageServer
 import eg.foureg.circles.feature.activitymain.content.ContentActivity
 import eg.foureg.circles.feature.activitymain.content.ContentActivityMessages
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.fragment_circle_edit.*
-import kotlinx.android.synthetic.main.fragment_circle_edit.view.*
+import kotlinx.android.synthetic.main.fragment_circle_add.*
+import kotlinx.android.synthetic.main.fragment_circle_add.view.*
 
 /**
  * A fragment to add/edit circle
  *
  */
-class CircleEditFragment : Fragment() {
+class CircleAddFragment : Fragment() {
 
-    var viewModel = CircleEditViewModel()
+    var viewModel = CircleAddViewModel()
     val listOfDisposable: ArrayList<Disposable> = ArrayList()
     var editCircle: CircleData? = null
 
@@ -42,25 +42,25 @@ class CircleEditFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_circle_edit, container, false)
+        return inflater.inflate(R.layout.fragment_circle_add, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(CircleEditViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(CircleAddViewModel::class.java)
 
         viewModel.circleName.observe(this, Observer { name: String? ->
-            fragment_circle_edit_circle_name_editor.setText(name)
+            fragment_circle_add_circle_name_editor.setText(name)
         })
 
         viewModel.progressVisibility.observe(this, Observer { visibility: Int? ->
-            fragment_circle_edit_loading_progress.visibility = visibility!!
+            fragment_circle_add_loading_progress.visibility = visibility!!
         })
 
-        listOfDisposable.add(RxView.clicks(fragment_circle_edit_save_btn)
+        listOfDisposable.add(RxView.clicks(fragment_circle_add_save_btn)
                 .subscribe {
-                    saveCircle(view.fragment_circle_edit_circle_name_editor)
+                    saveCircle(view.fragment_circle_add_circle_name_editor)
                 })
 
         viewModel.initCircle(activity as Context, editCircle)
@@ -102,11 +102,11 @@ class CircleEditFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @return A new instance of fragment CircleEditFragment.
+         * @return A new instance of fragment CircleAddFragment.
          */
         @JvmStatic
         fun newInstance(circleData: CircleData?) =
-                CircleEditFragment().apply {
+                CircleAddFragment().apply {
                     arguments = Bundle().apply {
                         putParcelable(CIRCLE_DATA_PARAM, circleData)
                     }

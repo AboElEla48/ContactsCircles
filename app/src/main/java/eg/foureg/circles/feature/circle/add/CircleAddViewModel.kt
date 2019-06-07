@@ -1,4 +1,4 @@
-package eg.foureg.circles.feature.circle.edit
+package eg.foureg.circles.feature.circle.add
 
 import android.app.Activity
 import android.arch.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import eg.foureg.circles.feature.circle.models.CirclesModel
 import io.reactivex.Observable
 import org.koin.android.ext.android.get
 
-class CircleEditViewModel : ViewModel() {
+class CircleAddViewModel : ViewModel() {
 
     val circleName : MutableLiveData<String> = MutableLiveData()
 

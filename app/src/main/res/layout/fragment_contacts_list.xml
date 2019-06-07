@@ -15,11 +15,10 @@
         android:padding="5dp"
         android:background="@color/color_contact_title_background"
         android:text="@string/txt_contacts_list_title"
-        android:textColor="@color/color_contact_title"
-        android:textSize="35sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/StyleTitleWhiteText"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_contacts_list_recycler_view"

@@ -34,13 +34,14 @@
 
     <Button
         android:id="@+id/fragment_circle_add_save_btn"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        app:layout_goneMarginEnd="20dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="@string/txt_save_circle_editing"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/txt_save_circle_editing"
+        style="@style/StyleBtnWhiteText"/>
 
     <ProgressBar
         android:id="@+id/fragment_circle_add_loading_progress"

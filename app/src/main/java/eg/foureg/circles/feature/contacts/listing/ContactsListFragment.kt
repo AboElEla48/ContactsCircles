@@ -60,6 +60,13 @@ class ContactsListFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this).get(ContactsListViewModel::class.java)
         viewModel.contacts.observe(this, Observer { contactsList: List<ContactData>? ->
             recyclerView.adapter = ContactsListAdapter(context, contactsList)
+
+            if(contactsList?.size == 0) {
+                view.fragment_contacts_list_empty_list_text_view.visibility = View.VISIBLE
+            }
+            else {
+                view.fragment_contacts_list_empty_list_text_view.visibility = View.GONE
+            }
         })
 
 

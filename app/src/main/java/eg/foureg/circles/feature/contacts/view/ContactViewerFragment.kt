@@ -29,7 +29,6 @@ import android.net.Uri
 
 
 
-
 /**
  * Contact Viewer fragment
  *
@@ -88,6 +87,11 @@ class ContactViewerFragment : BaseFragment() {
                             listOfDisposables.add(RxView.clicks(phoneView.fragment_contact_view_phone_item_phone_type_text_view)
                                     .subscribe {
                                         callPhoneNumber(phoneNumber.phoneNumber)
+                                    })
+
+                            listOfDisposables.add(RxView.clicks(phoneView.fragment_contact_view_phone_item_email_image_view)
+                                    .subscribe {
+                                        sendSMS(phoneNumber.phoneNumber)
                                     })
                         }
 
@@ -149,11 +153,15 @@ class ContactViewerFragment : BaseFragment() {
     private fun sendEmail(email: String) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/html"
-//        intent.putExtra(Intent.EXTRA_EMAIL, "emailaddress@emailaddress.com")
+        intent.putExtra(Intent.EXTRA_EMAIL, email)
 //        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject")
 //        intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.")
 
         startActivity(Intent.createChooser(intent, "Send Email"))
+    }
+
+    fun sendSMS(phoneNumber: String) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber, null)))
     }
 
     /**

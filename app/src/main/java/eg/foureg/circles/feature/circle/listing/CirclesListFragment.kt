@@ -17,6 +17,7 @@ import eg.foureg.circles.feature.activitymain.MainActivity
 import eg.foureg.circles.feature.activitymain.MainActivityMessages
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_circles_list.*
+import kotlinx.android.synthetic.main.fragment_circles_list.view.*
 
 
 /**
@@ -54,6 +55,12 @@ class CirclesListFragment : Fragment() {
 
         circlesListViewModel.circlesList.observe(this, Observer { list ->
             fragment_circles_list_circles_grid_view.adapter = CirclesGridAdapter(activity as Context, list)
+            if(list?.size == 0) {
+                view.fragment_circles_list_empty_grid_text_view.visibility = View.VISIBLE
+            }
+            else {
+                view.fragment_circles_list_empty_grid_text_view.visibility = View.GONE
+            }
         })
 
         listOfDisposable.add(circlesListViewModel.loadCircles(activity as Context)

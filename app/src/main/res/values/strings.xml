@@ -2,6 +2,8 @@
     <string name="app_name" translatable="false">Circles</string>
     <string name="txt_contacts_list_title">Phone book</string>
 
+    <string name="txt_empty_circles_list">Click Add button to add new circle!</string>
+
     <string name="txt_contacts_list_loading_message">Loading contacts …</string>
     <string name="txt_circles_list_loading_message">Loading circles …</string>
 

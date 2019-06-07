@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".feature.circle.add.CircleAddFragment"
+    android:background="@drawable/background">
+
+    <EditText
+        android:id="@+id/fragment_circle_add_circle_name_editor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:inputType="text"
+        android:textColor="@color/color_contact_white_text"
+        android:imeOptions="actionDone"
+        android:hint="@string/txt_circle_name_hint"
+        style="@style/StyleItemWhiteText"/>
+
+    <ImageView
+        android:id="@+id/fragment_circle_add_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:src="@drawable/group_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fragment_circle_add_circle_name_editor"
+        android:layout_marginBottom="28dp"
+        android:contentDescription="@string/app_name"/>
+
+    <Button
+        android:id="@+id/fragment_circle_add_save_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/txt_save_circle_editing"
+        style="@style/StyleBtnWhiteText"/>
+
+    <ProgressBar
+        android:id="@+id/fragment_circle_add_loading_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
+
+
+</android.support.constraint.ConstraintLayout>

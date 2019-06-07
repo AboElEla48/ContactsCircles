@@ -2,6 +2,10 @@
     <string name="app_name" translatable="false">Circles</string>
     <string name="txt_contacts_list_title">Phone book</string>
 
+    <string name="txt_empty_circles_list">Click Add button to add new circle!</string>
+    <string name="txt_empty_contacts_list">Click Add button to add new contact!</string>
+    <string name="txt_empty_circle_contacts_grid">Click Add button to add contacts to circle!</string>
+
     <string name="txt_contacts_list_loading_message">Loading contacts …</string>
     <string name="txt_circles_list_loading_message">Loading circles …</string>
 
@@ -26,7 +30,7 @@
 
     <string name="txt_circle_saved_message">Circle saved successfully</string>
 
-    <string name="txt_circle_contacts_viewer_circle_name_lable">Circle Name</string>
+    <string name="txt_circle_contacts_viewer_circle_name_label">Circle Name</string>
 
     <string name="txt_circle_contacts_viewer_contacts_list">Circle Contacts</string>
 

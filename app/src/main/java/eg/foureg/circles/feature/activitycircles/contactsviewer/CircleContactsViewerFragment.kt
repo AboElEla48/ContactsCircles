@@ -59,6 +59,13 @@ class CircleContactsViewerFragment : Fragment() {
         circleContactsViewModel.contactsList.observe(this, Observer { contacts ->
             view.fragment_circle_contacts_viewer_grid_view.adapter = CircleContactsGridAdapter(activity as Context,
                     contacts)
+
+            if(contacts?.size == 0) {
+                view.fragment_circle_contacts_viewer_empty_grid_text_view.visibility = View.VISIBLE
+            }
+            else {
+                view.fragment_circle_contacts_viewer_empty_grid_text_view.visibility = View.GONE
+            }
         })
 
         circleContactsViewModel.loadingProgressBarVisibility.observe(this, Observer { visibility ->
@@ -68,7 +75,8 @@ class CircleContactsViewerFragment : Fragment() {
         // Handle click on edit circle name button
         listOfDisposable.add(RxView.clicks(view.fragment_circle_contacts_viewer_circle_name_edit_image)
                 .subscribe {
-                    view.fragment_circles_contacts_viewer_circle_name_layout.visibility = View.GONE
+                    // Make it invisible instead of Gone to save the constraints as it is
+                    view.fragment_circles_contacts_viewer_circle_name_layout.visibility = View.INVISIBLE
                     view.fragment_circle_contacts_viewer_circle_name_editor_layout.visibility = View.VISIBLE
                 })
 

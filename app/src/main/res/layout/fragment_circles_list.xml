@@ -5,13 +5,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.circle.listing.CirclesListFragment">
+    tools:context=".feature.circle.listing.CirclesListFragment"
+    android:background="@drawable/background">
 
     <GridView
         android:id="@+id/fragment_circles_list_circles_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="auto_fit"/>
+        android:numColumns="auto_fit" />
+
+    <TextView
+        android:id="@+id/fragment_circles_list_empty_grid_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/txt_empty_circles_list"
+        style="@style/StyleEmptyListWhiteText"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/fragment_circles_list_loading_progress_layout"
@@ -33,7 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/txt_circles_list_loading_message"/>
+            android:text="@string/txt_circles_list_loading_message"
+            style="@style/StyleItemWhiteText"/>
 
     </LinearLayout>
 
@@ -43,9 +57,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/edit"
-        android:scaleType="fitCenter"
-        app:fabSize="normal"
+        android:src="@drawable/plus"
+        app:backgroundTint="@color/color_floating_btn"
+        app:fabSize="auto"
         android:layout_margin="16dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -3,7 +3,7 @@ package eg.foureg.circles.feature.activitymain.content
 import eg.foureg.circles.R
 import eg.foureg.circles.circles.data.CircleData
 import eg.foureg.circles.contacts.data.ContactData
-import eg.foureg.circles.feature.circle.edit.CircleEditFragment
+import eg.foureg.circles.feature.circle.add.CircleAddFragment
 import eg.foureg.circles.feature.contacts.edit.ContactEditorFragment
 import eg.foureg.circles.feature.contacts.view.ContactViewerFragment
 
@@ -23,7 +23,7 @@ class ContentActivityFragmentsNavigator {
 
     fun setCircleEditorFragment(contentActivity: ContentActivity, circle: CircleData?){
         val transaction = contentActivity.supportFragmentManager.beginTransaction()
-        val circleFragment = CircleEditFragment.newInstance(circle)
+        val circleFragment = CircleAddFragment.newInstance(circle)
         transaction.replace(R.id.content_activity_content_frame_layout, circleFragment).commit()
     }
 }

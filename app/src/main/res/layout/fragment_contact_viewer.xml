@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".feature.contacts.view.ContactViewerFragment">
+    tools:context=".feature.contacts.view.ContactViewerFragment"
+    android:background="@drawable/background">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,8 +20,9 @@
             android:layout_height="120dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
+            app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/app_name"
-            android:src="@android:drawable/ic_menu_gallery" />
+            android:src="@drawable/user" />
 
         <TextView
             android:id="@+id/fragment_content_view_name_text_view"
@@ -29,8 +32,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:textColor="@color/color_contact_text"
-            android:textSize="20sp"
+            style="@style/StyleBannerTitleWhiteText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_contact_viewer_image_view" />

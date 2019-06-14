@@ -64,12 +64,15 @@ class ContactEditorFragment : BaseFragment() {
                 view.fragment_contact_editor_image_view.setImageBitmap(img)
             }
         })
+
         contactEditorViewModel.contactName.observe(this, Observer { name: String? ->
             view.fragment_content_editor_name_edit_view.setText(name)
         })
+
         contactEditorViewModel.phones.observe(this, Observer { phonesList: List<ContactPhoneNumber>? ->
             bindPhonesLayout(container, view.fragment_content_editor_phones_layout, inflater, phonesList)
         })
+
         contactEditorViewModel.emails.observe(this, Observer { emailsList: List<String>? ->
             bindEmailsLayout(container, view.fragment_content_editor_emails_layout, inflater, emailsList)
         })
@@ -131,15 +134,19 @@ class ContactEditorFragment : BaseFragment() {
         phoneEditorTypesSpinnerViewsList.add(phoneEditView.view_phone_number_editor_type_spinner)
 
         phoneEditView.view_phone_number_editor_delete_detail_image_view.setOnClickListener {
-            contactPhonesLayout.removeView(phoneEditView)
-            phoneEditorsViewsList.remove(phoneEditView.view_phone_number_editor_edit_text)
-            phoneEditorTypesSpinnerViewsList.remove(phoneEditView.view_phone_number_editor_type_spinner)
+            deletePhoneNumber(contactPhonesLayout, phoneEditView)
         }
 
         phoneEditView.view_phone_number_editor_edit_text.requestFocus()
 
         contactPhonesLayout.addView(phoneEditView)
 
+    }
+
+    private fun deletePhoneNumber(contactPhonesLayout: LinearLayout, phoneEditView: View) {
+        contactPhonesLayout.removeView(phoneEditView)
+        phoneEditorsViewsList.remove(phoneEditView.view_phone_number_editor_edit_text)
+        phoneEditorTypesSpinnerViewsList.remove(phoneEditView.view_phone_number_editor_type_spinner)
     }
 
     /**
@@ -167,13 +174,17 @@ class ContactEditorFragment : BaseFragment() {
         emailEditorsViewsList.add(emailEditView.view_email_editor_email_edit_view)
 
         emailEditView.view_email_editor_delete_detail_image_view.setOnClickListener {
-            contactEmailsLayout.removeView(emailEditView)
-            emailEditorsViewsList.remove(emailEditView.view_email_editor_email_edit_view)
+            deleteEmail(contactEmailsLayout, emailEditView)
         }
 
         emailEditView.view_email_editor_email_edit_view.requestFocus()
 
         contactEmailsLayout.addView(emailEditView)
+    }
+
+    private fun deleteEmail(contactEmailsLayout: LinearLayout, emailEditView: View) {
+        contactEmailsLayout.removeView(emailEditView)
+        emailEditorsViewsList.remove(emailEditView.view_email_editor_email_edit_view)
     }
 
     /**

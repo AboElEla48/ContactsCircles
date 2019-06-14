@@ -19,17 +19,16 @@
 
     <EditText
         android:id="@+id/view_email_editor_email_edit_view"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/view_email_editor_delete_detail_image_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColor="@color/color_contact_text"
-        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/view_email_editor_delete_detail_image_view"
         android:inputType="textEmailAddress"
         android:autofillHints="@string/txt_contact_editor_email_hint"
-        android:hint="@string/txt_contact_editor_email_hint"/>
+        android:hint="@string/txt_contact_editor_email_hint"
+        style="@style/StyleItemWhiteText"/>
 
 
 

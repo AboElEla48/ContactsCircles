@@ -24,7 +24,8 @@
         app:layout_constraintEnd_toStartOf="@id/view_phone_number_editor_delete_detail_image_view"
         android:autofillHints="@string/txt_contact_editor_phone_number_hint"
         android:hint="@string/txt_contact_editor_phone_number_hint"
-        android:inputType="phone"/>
+        android:inputType="phone"
+        style="@style/StyleItemWhiteText"/>
 
     <Spinner
         android:id="@+id/view_phone_number_editor_type_spinner"

@@ -51,7 +51,7 @@ class MainActivity : BaseActivity() {
                     mainActivityFragmentsNavigator.setHeaderCirclesListFragment(this)
                 }
                 else {
-                    Toast.makeText(this, getString(R.string.txt_permission_must_be_granted), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.txt_contacts_permission_must_be_granted), Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -60,7 +60,7 @@ class MainActivity : BaseActivity() {
                     viewContactEditor(tempContactData)
                 }
                 else {
-                    Toast.makeText(this, getString(R.string.txt_permission_must_be_granted), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.txt_contacts_permission_must_be_granted), Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -69,7 +69,7 @@ class MainActivity : BaseActivity() {
                     viewCircleEditor(tempCircleData)
                 }
                 else {
-                    Toast.makeText(this, getString(R.string.txt_permission_must_be_granted), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.txt_contacts_permission_must_be_granted), Toast.LENGTH_LONG).show()
                 }
             }
         }

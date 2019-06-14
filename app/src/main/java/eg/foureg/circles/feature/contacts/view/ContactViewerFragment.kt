@@ -1,6 +1,7 @@
 package eg.foureg.circles.feature.contacts.view
 
 
+import android.Manifest
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -25,8 +26,10 @@ import kotlinx.android.synthetic.main.fragment_contact_viewer.view.*
 import kotlinx.android.synthetic.main.view_contact_view_email_item.view.*
 import kotlinx.android.synthetic.main.view_contact_view_phone_item.view.*
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
-
+import android.os.Build
+import android.widget.Toast
 
 
 /**
@@ -38,6 +41,7 @@ class ContactViewerFragment : BaseFragment() {
     private var contactViewViewModel = ContactViewViewModel()
     lateinit var contact: ContactData
     val listOfDisposables: ArrayList<Disposable> = ArrayList()
+    var phoneNumToCall: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,7 +150,41 @@ class ContactViewerFragment : BaseFragment() {
     }
 
     private fun callPhoneNumber(phone: String) {
-        val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+        phoneNumToCall = phone
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
+            if (activity?.checkSelfPermission(Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                doCallPhoneNumber(phone)
+            }
+            else {
+                requestPermissions(arrayOf(Manifest.permission.CALL_PHONE),
+                        PERMISSION_CALL_PHONE_ID)
+            }
+        }
+        else {
+            val intent = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phone, null))
+            startActivity(intent)
+        }
+
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode) {
+            PERMISSION_CALL_PHONE_ID -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    doCallPhoneNumber(phoneNumToCall)
+                }
+                else {
+                    Toast.makeText(activity, getString(R.string.txt_phone_call_permission_must_be_granted), Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    private fun doCallPhoneNumber(phone: String) {
+        val intent = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phone, null))
         startActivity(intent)
     }
 
@@ -154,8 +192,6 @@ class ContactViewerFragment : BaseFragment() {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/html"
         intent.putExtra(Intent.EXTRA_EMAIL, email)
-//        intent.putExtra(Intent.EXTRA_SUBJECT, "Subject")
-//        intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.")
 
         startActivity(Intent.createChooser(intent, "Send Email"))
     }
@@ -200,6 +236,7 @@ class ContactViewerFragment : BaseFragment() {
 
     }
 
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -216,5 +253,7 @@ class ContactViewerFragment : BaseFragment() {
                 }
 
         const val CONTACT_DATA_PARAM = "CONTACT_DATA_PARAM"
+
+        const val PERMISSION_CALL_PHONE_ID = 301
     }
 }

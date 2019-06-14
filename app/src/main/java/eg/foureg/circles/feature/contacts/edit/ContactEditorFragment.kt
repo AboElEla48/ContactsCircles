@@ -134,6 +134,8 @@ class ContactEditorFragment : BaseFragment() {
             phoneEditorTypesSpinnerViewsList.remove(phoneEditView.view_phone_number_editor_type_spinner)
         }
 
+        phoneEditView.view_phone_number_editor_edit_text.requestFocus()
+
         contactPhonesLayout.addView(phoneEditView)
 
     }
@@ -166,6 +168,8 @@ class ContactEditorFragment : BaseFragment() {
             contactEmailsLayout.removeView(emailEditView)
             emailEditorsViewsList.remove(emailEditView.view_email_editor_email_edit_view)
         }
+
+        emailEditView.view_email_editor_email_edit_view.requestFocus()
 
         contactEmailsLayout.addView(emailEditView)
     }

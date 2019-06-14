@@ -105,7 +105,7 @@ class ContactViewerFragment : BaseFragment() {
                         emailView.fragment_contact_view_phone_item_email_text_view.text = email
                         view.fragment_content_view_emails_layout.addView(emailView)
 
-                        listOfDisposables.add(RxView.clicks(emailView.fragment_contact_view_phone_item_email_text_view)
+                        listOfDisposables.add(RxView.clicks(emailView)
                                 .subscribe {
                                     sendEmail(email)
                                 })

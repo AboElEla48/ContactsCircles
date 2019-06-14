@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -18,9 +19,11 @@
         android:id="@+id/fragment_contact_view_phone_item_email_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/fragment_contact_view_phone_item_email_image"
+        app:layout_constraintBottom_toBottomOf="@id/fragment_contact_view_phone_item_email_image"
         app:layout_constraintStart_toEndOf="@id/fragment_contact_view_phone_item_email_image"
         style="@style/StyleItemWhiteText"
-        android:layout_marginStart="30dp" />
+        android:layout_marginStart="30dp"
+        android:text="@string/app_name"/>
 
 </android.support.constraint.ConstraintLayout>

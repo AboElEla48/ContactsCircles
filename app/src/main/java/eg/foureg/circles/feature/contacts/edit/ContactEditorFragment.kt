@@ -101,6 +101,8 @@ class ContactEditorFragment : BaseFragment() {
             contactEditorViewModel.initContact(activity as Context, editContact)
         }
 
+        view.fragment_content_editor_name_edit_view.requestFocus()
+
         return view
     }
 
@@ -211,10 +213,6 @@ class ContactEditorFragment : BaseFragment() {
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .subscribe { contactSavedAndExit() })
         }
-
-
-
-
     }
 
     private fun contactSavedAndExit() {

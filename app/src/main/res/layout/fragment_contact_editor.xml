@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".feature.contacts.edit.ContactEditorFragment">
+    tools:context=".feature.contacts.edit.ContactEditorFragment"
+    android:background="@drawable/background">
 
     <ImageView
         android:id="@+id/fragment_contact_editor_image_view"
@@ -19,14 +20,14 @@
 
     <Button
         android:id="@+id/fragment_content_editor_save_button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textAllCaps="false"
-        android:text="@string/txt_save_contact_editing"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/txt_save_contact_editing"
+        style="@style/StyleBtnWhiteText"/>
 
 
     <ScrollView
@@ -52,14 +53,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/color_contact_text"
-                android:textSize="20sp"
+                android:textColor="@color/color_contact_white_text"
                 android:inputType="text"
                 android:autofillHints="@string/txt_contact_editor_name_hint"
-                android:hint="@string/txt_contact_editor_name_hint"/>
+                android:hint="@string/txt_contact_editor_name_hint"
+                style="@style/StyleItemWhiteText"/>
 
             <!-- Contact Phone numbers layout -->
             <LinearLayout
@@ -75,9 +76,9 @@
 
                 <ImageView
                     android:id="@+id/fragment_content_editor_phones_layout_add_phone_btn"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/plus"
                     android:layout_gravity="end"
                     android:contentDescription="@string/app_name"/>
 
@@ -95,9 +96,9 @@
 
                 <ImageView
                     android:id="@+id/fragment_content_editor_emails_layout_add_email_btn"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/plus"
                     android:layout_gravity="end"
                     android:contentDescription="@string/app_name"/>
 

@@ -4,8 +4,10 @@ package eg.foureg.circles.feature.contacts.edit
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -144,9 +146,24 @@ class ContactEditorFragment : BaseFragment() {
     }
 
     private fun deletePhoneNumber(contactPhonesLayout: LinearLayout, phoneEditView: View) {
-        contactPhonesLayout.removeView(phoneEditView)
-        phoneEditorsViewsList.remove(phoneEditView.view_phone_number_editor_edit_text)
-        phoneEditorTypesSpinnerViewsList.remove(phoneEditView.view_phone_number_editor_type_spinner)
+
+        // Confirm deletion
+        showConfirmationDialog(getString(R.string.txt_delete_contact_details_confirmation_title),
+                getString(R.string.txt_delete_contact_details_confirmation_body),
+                getString(R.string.txt_delete_contact_details_confirmation_yes),
+                getString(R.string.txt_delete_contact_details_confirmation_no),
+                DialogInterface.OnClickListener { _, which ->
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            contactPhonesLayout.removeView(phoneEditView)
+                            phoneEditorsViewsList.remove(phoneEditView.view_phone_number_editor_edit_text)
+                            phoneEditorTypesSpinnerViewsList.remove(phoneEditView.view_phone_number_editor_type_spinner)
+                        }
+
+                    }
+                })
+
+
     }
 
     /**
@@ -183,8 +200,22 @@ class ContactEditorFragment : BaseFragment() {
     }
 
     private fun deleteEmail(contactEmailsLayout: LinearLayout, emailEditView: View) {
-        contactEmailsLayout.removeView(emailEditView)
-        emailEditorsViewsList.remove(emailEditView.view_email_editor_email_edit_view)
+
+        showConfirmationDialog(getString(R.string.txt_delete_contact_details_confirmation_title),
+                getString(R.string.txt_delete_contact_details_confirmation_body),
+                getString(R.string.txt_delete_contact_details_confirmation_yes),
+                getString(R.string.txt_delete_contact_details_confirmation_no),
+                DialogInterface.OnClickListener { _, which ->
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            contactEmailsLayout.removeView(emailEditView)
+                            emailEditorsViewsList.remove(emailEditView.view_email_editor_email_edit_view)
+                        }
+
+                    }
+                })
+
+
     }
 
     /**
@@ -271,6 +302,25 @@ class ContactEditorFragment : BaseFragment() {
                     contactEditorViewModel.emails.value?.add(editText.text.toString())
                 })
 
+    }
+
+    /**
+     * Show confirmation dialog
+     */
+    private fun showConfirmationDialog(title: String,
+                                       msg: String,
+                                       yesText: String,
+                                       noText: String,
+                                       dialogClickListener: DialogInterface.OnClickListener) {
+
+        val builder = AlertDialog.Builder(activity as Context)
+        builder.setTitle(title)
+        builder.setMessage(msg)
+
+        builder.setPositiveButton(yesText, dialogClickListener)
+        builder.setNegativeButton(noText, dialogClickListener)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     override fun onDestroy() {

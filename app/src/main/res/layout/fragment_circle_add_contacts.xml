@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".feature.activitycircles.contactsadder.CircleAddContactsFragment">
+    tools:context=".feature.activitycircles.contactsadder.CircleAddContactsFragment"
+    android:background="@drawable/background">
 
     <LinearLayout
         android:id="@+id/fragment_circle_add_contacts_navigation_layout"
@@ -17,21 +18,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone">
 
-        <ImageView
+        <Button
             android:id="@+id/fragment_circle_add_contacts_save_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/edit"
+            android:text="@string/txt_add_contact_to_circle"
             android:layout_weight="1"
-            android:contentDescription="@string/app_name"/>
+            style="@style/StyleBtnWhiteText"/>
 
-        <ImageView
+        <Button
             android:id="@+id/fragment_circle_add_contacts_cancel_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/edit"
+            android:text="@string/txt_cancel_add_contact_to_circle"
             android:layout_weight="1"
-            android:contentDescription="@string/app_name"/>
+            style="@style/StyleBtnWhiteText"/>
 
     </LinearLayout>
 

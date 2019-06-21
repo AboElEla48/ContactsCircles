@@ -23,7 +23,7 @@
     <string name="txt_confirm_delete_ok_btn">Yes</string>
     <string name="txt_confirm_delete_no_btn">Cancel</string>
 
-    <string name="txt_permission_must_be_granted">Contacts Permissions must be granted</string>
+    <string name="txt_contacts_permission_must_be_granted">Contacts Permissions must be granted</string>
 
     <string name="txt_circle_name_hint">Enter Circle Name</string>
     <string name="txt_save_circle_editing">Save Circle</string>
@@ -40,6 +40,11 @@
     <string name="txt_delete_contact_details_confirmation_body">Are you sure you want to delete this item?</string>
     <string name="txt_delete_contact_details_confirmation_yes">Yes</string>
     <string name="txt_delete_contact_details_confirmation_no">No</string>
+
+    <string name="txt_phone_call_permission_must_be_granted">Phone Call Permission must be granted to make calls</string>
+
+    <string name="txt_add_contact_to_circle">Save</string>
+    <string name="txt_cancel_add_contact_to_circle">Cancel</string>
 
     <string-array name="txt_phone_types_arr">
         <item>Mobile</item>

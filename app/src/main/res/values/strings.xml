@@ -46,6 +46,8 @@
     <string name="txt_add_contact_to_circle">Save</string>
     <string name="txt_cancel_add_contact_to_circle">Cancel</string>
 
+    <string name="txt_phone_numbers_list_dialog_title">Choose Phone to call</string>
+
     <string-array name="txt_phone_types_arr">
         <item>Mobile</item>
         <item>Home</item>

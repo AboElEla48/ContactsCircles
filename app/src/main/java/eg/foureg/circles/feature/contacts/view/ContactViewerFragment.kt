@@ -25,11 +25,12 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_contact_viewer.view.*
 import kotlinx.android.synthetic.main.view_contact_view_email_item.view.*
 import kotlinx.android.synthetic.main.view_contact_view_phone_item.view.*
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.widget.Toast
+import eg.foureg.circles.feature.phone.email.PhoneEmail
+import eg.foureg.circles.feature.phone.caller.PhoneCaller
+import eg.foureg.circles.feature.phone.caller.PhoneSMS
 
 
 /**
@@ -162,8 +163,7 @@ class ContactViewerFragment : BaseFragment() {
             }
         }
         else {
-            val intent = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phone, null))
-            startActivity(intent)
+            PhoneCaller.callPhone(activity as Context, phone)
         }
 
 
@@ -184,20 +184,15 @@ class ContactViewerFragment : BaseFragment() {
     }
 
     private fun doCallPhoneNumber(phone: String) {
-        val intent = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", phone, null))
-        startActivity(intent)
+        PhoneCaller.callPhone(activity as Context, phone)
     }
 
     private fun sendEmail(email: String) {
-        val intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/html"
-        intent.putExtra(Intent.EXTRA_EMAIL, email)
-
-        startActivity(Intent.createChooser(intent, "Send Email"))
+        PhoneEmail.sendEmail(activity as Context, email)
     }
 
     fun sendSMS(phoneNumber: String) {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber, null)))
+        PhoneSMS.sendSMS(activity as Context, phoneNumber)
     }
 
     /**

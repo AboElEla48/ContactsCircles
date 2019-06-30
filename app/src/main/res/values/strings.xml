@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Circles</string>
     <string name="txt_contacts_list_title">Phone book</string>
+    <string name="txt_contacts_list_title_with_numbers">Phone book (%d contacts)</string>
 
     <string name="txt_empty_circles_list">Click Add button to add new circle!</string>
     <string name="txt_empty_contacts_list">Click Add button to add new contact!</string>

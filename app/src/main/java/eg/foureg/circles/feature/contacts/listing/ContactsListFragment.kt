@@ -72,6 +72,9 @@ class ContactsListFragment : BaseFragment() {
         disposable = viewModel.loadContacts(activity as Context)
                 .doOnComplete {
                     progressBarLayout.visibility = View.GONE
+
+                    view.fragment_contacts_list_title_text_view.text =
+                            String.format(getString(R.string.txt_contacts_list_title_with_numbers), viewModel.contacts.value?.size)
                 }
                 .subscribe()
 

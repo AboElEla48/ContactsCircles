@@ -69,13 +69,11 @@ class ContactsListFragment : BaseFragment() {
             }
         })
 
-
-        Observable.fromCallable {
-            disposable = viewModel.loadContacts(activity as Context)
-                    .subscribe {
-                        progressBarLayout.visibility = View.GONE
-                    }
-        }.subscribe()
+        disposable = viewModel.loadContacts(activity as Context)
+                .doOnComplete {
+                    progressBarLayout.visibility = View.GONE
+                }
+                .subscribe()
 
         return view
     }

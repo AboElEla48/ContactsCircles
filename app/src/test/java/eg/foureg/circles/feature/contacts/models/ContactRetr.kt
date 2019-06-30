@@ -12,7 +12,7 @@ class ContactRetr() : ContactsRetriever, Parcelable {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun loadContacts(context: Context): ArrayList<ContactData> {
+    override fun loadContacts(context: Context): Observable<ArrayList<ContactData>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

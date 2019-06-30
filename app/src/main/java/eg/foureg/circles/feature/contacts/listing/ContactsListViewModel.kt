@@ -30,14 +30,14 @@ class ContactsListViewModel : ViewModel() {
                 .flatMap { rawContacts: ArrayList<ContactData> -> contactsModel.removeDuplicate(rawContacts) }
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ contactsList: ArrayList<ContactData> ->
+                .doOnNext{contactsList: ArrayList<ContactData> ->
                     contacts.value = contactsList
-
                     loadContactsImages(context, contactsList)
-
-                    publishSubject.onNext(true)
-
                 }
+                .doOnComplete {
+                    publishSubject.onComplete()
+                }
+                .subscribe()
 
         return publishSubject
 

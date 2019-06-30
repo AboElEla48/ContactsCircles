@@ -22,69 +22,80 @@ class ContactsRetrieverImpl : ContactsRetriever {
     /**
      * Load contacts book
      */
-    override fun loadContacts(context: Context): ArrayList<ContactData> {
+    override fun loadContacts(context: Context): Observable<ArrayList<ContactData>> {
 
-        // Open content resolver to retrieve contactsCursor
-        val contactsCursor = context.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                null,
-                null,
-                null,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
+        return Observable.create<ArrayList<ContactData>> { emitter ->
+            // Open content resolver to retrieve contactsCursor
+            val contactsCursor = context.contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                    null,
+                    null,
+                    null,
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC")
 
-        val contactsList: ArrayList<ContactData> = ArrayList()
+            val contactsList: ArrayList<ContactData> = ArrayList()
 
-        // iterate contactsCursor
-        while (contactsCursor!!.moveToNext()) {
-            val id = Uri.withAppendedPath(ContactsContract.RawContacts.CONTENT_URI,
-                    contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.Data.RAW_CONTACT_ID))).toString()
+            var counter = 0
 
-            val emailID = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
+            // iterate contactsCursor
+            while (contactsCursor!!.moveToNext()) {
+                val id = Uri.withAppendedPath(ContactsContract.RawContacts.CONTENT_URI,
+                        contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.Data.RAW_CONTACT_ID))).toString()
 
-            val name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-            val phoneNumber = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-            val phoneType = contactsCursor.getInt(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
+                val emailID = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.CONTACT_ID))
 
-            Logger.debug(TAG, "ID: $id, Name: $name, Phone Number:$phoneNumber")
+                val name = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                val phoneNumber = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                val phoneType = contactsCursor.getInt(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE))
 
-            val photoID = contactsCursor.getInt(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_ID))
+                Logger.debug(TAG, "ID: $id, Name: $name, Phone Number:$phoneNumber")
 
-            // extract contact
-            val contactData = ContactData()
-            contactData.name = if (name == null) {
-                "TempName"
-            } else {
-                name
+                val photoID = contactsCursor.getInt(contactsCursor.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO_ID))
+
+                // extract contact
+                val contactData = ContactData()
+                contactData.name = if (name == null) {
+                    "TempName"
+                } else {
+                    name
+                }
+
+                val type = when (phoneType) {
+                    ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE ->
+                        ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
+                    ContactsContract.CommonDataKinds.Phone.TYPE_WORK ->
+                        ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_WORK
+                    ContactsContract.CommonDataKinds.Phone.TYPE_HOME ->
+                        ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME
+
+                    else ->
+                        ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
+                }
+
+                contactData.phones?.add(ContactPhoneNumber(id, phoneNumber, type))
+                contactData.emails = loadEmailAddress(emailID, context.contentResolver)
+                contactData.photoID = photoID
+
+                // add contact
+                contactsList.add(contactData)
+
+                counter++
+                if(counter % 5 == 0) {
+                    emitter.onNext(contactsList)
+                }
             }
 
-            val type = when (phoneType) {
-                ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE ->
-                    ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
-                ContactsContract.CommonDataKinds.Phone.TYPE_WORK ->
-                    ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_WORK
-                ContactsContract.CommonDataKinds.Phone.TYPE_HOME ->
-                    ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_HOME
+            // close content provider
+            contactsCursor.close()
 
-                else ->
-                    ContactPhoneNumber.PHONE_NUM_TYPE.PHONE_NUM_TYPE_MOBILE
-            }
-
-            contactData.phones?.add(ContactPhoneNumber(id, phoneNumber, type))
-            contactData.emails = loadEmailAddress(emailID, context.contentResolver)
-            contactData.photoID = photoID
-
-            // add contact
-            contactsList.add(contactData)
+            emitter.onNext(contactsList)
+            emitter.onComplete()
         }
-
-        // close content provider
-        contactsCursor.close()
-
-        return contactsList
     }
 
     override fun loadContactByPhoneNumber(context: Context, phoneNumber: String): Observable<ContactData> {
         return Observable.create<ContactData> { emitter ->
-            Observable.fromCallable { loadContacts(context) }
+
+            loadContacts(context)
                     .subscribe { contacts ->
                         Observable.fromIterable(contacts)
                                 .filter { contact: ContactData ->

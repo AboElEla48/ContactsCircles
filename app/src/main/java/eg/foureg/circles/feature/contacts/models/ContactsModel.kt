@@ -20,7 +20,7 @@ open class ContactsModel(retriever: ContactsRetriever, editor: ContactsEditor) {
     }
 
     fun loadContacts(context: Context): Observable<ArrayList<ContactData>> {
-        return Observable.fromCallable { contactsRetriever.loadContacts(context) }
+        return contactsRetriever.loadContacts(context)
 
     }
 

@@ -11,9 +11,8 @@ import android.content.ContentResolver
 import android.net.Uri
 import eg.foureg.circles.contacts.data.ContactData
 import eg.foureg.circles.contacts.data.ContactPhoneNumber
-import android.R.attr.phoneNumber
-import android.provider.Contacts.Phones.CONTENT_FILTER_URL
 
+private val COUNT_TO_NOTIFY_OBSREVER = 100
 
 /**
  * Retriever class for contacts saved on device
@@ -79,7 +78,7 @@ class ContactsRetrieverImpl : ContactsRetriever {
                 contactsList.add(contactData)
 
                 counter++
-                if(counter % 5 == 0) {
+                if(counter % COUNT_TO_NOTIFY_OBSREVER == 0) {
                     emitter.onNext(contactsList)
                 }
             }
